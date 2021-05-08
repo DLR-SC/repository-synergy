@@ -1,0 +1,22 @@
+
+{% include  "reposynergy/components/header.html" %}
+
+
+    <!-- Login Form -->
+
+    <form action="{% url 'reposynergy:login'  %}" method="post" class="login-form">
+    {% csrf_token %}
+          {% if message %}<div class="alert alert-{{ message_type }}" role="alert">{{ message }}</div>{% endif %}
+ <h2 class="text-center">Log in</h2>       
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Username" required="required" name="username">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Password" required="required" name="password">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-secondary btn-block">Log in</button>
+        </div>      
+    </form>
+
+{% include "reposynergy/components/footer.html" %}

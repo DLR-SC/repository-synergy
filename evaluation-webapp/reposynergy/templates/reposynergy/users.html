@@ -1,0 +1,103 @@
+{% load static %}
+{% include  "reposynergy/components/header.html" %}
+       
+<form action="{% url 'reposynergy:create_show_users'  %}" enctype="multipart/form-data" method="post" class="needs-validation login-form" >
+    {% csrf_token %}
+    {% if messages %}
+
+    {% for message in  messages %}
+        <div  class="alert alert-danger" role="alert">{{message|safe}}</div>
+        {% endfor %}
+        {% endif %}
+    <div class="form-group">
+    <label for="firstname">First Name</label>
+    <input type="text" class="form-control" id="firstname" name="firstname" required>
+  </div>
+    <div class="form-group">
+    <label for="lastname">Last Name</label>
+    <input type="text" class="form-control" id="lastname" name="lastname" required>
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" class="form-control" id="email" name="email"  placeholder="Enter email" required>
+  </div>
+
+    <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" name="username" required>
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+  </div>
+     <div class="form-group">
+  <label for="batch">Batch</label>
+  <select class="form-control" id="batch" name="batch" required>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
+</div>
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="active" name="active" >
+    <label class="form-check-label" for="active">Active</label>
+  </div>
+      <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="staff" name="staff">
+    <label class="staff" for="staff">Staff</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<hr>
+<h2>Users - Current Data</h2>
+
+  {% if users_data|length > 0 %}
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">uername</th>
+                    <th scope="col">Staff</th>
+                     <th scope="col">Batch</th>
+                  <th scope="col">Active</th>
+                  <th scope="col">Last Login</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+            {% for user in users_data  %}
+
+            <tr >
+                 <td>{{user.id }}</td>
+                 <td>{{user.first_name }}</td>
+                <td>{{user.last_name }}</td>
+
+                <td>{{user.username }}</td>
+                <td>{{user.is_staff }}</td>
+                <td>{{user.batch }}</td>
+                <td>{{user.is_active }}</td>
+
+                <td>{{user.last_login}}</td>
+
+                <td>
+                    {% if user.is_active %}
+                    <a href="{% url 'reposynergy:deactivate_user' user.id  %}">deactivate</a></td>
+                     {% else %}
+                    <a href="{% url 'reposynergy:activate_user' user.id  %}">activate</a></td>
+
+                {% endif%}
+
+
+
+            </tr>
+
+            {% endfor%}
+              </tbody>
+            </table>
+{% endif %}
+{% include "reposynergy/components/footer.html" %}

@@ -1,0 +1,113 @@
+{% load static %}
+{% include  "reposynergy/components/header.html" %}
+
+           
+    <div class="container-fluid" id="main">
+
+
+        <div  class="page-header container">
+                        <div  class="boxshadow"  >
+                                <h1>Guideline</h1>
+                            <h2>Overview</h2>
+                            <p>Many new projects result from novel combinations of already existing tools and techniques. This is especially the case for software development. Due to the huge amount of open source projects it is impossible to keep track of all new developments and potential synergy between projects remain undiscovered.
+                            </p>
+
+                            <p>In our project we aim to analyze GitHub repositories using data mining techniques in order to discover pairs of software projects that can <b>benefit</b> from each other,  or that can <b>inspire</b> new software projects when combined together.</p>
+
+                                    <h2>Defining Two Repositories with Synergy </h2>
+                            <p> We define two <i>diverse</i> or <i>somehow similar</i> repositories to have potential synergy if they inspire a new software project that combines features of both. </p>
+
+                                     <h2>Questions</h2>
+                                    <p>As part of our evaluation, we ask annotators (you are one of them) to annotate 30 pairs of GitHub repositories. </p>
+
+                                     <p>For each pair, we ask you first to read the README files of the two repositories and then answer 3 questions:
+                                        <ol>
+                            <li>Can you imagine a new software project that is mainly based on combining software features from both?<br>
+                            </li>
+                            <li> If there is synergy between the pair, what is the <i>direction</i> of the synergy?
+
+                                           <ul>
+                                            <li> None </li>
+                                            <li> Repository 1 benefits from Repository 2</li>
+                                            <li> Repository 2 benefits from Repository 1</li>
+                                            <li> Both repositories benefit from each others</li>
+                                               </ul>
+                                    </li>
+                                    <li> Explain your answer: this a free text answer where you can either define how can the 2 repositories benefit from each others or why they can not benefit from each others. This field is optional in case there is no synergy between the 2 repositories.</li>
+                                    </ol></p>
+                            <h2>Annotation Tool</h2>
+                            <p>Upon login, you are always redirected to this page (dashboard) where the guideline and an overview of your progress is shown.  </p>
+
+                            <p>Please feel free to review the guidelines at any point in time. </p>
+
+                            <p>Below, we show you a table containing all the repository pairs, your evaluation for each pair and your overall progress. When you click to <i>view</i> one pair, you will be redirected to view the two readme files of two repositories and you are asked to answer the questions and submit. Upon submission, you will be redirected to evaluate the next pair. At any time in point, you can click the top left link, <i>Back to Dashboard</i> to go back to the dahsboard.</p>
+
+                            <p>Please finish the annotations at your own pace. Your data will be saved and you can logout and login again to continue.</p>
+
+
+            <h2>Disclaimer</h2>
+            Please be sure that your annotations will be used solely for research (non-commercial) purposes. The results of the annotations will be available publicly after this study is done, without revealing your identity.
+
+
+                </div>   </div>
+
+
+
+            <br />
+             <div  class="dashboard">
+                <h1> Overview of your Annotations </h1>
+                 <br>
+                {% if total == annotated %}<div class="alert alert-success  text-center" role="alert" >Thank you for completing the survey! You can still review and update your entries until the 6th of May 2020. </div>{% endif %}
+                <div class="alert alert-primary text-center" role="alert" >You annotated {{annotated}} out of {{total}} repository pairs...</div>
+                 <br>
+
+
+                 {% if repo_pairs|length > 0 %}
+            <table class="table table-hover table-responsive">
+              <thead>
+                <tr>
+                    <th scope="col">Pair ID</th>
+                  <th scope="col">Repository 1</th>
+                  <th scope="col">Repository 2</th>
+
+                  <th scope="col">Annotated</th>
+                  <th scope="col">Have Synergy</th>
+                  <th scope="col">Synergy Direction</th>
+                  <th scope="col">Explanation</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+            {% for pair in repo_pairs.itertuples  %}
+
+            <tr id="{{pair.id}}" >
+                 <td>{{pair.id }}</td>
+                <td>{{pair.repo_description1 }}</td>
+                <td>{{pair.repo_description2 }}</td>
+                <td class="text-center">{% if pair.synergy != '' %}
+                        <img src="{% static 'reposynergy/img/check.png' %}" height="30px" />
+                    {% else %}
+                        <img src="{% static 'reposynergy/img/not.png' %}" height="25px" />
+                    {% endif %}
+                </td>
+                <td>{{pair.synergy}}</td>
+                <td>{{pair.direction}}</td>
+                <td>{{pair.explanation}}</td>
+
+                <td><a href="{% url 'reposynergy:annotate' pair.id %}">view</a> </td>
+
+            </tr>
+
+            {% endfor%}
+
+
+                  </tbody>
+        </table>
+
+                {% else %}
+                <span>No repositories uploaded yet, please contact us!</span>
+        {% endif %}
+
+        </div>
+        </div>
+{% include "reposynergy/components/footer.html" %}

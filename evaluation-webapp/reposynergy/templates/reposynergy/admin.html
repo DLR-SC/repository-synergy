@@ -1,0 +1,23 @@
+{% load static %}
+{% include  "reposynergy/components/header.html" %}
+
+
+    <div class="container-fluid" id="main">
+
+        <div  class="page-header container">
+            <br>
+            <h1> View Data</h1>
+            <a href="{% url 'reposynergy:view_annotations' '1'  %}">View Annotations</a> <br><hr>
+            <a href="{% url 'reposynergy:upload_repopairs'  %}">View/Upload Repo Pairs</a> <br>
+            <a href="{% url 'reposynergy:create_show_users'  %}">View/Add Users</a> <br>
+
+
+
+            <hr>
+            <h1> Download csv File</h1>
+            <a href="{% url 'reposynergy:download_annotations'  %}"> <img src="{% static 'reposynergy/img/csv.png' %}"  /> Annotations</a><br>
+            <a href="{% url 'reposynergy:download_users'  %}"><img src="{% static 'reposynergy/img/csv.png' %}" /> Users</a><br>
+            <a href="{% url 'reposynergy:download_repo_pairs'  %}"><img src="{% static 'reposynergy/img/csv.png' %}" /> Repo Pairs</a><br>
+        </div>
+    </div>
+{% include "reposynergy/components/footer.html" %}

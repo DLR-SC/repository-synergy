@@ -1,0 +1,17 @@
+*/*/*.pckl
+
+.ipynb_checkpoints
+.idea
+notebooks/textmining/thirdparty-data
+
+*/__pycache__
+*/*/__pycache__
+__pycache__
+
+*migrations/
+
+data/evaluation/per_repo
+data/evaluation/*.zip
+data/evaluation/*.csv
+
+.idea

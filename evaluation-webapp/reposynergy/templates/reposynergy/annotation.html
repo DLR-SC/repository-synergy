@@ -1,0 +1,124 @@
+{% load static %}
+{% include  "reposynergy/components/header.html" %}
+
+<div class="articles" xmlns:synergy>
+
+                <div  class="page-header">
+                        <span><a href="{% url 'reposynergy:dashboard' %}"> << Back to Dashboard </a></span><br><br>
+
+                    <h1>Annotate Repositories Pair </h1> <br>
+                    <div class="alert alert-primary text-center" role="alert" >You annotated {{annotated}} out of {{total}} pairs</div>
+
+                  
+                </div>
+<br>
+            <input type="hidden" value="{{ readme1 }}" id="hidden_readme1">
+            <input type="hidden" value="{{ readme2 }}" id="hidden_readme2">
+          <div class="container-auto">
+                  <div class="row">
+
+                    <div  class="col-6"  >
+                    <div  class="boxshadow"  >
+                     <h2 >Repository 1 <i>readme</i> file</h2>
+                        <hr>
+                        <div class="readme"  id="readme1">
+
+                        </div >
+                        </div >
+
+
+                    </div> <!-- End of col for original editorial-->
+                    <div  class="col-6"  >
+                    <div  class="boxshadow"  >
+                     <h2 >Repository 2 <i>readme</i> file</h2>
+                    <hr>
+                        <div  class="readme" id="readme2">
+
+                        </div >
+                </div> <!-- End of col for summaries-->
+                </div> <!-- End of col for summaries-->
+
+                
+
+            </div>
+            <br>
+              <form id="annotated-form" action="{% url 'reposynergy:save_annotation'  %}" method="post" class="needs-validation" >
+                        {% csrf_token %}
+                  <input type="hidden" value="{{pair_id}}" name="pair_id" id="pair_id">
+              <div  class="boxshadow"  >
+              <div class="row">
+                  <div class=" col">
+                      <h1>
+                          Questions
+                      </h1>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class=" col-6">
+                      <span class="question">1. There is synergy between the two repositories:</span> <br>
+                      <small><i>I see that there is synergy between the 2 repositories:
+                     they inspire a new software project that combines features of both (i.e., They have complementary features)</i> </small><br>
+                      <!-- <i><small>Note: 2 repositories have complementary features when one repository can use the software features of the other repository (and vice versa)</small></i> -->
+                        <div class="form-check ">
+                          <input class="form-check-input" type="radio" name="synergyQuestion" id="synergyQuestion1" value="1" required {% if synergy == 1 %} checked{% endif %}>
+                          <label class="form-check-label" for="synergyQuestion1">None  - <small>No complementary or common features (they solve unrelated tasks and cannot benefit from each other)</small></label>
+                        </div>
+                        <div class="form-check ">
+                          <input class="form-check-input" type="radio" name="synergyQuestion" id="synergyQuestion2" value="2" required {% if synergy == 2 %} checked{% endif %}>
+                            <label class="form-check-label" for="synergyQuestion2">Weak - <small>More common features than complementary (they both seem to solve similar tasks with minor difference in features)</small></label>
+                        </div>
+                        <div class="form-check ">
+                          <input class="form-check-input" type="radio" name="synergyQuestion" id="synergyQuestion3" value="3" required {% if synergy == 3 %} checked{% endif %}>
+                          <label class="form-check-label" for="synergyQuestion3">Somewhat - <small> Some features can be merged (using features from one repository can benefit the other)</small></label>
+                        </div>
+                                              <div class="form-check ">
+                          <input class="form-check-input" type="radio" name="synergyQuestion" id="synergyQuestion4" value="4" required {% if synergy == 4 %} checked{% endif %}>
+                          <label class="form-check-label" for="synergyQuestion4">Strong  - <small> Clear complementary features that lead to a new project (combining features from both repositories is innovative)</small></label>
+                        </div>
+
+                  </div>
+                  <div class="col-6">
+                      <span class="question">2. Synergy direction:</span> <br>
+                         <div class="form-check ">
+
+                          <input class="form-check-input" type="radio" name="directionQuestion" id="directionQuestion-none" value="0" required  {% if direction == 0 %} checked{% endif %}  >
+                          <label class="form-check-label" for="directionQuestion-none">None</label>
+                        </div>
+                        <div class="form-check ">
+                          <input class="form-check-input" type="radio" name="directionQuestion" id="directionQuestion-1-from-2" value="12" required  {% if direction == 12 %} checked{% endif %}>
+                          <label class="form-check-label" for="directionQuestion-1-from-2">Repository 1 benefits from Repository 2</label>
+                        </div>
+                        <div class="form-check ">
+                          <input class="form-check-input" type="radio" name="directionQuestion" id="directionQuestion-2-from-1" value="21" required  {% if direction == 21 %} checked{% endif %}>
+                          <label class="form-check-label" for="directionQuestion-2-from-1">Repository 2 benefits from Repository 1</label>
+                        </div>
+                      <div class="form-check ">
+                          <input class="form-check-input" type="radio" name="directionQuestion" id="directionQuestion-both" value="2" required  {% if direction == 2 %} checked{% endif %}>
+                          <label class="form-check-label" for="directionQuestion-both">Both repositories benefit from each others</label>
+                        </div>
+
+                  </div>
+
+
+              </div>
+
+              <div class="row">
+                  <div class="col-6">
+                      <br>
+                      <label for="explanationtextarea" class="question">3. Explanation:</label><br>
+                      <i></i>
+                    <textarea class="form-control" id="explanationtextarea" rows="3" name="explanation" maxlength="1000" minlength="0" placeholder="Please add a short explanation of your answer ESPECIALLY in case you think there is a potential synergy between the repositories.">{{explanation}}</textarea>
+                      <br>
+
+
+                  </div></div>
+                   <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                       </div>
+              </div>
+              </form>
+        </div>
+  </div>
+
+<script src="{% static 'reposynergy/js/main.js' %}"></script>
+{% include "reposynergy/components/footer.html" %}

@@ -1,0 +1,3 @@
+sep=;
+feature;is_normal (shapiro);is_homogeneous (levene);p_value;is_significant;effect;result;('random', 'd02');('random', 'd02');('random', 'd00');('random', 'd00');('d02', 'd00');('d02', 'd00')
+synergy;False;False;1.2506287666516846e-08;True;;;True;-0.3;True;-0.39;False;

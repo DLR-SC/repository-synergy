@@ -1,0 +1,75 @@
+{% load static %}
+{% include  "reposynergy/components/header.html" %}
+
+    <div class="container-fluid" id="main">
+
+
+        <div  class="page-header ">
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <a class="btn btn-secondary {% if batch_num == 1 %} active {% endif %}" role="button" href="{% url 'reposynergy:view_annotations' '1'  %}"  name="batch" id="batch1" autocomplete="off"  > Batch 1</a>
+    <a class="btn btn-secondary {% if batch_num == 2 %} active{% endif %}" role="button" href="{% url 'reposynergy:view_annotations' '2'  %}"  name="batch" id="batch2" autocomplete="off" > Batch 2</a>
+    <a class="btn btn-secondary {% if batch_num == 3 %} active{% endif %}" role="button"  href="{% url 'reposynergy:view_annotations' '3'  %}"  name="batch" id="batch3" autocomplete="off" > Batch 3</a>
+
+</div>
+            <a href="{% url 'reposynergy:download_annotations_view' batch_num  %}"> <img src="{% static 'reposynergy/img/csv-512.png' %}"  /></a>
+
+               </div>
+
+  <div class="alert alert-primary text-center" role="alert" >There are {{total_count}}  annotations in this batch -- {{annotated_count}}/30 have at least 3 annotations. </div>
+
+<h2>Annotations - Current Data</h2>
+
+  {% if annotations_data|length > 0 %}
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Repository 1 URL</th>
+                    <th scope="col">Repository 1</th>
+                    <th scope="col">Repository 2 URL</th>
+                    <th scope="col">Repository 2</th>
+                    <th scope="col">Batch</th>
+
+                  <th scope="col">Algorithm</th>
+                    <th scope="col"># of annotations</th>
+                    <th scope="col">labels</th>
+                    <th scope="col">Directions</th>
+                    <th scope="col">Users</th>
+                     <th scope="col">Complete</th>
+
+                </tr>
+              </thead>
+              <tbody>
+            {% for a in annotations_data.itertuples  %}
+
+            <tr >
+                 <td>{{a.id }}</td>
+                <td>{{a.repo_url1 }}</td>
+
+                <td>{{a.repo_description1 }}</td>
+                <td>{{a.repo_url2 }}</td>
+                <td>{{a.repo_description2 }}</td>
+                <td>{{a.batch}}</td>
+
+                <td>{{a.algorithm}}</td>
+                <td>{{a.annotations_num}}</td>
+                <td>{{a.labels}}</td>
+                <td>{{a.directions}}</td>
+                <td>{{a.users}}</td>
+
+                <td class="text-center">{% if a.annotations_num >= 3 %}
+                        <img src="{% static 'reposynergy/img/check.png' %}" height="30px" />
+                    {% else %}
+                        <img src="{% static 'reposynergy/img/not.png' %}" height="25px" />
+                    {% endif %}
+                </td>
+
+
+            </tr>
+
+            {% endfor%}
+              </tbody>
+            </table>
+{% endif %}
+        </div>
+{% include "reposynergy/components/footer.html" %}

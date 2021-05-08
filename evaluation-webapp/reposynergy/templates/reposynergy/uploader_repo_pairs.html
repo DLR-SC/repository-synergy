@@ -1,0 +1,66 @@
+{% load static %}
+{% include  "reposynergy/components/header.html" %}
+       
+<form action="{% url 'reposynergy:upload_repopairs'  %}" enctype="multipart/form-data" method="post" class="needs-validation login-form" >
+    {% csrf_token %}
+    {% if messages %}
+
+    {% for message in  messages %}
+        <div  class="alert alert-danger" role="alert">{{message|safe}}</div>
+        {% endfor %}
+        {% endif %}
+    <div class="form-group" >
+        <label >Upload a .csv file with the following order and header:<br> 'id', 'repo_url1', 'repo_description1', 'repo_url2', 'repo_description2', 'score', 'is_random'</label>  <br />
+        <input  name="file"  type="file" required disabled/>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block">Upload</button>
+    </div>
+</form>
+
+<hr>
+  <div class="alert alert-primary text-center" role="alert" >There are {{count}}  repository pairs uploaded.</div>
+
+<h2>Repository Pairs - Current Data</h2>
+
+  {% if repo_pairs_data|length > 0 %}
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Repository 1 URL</th>
+                    <th scope="col">Repository 1</th>
+                    <th scope="col">Repository 2 URL</th>
+                    <th scope="col">Repository 2</th>
+                    <th scope="col">Batch</th>
+
+                  <th scope="col">Score</th>
+                  <th scope="col">Algorithm</th>
+
+                  <th scope="col">Is Random</th>
+                </tr>
+              </thead>
+              <tbody>
+            {% for pair in repo_pairs_data  %}
+
+            <tr >
+                 <td>{{pair.id }}</td>
+                <td>{{pair.repo_url1 }}</td>
+
+                <td>{{pair.repo_description1 }}</td>
+                <td>{{pair.repo_url2 }}</td>
+                <td>{{pair.repo_description2 }}</td>
+                <td>{{pair.batch}}</td>
+
+                <td>{{pair.score}}</td>
+                <td>{{pair.algorithm}}</td>
+                <td>{{pair.is_random}}</td>
+
+
+            </tr>
+
+            {% endfor%}
+              </tbody>
+            </table>
+{% endif %}
+{% include "reposynergy/components/footer.html" %}
