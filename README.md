@@ -63,7 +63,7 @@ We ended up with 20 509, saved in *data/processed/repositories_with-readme.csv*.
 The readme files are saved under *data/readme_files*
 
 
-## 1. Software Features Extractions
+## 1. Software Features Extraction
 We use the project [READMEClassifer](https://github.com/gprana/READMEClassifier) to classify the sections in the readme files under *data/readme_files*.
 
 The classifications are saved under *data/ghtorrent_readme_classifications*.
@@ -78,7 +78,7 @@ We exported the data into csv an saved them under *data/ghtorrent\_readme\_class
 
 We then created 1 csv file with all the needed info using *5_extracting_readme_content.ipynb* and saved them here *data/processed/repositories_with-readme_what-why-code_content.csv*.
 
-## 2. Software Fetaures Modeling
+## 2. Software Features Modeling
 #### reproducibility: 
  - check code/2_software-features-modeling: extracting features using NMF/LDA and then comparing the results
 
