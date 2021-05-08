@@ -1,0 +1,100 @@
+apt-metalink
+============
+
+apt-metalink makes 'apt-get' faster by downloading Debian/Ubuntu
+packages from several servers concurrently. apt-metalink uses
+python-apt to interface apt infrastructure and aria2 for download
+backend. Metalink is used to feed package list to aria2.
+
+If multiple debian mirror is specified in /etc/apt/sources.list,
+packages are usually available in more than one server.  apt-get only
+uses 1 URI to download package in sequential manner.  apt-metalink
+uses the advantage of availability of these mirrors.  apt-metalink
+establishes 1 connection per mirror and downloads packages from all
+mirrors in sources.list. This is as if running apt-get with different
+mirror and mutually exclusive subset of packages at the same time.
+This parallelism shortens whole download time. The difference of
+parallel transfer and sequential transfer gets bigger when the number
+of packages to download increases.  The connection to the remote
+server is reused across the download, so it is very efficient.
+
+Prerequisites
+-------------
+
+apt-metalink uses aria2 as download backend.
+You can install aria2 with following command:
+
+---------------------
+apt-get install aria2
+---------------------
+
+I strongly recommend to use the latest release of aria2.  You can
+download aria2 from https://aria2.github.io/
+
+apt-metalink also depends on python-apt package.
+You can install python-apt with following command:
+
+--------------------------
+apt-get install python-apt
+--------------------------
+
+But I think it is usually already in your system.  If you see that
+apt-metalink reports there are packages to update but the total size
+is 0 byte, then it is a sign that python-apt needs to be updated.
+Please update python-apt first in this case.
+
+Edit sources.list
+-----------------
+
+sources.list is ususally located at /etc/apt/sources.list.  Add
+several fast debian mirror server to it.  Don't add slow mirror. It
+voids the power of apt-metalink.  For example, adding 3 debian mirror:
+
+---------------------------------------------------------
+deb http://MIRROR1/debian/ unstable main contrib non-free
+deb http://MIRROR2/debian/ unstable main contrib non-free
+deb http://MIRROR3/debian/ unstable main contrib non-free
+---------------------------------------------------------
+
+See sources.list(5) for more details.
+
+apt-metalink uses them all and download packages concurrently, which
+makes download faster.
+
+Currently, apt-metalink passes the number of mirrors as -j option to
+aria2c.
+
+Usage
+-----
+
+--------------------------------------------------------------------------------
+  Usage: apt-metalink [options] {upgrade | dist-upgrade | install pkg ...}
+
+  Options:
+    -h, --help            show this help message and exit
+    -d, --download-only   Download only. [default: False]
+    --print-metalink      Instead of fetching the files, Metalink XML document
+                          is printed. Metalink XML document contains package's
+                          URIs and checksums.
+    --hash-check          Check hash of already downloaded files. If hash check
+                          fails, download file again.
+    -x ARIA2C, --aria2c=ARIA2C
+                          path to aria2c executable [default: /usr/bin/aria2c]
+--------------------------------------------------------------------------------
+
+Currently, apt-metalink offers very basic subset of features that
+apt-get has: upgrade, dist-upgrade and install. But I think this is
+enough to see what apt-metalink offers and its possibility.
+
+License
+-------
+
+GPLv3
+
+References
+----------
+
+ * https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=500653
+ * https://bugs.launchpad.net/ubuntu/+source/apt/+bug/275994
+ * https://tools.ietf.org/html/rfc5854 The Metalink Download Description Format
+ * https://aria2.github.io/ aria2 project

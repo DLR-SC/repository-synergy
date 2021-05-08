@@ -1,0 +1,53 @@
+= WARNING =
+
+This script is apparently against the licensing contract between universities and Springer.
+See e.g.: http://www.bib.hm.edu/aktuelles/news/newsdetail_9984.de.html
+
+I do not actively maintain this script anymore. Please use an alternative or one of the
+excellent forks of this script which add some more functionality. See e.g.
+http://tovotu.de/dev/518-Neuer-SpringerLink-Downloader/
+
+= Download Script for Ebooks hosted on Springerlink.com =
+
+author:	
+	Milian Wolff <mail@milianw.de> / <http://milianw.de>
+licencse:
+	GPL v3 (http://www.gnu.org/licenses/gpl.html)
+language:
+	Python (v2.4 compatible)
+
+== Explanation ==
+
+springer_download.py is a command-line utility to download educational ebooks
+from http://springerlink.com. You have to have access to the contents hosted
+on this site. The script is _not_ a way to obtion illegal copies of those ebooks.
+Instead it is intended to be used e.g. from your University account which often
+have free access to the contents of SpringerLink.
+
+The script downloads all chapters of a book and merges them into one PDF file.
+
+== Usage ==
+
+./springer_download.py [OPTIONS]
+
+Options:
+  -h, --help              Display this usage message
+  -l LINK, --link=LINK    define the link of the book to start downloading
+  -c ISBN, --content=ISBN define the book to download by it's ISBN
+
+LINK:
+  The link to your the detail page of the ebook of your choice on SpringerLink.
+  It lists book metadata and has a possibly paginated list of the chapters of the book.
+  It has the form:
+    http://springerlink.com/content/HASH/STUFF
+  Where: HASH is a string consisting of lower-case, latin chars and numbers.
+         STUFF is optional and looks like ?p=...&p_o=... or similar. Will be stripped.
+
+== Thanks ==
+
+A big thank you goes to Springer for hosting all these books _and_ giving
+free access to students.
+
+== Legal Note: == 
+
+Springerlink is © Springer and part of Springer Science+Business Media.

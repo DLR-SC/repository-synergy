@@ -1,0 +1,130 @@
+# Created 2018-10-22 Mon 12:35
+#+TITLE: Color Schemes for ConEmu
+#+AUTHOR: Joon Ro
+I port my favorite color schemes to [[https://conemu.github.io/][ConEmu]]. Note that screenshots are taken
+with the prompt customized with [[https://github.com/dahlbyk/posh-git][posh-git]] and the =Get-ChildItem= with
+[[https://github.com/joonro/Get-ChildItemColor][Get-ChildItemColor]]. See this [[http://joonro.github.io/blog/posts/powershell-customizations.html][blog post]] for my PowerShell customizations.
+
+My current favorites are =material-theme (Emacs) light= and =One Dark=.
+* Examples
+- [[https://github.com/cpaulik/emacs-material-theme][material-theme (Emacs)]] (light)
+
+  [[file:./screenshots/material-emacs-light.png]]
+
+- [[https://github.com/dunovank/oceans16-syntax][Oceans16]] (dark)
+
+  [[file:./screenshots/oceans16-dark.png]]
+
+* Color Schemes List
+For all screenshots, see [[screenshots.org][screenshots]]
+
+- [[https://github.com/ayu-theme/ayu-colors][ayu]] (Light, Mirage, & Dark)
+- [[https://chriskempson.github.io/base16/][Base16]]
+  - Ocean (dark)
+  - Railscasts (light and dark)
+
+- [[https://github.com/zenorocha/dracula-theme][Dracula]] (thanks to [[https://github.com/radmonac][Radmon]])
+- [[https://github.com/morhetz/gruvbox][gruvbox]] (dark, thanks to [[https://github.com/circleous][circleous]])
+- [[https://github.com/cpaulik/emacs-material-theme][material-theme (Emacs)]] (light)
+- [[http://equinsuocha.io/material-theme/#/darker][material-theme (Sublime)]] (darker, thanks to [[https://github.com/chantisnake][chantisnake]])
+- [[https://github.com/kuanyui/moe-theme.el][moe-theme]] (light and dark)
+- [[http://www.monokai.nl/blog/2006/07/15/textmate-color-theme/][Monokai]]
+- [[https://github.com/dunovank/oceans16-syntax][Oceans16]] (dark)
+- [[https://github.com/atom/one-dark-syntax][One Dark]] and [[https://github.com/atom/one-light-syntax/][One Light]] (light theme contributed by [[https://github.com/ConnorGriffin][Connor Griffin]])
+- [[http://ethanschoonover.com/solarized][Solarized]] (light and dark)
+- [[https://github.com/nashamri/spacemacs-theme][Spacemacs]] (dark)
+* How to Install
+There are two methods.
+** Use =Install-ConEmuTheme.ps1= PowerShell script. (Recommended)
+- Use =Install-ConEmuTheme.ps1= PowerShell script. First, the script will always create
+  a backup of your config file as =ConEmu.backup.xml= prior to doing anything else. It's
+  got two operation modes:
+
+  1. To add a theme to your config file:
+     #+BEGIN_SRC ps1
+          .\Install-ConEmuTheme.ps1 [-ConfigPath Path] -Operation Add -ThemePathOrName themes\oceans16-dark.xml
+     #+END_SRC
+  2. To remove a theme from your config file:
+     #+BEGIN_SRC ps1
+          .\Install-ConEmuTheme.ps1 [-ConfigPath Path] -Operation Remove -ThemePathOrName "Oceans16 Dark"
+     #+END_SRC
+
+- Note that ~-ConfigPath~ argument is optional if your =ConEmu.xml= is located
+  at the default location (=C:\Users\You\AppData\Roaming\ConEmu.xml=).
+- To add all the themes included in this repo, run the following in a powershell prompt:
+     #+BEGIN_SRC ps1
+          @(Get-ChildItem -Recurse -Filter *.xml ) | %{.\Install-ConEmuTheme.ps1 -Operation Add -ThemePathOrName $_}
+     #+END_SRC
+
+** Manually add color schemes and modify the =ConEmu.xml= file:
+1. Open =ConEmu.xml=. Usually it is at  =~\AppData\Roaming=, where =~= is
+   your home directory (=C:\Users\UserName=).
+2. Paste the color scheme at the end of palette settings part. It starts with 
+   the following:
+   #+BEGIN_SRC xml
+        <key name="Colors" modified="2015-03-19 13:53:09" build="150310">
+        	<value name="Count" type="dword" data="00000001"/>
+        	<key name="Palette1" modified="2015-03-19 13:53:09" build="150310">
+   #+END_SRC
+
+3. If you do not have any custom color scheme, the xml key is not there. In
+   ConEmu, go to =Settings= -> =Feature= -> =Colors= and generate a custom
+   color theme by click on =Save= button and specify any name. Then =Colors=
+   key will be automatically generated in your =ConEmu.xml=. You can
+   overwrite it when you add new themes.
+
+4. Update the palette number (key name =PaletteX=) accordingly. For example, if you have 1
+   custom color palette already, it should be =Palette2= for the new one:
+   #+BEGIN_SRC xml
+        <key name="Palette2" modified="2015-03-19 13:53:09" build="150310">
+   #+END_SRC
+
+5. Make sure to increase the value for key name =Count= under key =Colors=
+   as well. It should equal to the total number of pallets you have:
+
+   #+BEGIN_SRC xml
+        <value name="Count" type="dword" data="00000002"/>
+   #+END_SRC
+6. For example, the =Colors= part of your modified =ConEmu.xml= should look like this:
+   #+BEGIN_SRC xml
+        <key name="Colors" modified="2015-03-19 13:53:09" build="150310">
+        	<value name="Count" type="dword" data="00000002"/>
+        	<key name="Palette1" modified="2015-03-19 13:53:09" build="150310">
+        		<value name="Name" type="string" data="EXISTING COLOR"/>
+        		...
+        		<value name="ColorTable31" type="dword" data="00e3f6fd"/>
+        	</key>
+        	<key name="Palette2" modified="2015-03-19 13:53:09" build="150310">
+        		<value name="Name" type="string" data="NAME OF THE COLOR YOU ADDED"/>
+        		...
+        		<value name="ColorTable31" type="dword" data="00e7fdfd"/>
+        	</key>
+        </key>      
+   #+END_SRC
+* How to Contribute
+See [[Template.xml]] for the template for color schemes with the default colors.
+In general, programs (such as =git=) uses colors through 0 - 8, (see the
+template for their uses). I decided to use git and PowerShell as the main
+targets, so please try to match your colors to the usage of those
+applications.
+
+Also, make sure that all the color options set to =Auto= to get correct
+highlighting:
+
+[[file:./screenshots/ConEmu_Color_Options.png]]
+* Changelog
+** August 2018
+- Add =ayu= theme
+** April 2017
+- Change file structure
+- Add =material-sublime-darker= theme (thanks to [[https://github.com/chantisnake][chantisnake]])
+- Add =gruvbox= theme (thanks to [[https://github.com/circleous][circleous]])
+** March 2017
+- Add =One Dark= theme
+- Add default value for =-ConfigPath= argument for =Install-ConEmuTheme.ps1=
+** February 2017
+- Add =Monokai=
+- Add theme (un)installation script, =tools/Install-ConEmuTheme.ps1= (Thanks
+  to [[https://github.com/GrzegorzKozub][GrzegorzKozub]]).
+** January 2017
+- Add =bas16-railscasts= (light and dark)

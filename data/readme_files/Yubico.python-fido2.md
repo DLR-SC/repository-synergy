@@ -1,0 +1,104 @@
+== python-fido2
+image:https://github.com/Yubico/python-fido2/workflows/build/badge.svg["Github actions build", link="https://github.com/Yubico/python-fido2/actions"]
+
+
+Provides library functionality for communicating with a FIDO device over USB as
+well as verifying attestation and assertion signatures.
+
+WARNING: This project is in beta. Expect things to change or break at any time!
+
+This library aims to support the FIDO U2F and FIDO 2.0 protocols for
+communicating with a USB authenticator via the Client-to-Authenticator Protocol
+(CTAP 1 and 2). In addition to this low-level device access, classes defined in
+the `fido2.client` and `fido2.server` modules implement higher level operations
+which are useful when interfacing with an Authenticator, or when implementing
+WebAuthn support for a Relying Party.
+
+For usage, see the `examples/` directory.
+
+
+=== References
+These links related to WebAuthn and FIDO2 can help you get started:
+
+* Yubico WebAuthn/FIDO2 guide: https://developers.yubico.com/FIDO2/
+* W3C WebAuthn specification: https://www.w3.org/TR/webauthn/
+* FIDO specifications: https://fidoalliance.org/specifications/download/
+
+
+=== License
+This project, with the exception of the files mentioned below, is licensed
+under the BSD 2-clause license.
+See the _COPYING_ file for the full license text.
+
+This project contains source code from pyu2f (https://github.com/google/pyu2f)
+which is licensed under the Apache License, version 2.0.
+These files are located in `fido2/_pyu2f/` and `test/_pyu2f/`.
+See http://www.apache.org/licenses/LICENSE-2.0,
+or the _COPYING.APLv2_ file for the full license text.
+
+This project also bundles the public suffix list (https://publicsuffix.org)
+which is licensed under the Mozilla Public License, version 2.0.
+This file is stored as `fido2/public_suffix_list.dat`.
+See https://mozilla.org/MPL/2.0/,
+or the _COPYING.MPLv2_ file for the full license text.
+
+
+=== Requirements
+fido2 is compatible with CPython 2.7 (2.7.6 and up), 3.5 onwards, and is tested
+on Windows, MacOS, and Linux. Support for OpenBSD and FreeBSD is provided as-is
+and relies on community contributions.
+
+
+=== Installation
+fido2 is installable by running the following command:
+
+  pip install fido2
+
+To install the dependencies required for communication with NFC Authenticators,
+instead use:
+
+  pip install fido2[pcsc]
+
+Under Windows 10 (1903 or later) access to FIDO devices is restricted and
+requires running as Administrator. This library can still be used when running
+as non-administrator, via the  `fido.client.WindowsClient` class. An example of
+this is included in the file `examples/credential.py`.
+
+Under Linux you will need to add a Udev rule to be able to access the FIDO
+device, or run as root. For example, the Udev rule may contain the following:
+
+----
+#Udev rule for allowing HID access to Yubico devices for FIDO support.
+
+KERNEL=="hidraw*", SUBSYSTEM=="hidraw", \
+  MODE="0664", GROUP="plugdev", ATTRS{idVendor}=="1050"
+----
+
+Under FreeBSD you will either need to run as root or add rules for your device
+to /etc/devd.conf, which can be automated by installing security/u2f-devd:
+
+  # pkg install u2f-devd
+
+
+=== Dependencies
+This project depends on Cryptography. For instructions on installing this
+dependency, see https://cryptography.io/en/latest/installation/.
+
+NFC support is optionally available via PCSC, using the pyscard library. For
+instructions on installing this dependency, see
+https://github.com/LudovicRousseau/pyscard/blob/master/INSTALL.md.
+
+
+=== Development
+For development of the library, we recommend using `pipenv`. To set up the dev
+environment, run this command in the root directory of the repository:
+
+  pipenv install --dev
+
+
+==== Running tests
+While many tests can run on their own, some require a connected U2F or FIDO2
+device to run.
+
+  pipenv run test
+

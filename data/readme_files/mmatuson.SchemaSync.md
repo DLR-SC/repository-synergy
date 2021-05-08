@@ -1,0 +1,74 @@
+Project maintaining again. If you want to help us, we really appreciate that.
+
+
+Schema Sync v0.9.5
++++++++++++++++++++
+a MySQL schema synchronization utility
+http://mmatuson.github.io/SchemaSync/
+
+
+SYNOPSIS
+========
+schemasync [options] <source> <target>
+
+# source/target format: mysql://user:pass@host:port/database
+# output format: <database>[_<tag>].YYYYMMDD.(patch|revert)[_<version>].sql
+
+
+DESCRIPTION
+===========
+Schema Sync will generate the SQL necessary to migrate the schema of a source database to a target database (patch script), as well as a the SQL necessary to undo the changes after you apply them (revert script).
+
+* Schema Sync does not alter your database. It only generates the .sql files containing the differences. You must apply the changes. 
+* Schema Sync does not yet recognize Tables or Columns that have been renamed. A rename will result in the old table or column being dropped and the new one added. 
+* All ADD|MODIFY COLUMN statements have the AFTER (or FIRST) SQL syntax even if no move is required. 
+* COMMENTS and AUTO_INCREMENT values are not by synced by default. See help (-h) for details.
+* Partitions (MySQL 5.1+) are not yet supported
+
+OPTIONS
+=================
+-h, --help            show this help message and exit
+-V, --version         show version and exit.
+-r, --revision        increment the migration script version number
+                      if a file with the same name already exists.
+-a, --sync-auto-inc   sync the AUTO_INCREMENT value for each table.
+-c, --sync-comments   sync the COMMENT field for all tables AND columns
+-D, --no-date         removes the date from the file format
+--charset=CHARSET     set the connection charset, default: utf8
+--tag=TAG             tag the migration scripts as <database>_<tag>. 
+                      Valid characters include [A-Za-z0-9-_]
+--output-directory=OUTPUT_DIRECTORY
+                    directory to write the migration scrips. 
+                    The default is current working directory. 
+                    Must use absolute path if provided.
+--log-directory=LOG_DIRECTORY
+                    set the directory to write the log to. 
+                    Must use absolute path if provided. 
+                    Default is output directory. 
+                    Log filename is schemasync.log
+
+
+Download and Install
+====================
+
+Prerequisites
+-------------
+* To run Schema Sync, you need to have:
+    - Python 2.4, 2.5, or 2.6
+    - MySQL <http://www.mysql.com/>, version 5.0 or higher
+    - PyMySQL <https://github.com/PyMySQL/PyMySQL>, version 0.6.2 or higher
+    - SchemaObject <https://github.com/mmatuson/SchemaObject> 0.5.7 or higher
+* To run the test suite, you need to install a copy of the Sakila Database <http://dev.mysql.com/doc/sakila/en/index.html>, version 0.8
+
+Standard Installation
+---------------------
+For installation instructions, see http://mmatuson.github.io/SchemaSync/install.htm
+
+
+Status & License
+================
+It is released under the Apache License, Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0>. 
+
+You can obtain a copy of the latest source code from the Git repository <http://github.com/mmatuson/SchemaSync>, or fork it on Github <http://www.github.com>.
+
+You can report bugs via the Schema Sync Issues page <http://github.com/mmatuson/SchemaSync/issues>

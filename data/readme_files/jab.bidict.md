@@ -1,0 +1,279 @@
+.. Forward declarations for all the custom interpreted text roles that
+   Sphinx defines and that are used below. This helps Sphinx-unaware tools
+   (e.g. rst2html, PyPI's and GitHub's renderers, etc.).
+.. role:: doc
+
+.. Use :doc: rather than :ref: references below for better interop as well.
+
+
+``bidict``
+==========
+
+The bidirectional mapping library for Python.
+
+.. image:: https://raw.githubusercontent.com/jab/bidict/master/assets/logo-sm.png
+   :target: https://bidict.readthedocs.io/
+   :alt: bidict logo
+
+
+Status
+------
+
+.. image:: https://img.shields.io/pypi/v/bidict.svg
+   :target: https://pypi.org/project/bidict
+   :alt: Latest release
+
+.. image:: https://img.shields.io/readthedocs/bidict/master.svg
+   :target: https://bidict.readthedocs.io/en/master/
+   :alt: Documentation
+
+.. image:: https://api.travis-ci.org/jab/bidict.svg?branch=master
+   :target: https://travis-ci.org/jab/bidict
+   :alt: Travis-CI build status
+
+.. image:: https://codecov.io/gh/jab/bidict/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/jab/bidict
+   :alt: Test coverage
+
+.. Hide to reduce clutter
+   .. image:: https://img.shields.io/lgtm/alerts/github/jab/bidict.svg
+      :target: https://lgtm.com/projects/g/jab/bidict/
+      :alt: LGTM alerts
+   .. image:: https://api.codacy.com/project/badge/Grade/6628756a73254cd895656348236833b8
+      :target: https://www.codacy.com/app/jab/bidict
+      :alt: Codacy grade
+   .. image:: https://bestpractices.coreinfrastructure.org/projects/2354/badge
+      :target: https://bestpractices.coreinfrastructure.org/en/projects/2354
+      :alt: CII best practices badge
+   .. image:: https://img.shields.io/badge/tidelift-pro%20support-orange.svg
+      :target: https://tidelift.com/subscription/pkg/pypi-bidict?utm_source=pypi-bidict&utm_medium=referral&utm_campaign=docs
+      :alt: Paid support available via Tidelift
+   .. image:: https://ci.appveyor.com/api/projects/status/gk133415udncwto3/branch/master?svg=true
+      :target: https://ci.appveyor.com/project/jab/bidict
+      :alt: AppVeyor (Windows) build status
+   .. image:: https://img.shields.io/pypi/pyversions/bidict.svg
+      :target: https://pypi.org/project/bidict
+      :alt: Supported Python versions
+   .. image:: https://img.shields.io/pypi/implementation/bidict.svg
+      :target: https://pypi.org/project/bidict
+      :alt: Supported Python implementations
+
+.. image:: https://img.shields.io/pypi/l/bidict.svg
+   :target: https://raw.githubusercontent.com/jab/bidict/master/LICENSE
+   :alt: License
+
+.. image:: https://img.shields.io/badge/dynamic/json.svg?label=downloads&url=https%3A%2F%2Fpypistats.org%2Fapi%2Fpackages%2Fbidict%2Frecent%3Fperiod%3Dmonth&query=%24.data.last_month&colorB=blue&suffix=%2fmonth
+   :target: https://pypistats.org/packages/bidict
+   :alt: Downloads past month
+
+
+``bidict``:
+^^^^^^^^^^^
+
+- has been used for many years by several teams at
+  Google, Venmo, CERN, Bank of America Merrill Lynch, Bloomberg, Two Sigma, and others
+- has carefully designed APIs for
+  safety, simplicity, flexibility, and ergonomics
+- is fast, lightweight, and has no runtime dependencies other than Python's standard library
+- integrates natively with Python’s collections interfaces
+- is implemented in concise, well-factored, pure (PyPy-compatible) Python code
+  optimized both for reading and learning from [#fn-learning]_
+  as well as for running efficiently
+- has extensive docs and test coverage
+  (including property-based tests and benchmarks)
+  run continuously on all supported Python versions and OSes
+
+
+Note: Python 3 Now Required
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As promised in the 0.18.2 release (see :doc:`changelog` [#fn-changelog]_),
+**Python 2 is no longer supported**.
+Version 0.18.3
+is the last release of ``bidict`` that supports Python 2.
+This makes ``bidict`` more efficient on Python 3
+and enables further improvement to bidict in the future.
+See `python3statement.org <https://python3statement.org>`__
+for more info.
+
+
+Installation
+------------
+
+``pip install bidict``
+
+
+Quick Start
+-----------
+
+.. code:: python
+
+   >>> from bidict import bidict
+   >>> element_by_symbol = bidict({'H': 'hydrogen'})
+   >>> element_by_symbol['H']
+   'hydrogen'
+   >>> element_by_symbol.inverse['hydrogen']
+   'H'
+
+
+For more usage documentation,
+head to the :doc:`intro` [#fn-intro]_
+and proceed from there.
+
+
+Community Support
+-----------------
+
+.. image:: https://img.shields.io/badge/chat-on%20gitter-5AB999.svg?logo=gitter-white
+   :target: https://gitter.im/jab/bidict
+   :alt: Chat
+
+If you are thinking of using ``bidict`` in your work,
+or if you have any questions, comments, or suggestions,
+I'd love to know about your use case
+and provide as much voluntary support for it as possible.
+
+Please feel free to leave a message in the
+`chatroom <https://gitter.im/jab/bidict>`__
+or open a new issue on GitHub.
+You can search through
+`existing issues <https://github.com/jab/bidict/issues>`__
+before creating a new one
+in case your questions or concerns have been adressed there already.
+
+
+Enterprise-Grade Support via Tidelift
+-------------------------------------
+
+.. image:: https://img.shields.io/badge/tidelift-pro%20support-orange.svg
+   :target: https://tidelift.com/subscription/pkg/pypi-bidict?utm_source=pypi-bidict&utm_medium=referral&utm_campaign=readme
+   :alt: Paid support available via Tidelift
+
+If your use case requires a greater level of support,
+enterprise-grade support for ``bidict`` can be obtained via the
+`Tidelift subscription <https://tidelift.com/subscription/pkg/pypi-bidict?utm_source=pypi-bidict&utm_medium=referral&utm_campaign=readme>`__.
+
+
+Notice of Usage
+---------------
+
+If you use ``bidict``,
+and especially if your usage or your organization is significant in some way,
+please let me know.
+
+You can:
+
+- `star bidict on GitHub <https://github.com/jab/bidict>`__
+- `create an issue <https://github.com/jab/bidict/issues/new?title=Notice+of+Usage&body=I+am+using+bidict+for...>`__
+- leave a message in the `chat room <https://gitter.im/jab/bidict>`__
+- `email me <mailto:jab@math.brown.edu?subject=bidict&body=I%20am%20using%20bidict%20for...>`__
+
+
+Changelog
+---------
+
+See the :doc:`changelog` [#fn-changelog]_
+for a history of notable changes to ``bidict``.
+
+
+Release Notifications
+---------------------
+
+.. duplicated in CHANGELOG.rst:
+   (would use `.. include::` but GitHub doesn't understand it)
+
+.. image:: https://img.shields.io/badge/libraries.io-subscribe-5BC0DF.svg
+   :target: https://libraries.io/pypi/bidict
+   :alt: Follow on libraries.io
+
+Subscribe to releases
+`on GitHub <https://github.blog/changelog/2018-11-27-watch-releases/>`__ or
+`libraries.io <https://libraries.io/pypi/bidict>`__
+to be notified when new versions of ``bidict`` are released.
+
+
+Learning from ``bidict``
+------------------------
+
+One of the best things about ``bidict``
+is that it touches a surprising number of
+interesting Python corners,
+especially given its small size and scope.
+
+Check out :doc:`learning-from-bidict` [#fn-learning]_
+if you're interested in learning more.
+
+
+Contributing
+------------
+
+``bidict`` is currently a one-person operation
+maintained on a voluntary basis.
+
+Your help would be most welcome!
+
+
+Reviewers Wanted!
+^^^^^^^^^^^^^^^^^
+
+One of the most valuable ways to contribute to ``bidict`` –
+and to explore some interesting Python corners [#fn-learning]_
+while you're at it –
+is to review the relatively small codebase.
+
+Please create an issue or pull request with any improvements you'd propose
+or any other results you found.
+Submitting a `draft PR <https://github.blog/2019-02-14-introducing-draft-pull-requests/>`__
+with feedback in inline code comments, or a
+`"Review results" issue <https://github.com/jab/bidict/issues/new?title=Review+results>`__,
+would each work well.
+
+You can also
++1 `this issue <https://github.com/jab/bidict/issues/63>`__
+to sign up to give feedback on future proposed changes
+that are in need of a reviewer.
+
+
+Giving Back
+^^^^^^^^^^^
+
+.. duplicated in CONTRIBUTING.rst
+   (would use `.. include::` but GitHub doesn't understand it)
+
+``bidict`` is the product of hundreds of hours of unpaid, voluntary work.
+
+If ``bidict`` has helped you accomplish your work,
+especially work you've been paid for,
+please consider chipping in toward the costs
+of its maintenance and development
+and/or ask your organization to do the same.
+
+.. image:: https://raw.githubusercontent.com/jab/bidict/master/assets/support-on-gumroad.png
+   :target: https://gumroad.com/l/bidict
+   :alt: Support bidict
+
+
+Finding Documentation
+---------------------
+
+If you're viewing this on `<https://bidict.readthedocs.io>`__,
+note that multiple versions of the documentation are available,
+and you can choose a different version using the popup menu at the bottom-right.
+Please make sure you're viewing the version of the documentation
+that corresponds to the version of ``bidict`` you'd like to use.
+
+If you're viewing this on GitHub, PyPI, or some other place
+that can't render and link this documentation properly
+and are seeing broken links,
+try these alternate links instead:
+
+.. [#fn-learning] `<docs/learning-from-bidict.rst>`__ | `<https://bidict.readthedocs.io/learning-from-bidict.html>`__
+
+.. [#fn-changelog] `<CHANGELOG.rst>`__ | `<https://bidict.readthedocs.io/changelog.html>`__
+
+.. [#fn-intro] `<docs/intro.rst>`__ | `<https://bidict.readthedocs.io/intro.html>`__
+
+
+----
+
+Next: :doc:`intro` [#fn-intro]_

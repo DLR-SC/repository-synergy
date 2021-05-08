@@ -1,0 +1,157 @@
+This tool is intended for penetration testers who want to perform an engagement 
+quickly and efficiently. While this tool can be used for more covert operations 
+(including some additions below), it really shines when used at the scale of a 
+large network.
+
+At the core of it, you provide it a list of credentials you have dumped (or hashes, 
+it can pass-the-hash) and a list of systems on the domain (I suggest scanning for 
+port 445 first, or you can use "--scan"). It will tell you if the credentials you 
+dumped are valid on the domain, and if you have local administrator access to a host. 
+See below for additional features, like user hunting and host detail enumeration.
+
+It is intended to be run on Kali Linux
+
+
+
+
+
+
+   .d8888b.                       888 888b    888 d8b           d8b          
+  d88P  Y88b                      888 8888b   888 Y8P           Y8P          
+  888    888                      888 88888b  888                            
+  888        888d888 .d88b.   .d88888 888Y88b 888 888 88888b.  8888  8888b.  
+  888        888P"  d8P  Y8b d88" 888 888 Y88b888 888 888 "88b "888     "88b 
+  888    888 888    88888888 888  888 888  Y88888 888 888  888  888 .d888888 
+  Y88b  d88P 888    Y8b.     Y88b 888 888   Y8888 888 888  888  888 888  888 
+   "Y8888P"  888     "Y8888   "Y88888 888    Y888 888 888  888  888 "Y888888 
+                                                                888          
+                                                               d88P          
+                                                             888P"           
+
+                    v2.3 (Built 1/26/2018) - Chris King (@raikiasec)
+
+                         For help: ./CredNinja.py -h
+
+usage: CredNinja.py -a accounts_to_test.txt -s systems_to_test.txt
+                    [-t THREADS] [--ntlm] [--valid] [--invalid] [-o OUTPUT]
+                    [-p PASSDELIMITER] [--delay SECONDS %JITTER]
+                    [--timeout TIMEOUT] [--stripe] [--scan]
+                    [--scan-timeout SCAN_TIMEOUT] [-h] [--no-color] [--os]
+                    [--domain] [--users] [--users-time USERS_TIME]
+
+Quickly check the validity of multiple user credentials across multiple
+servers and be notified if that user has local administrator rights on each
+server.
+
+Required Arguments:
+  -a accounts_to_test.txt, --accounts accounts_to_test.txt
+                        A word or file of user credentials to test. Usernames
+                        are accepted in the form of "DOMAIN\USERNAME:PASSWORD"
+  -s systems_to_test.txt, --servers systems_to_test.txt
+                        A word or file of servers to test against. This can
+			be a single system, a filename containing a list of
+			systems, a gnmap file, or IP addresses in cidr notation.
+			Each credential will be tested against each of these
+                        servers by attempting to browse C$ via SMB
+
+Optional Arguments:
+  -t THREADS, --threads THREADS
+                        Number of threads to use. Defaults to 10
+  --ntlm                Treat the passwords as NTLM hashes and attempt to
+                        pass-the-hash!
+  --valid               Only print valid/local admin credentials
+  --invalid             Only print invalid credentials
+  -o OUTPUT, --output OUTPUT
+                        Print results to a file
+  -p PASSDELIMITER, --passdelimiter PASSDELIMITER
+                        Change the delimiter between the account username and
+                        password. Defaults to ":"
+  --delay SECONDS %JITTER
+                        Delay each request per thread by specified seconds
+                        with jitter (example: --delay 20 10, 20 second delay
+                        with 10% jitter)
+  --timeout TIMEOUT     Amount of seconds wait for data before timing out.
+                        Default is 15 seconds
+  --stripe              Only test one credential on one host to avoid spamming
+                        a single system with multiple login attempts (used to
+                        check validity of credentials). This will randomly
+                        select hosts from the provided host file.
+  --scan                Perform a quick check to see port 445 is available on
+                        the host before queueing it up to be processed
+  --scan-timeout SCAN_TIMEOUT
+                        Sets the timeout for the scan specified by --scan
+                        argument. Default of 2 seconds
+  -h, --help            Get help about this script's usage
+  --no-color            Turns off output color. Written file is always
+                        colorless
+
+Additional Information Retrieval:
+  --os                  Display the OS of the system if available (no extra
+                        request is being sent)
+  --domain              Display the primary domain of the system if available
+                        (no extra request is being sent)
+  --users               List the users that have logged in to the system in
+                        the last 6 months (requires LOCAL ADMIN). Returns
+                        usernames with the number of days since their home
+                        directory was changed. This sends one extra request to
+                        each host
+  --users-time USERS_TIME
+                        Modifies --users to search for users that have logged
+                        in within the last supplied amount of days (default
+                        100 days)
+
+
+
+
+
+
+
+
+
+
+Changelog:
+
+   v2.3 - Updated with some additional features
+        
+	* Added gnmap file parsing.  The file provided to the --systems (-s) argument
+	  can now be a gnmap file (ending in .gnmap)
+	* Added cidr notation parsing. The IP address provided to the --systems (-s)
+	  argument can now be in cidr notation and it will properly expand the range
+	  and test all systems within the ip space (make sure you provide --scan to 
+	  scan the systems ahead of time!)
+	* Made --scan multithreaded so it runs MUCH faster
+
+   v2.0 - Initial release of CredNinja from the predecessor CredSwissArmy:
+
+	* Same ability as the previous CredSwissArmy (using credentials and host list
+	  to search for Local Admin access across a network via SMB)
+        * Fully multithreaded!  It is 8x the speed of the old CredSwissArmy!
+        * Handles errors and complex passwords much better
+        * Can still pass-the-hash with the "--ntlm" option
+        * Still has the same arguments as before
+        * Added "--timeout", which allows scans to get done faster if you wish
+        * Added "--scan", which runs a quick port 445 scan of the hosts to make sure 
+	  they are connectable before trying creds on them
+        * Added "--stripe", which tests each credential once across a random system 
+	  (used to validate credentials without appearing suspicious in one systems' 
+	  event log)
+        * Added "--delay", which allows you to specify a delay between scanning hosts 
+	  to be more covert.  "--delay 10 20" will delay for 10 seconds with a 20% 
+	  jitter (so between 8-10 seconds)
+        * Added color output so its more obvious when you get success!
+
+	AND NOW THE COOL ADDITIONS
+
+        * Added "--os", which shows the operating system of each system that it can 
+	  fingerprint (no additional packet is sent to target host)
+        * Added "--domain", which shows the primary domain the system is a member of 
+	  (no additional packet is sent to the target host)
+        * Added "--users", which shows a list of users' whose home directories have 
+	  been modified in X amount of days (X is modifiable by "--users-days", default 
+	  of 100). Basically an SMB User-Hunter that shows where users are logged in to 
+	  or have been logged in to  (1 additional packet is sent to each target host)
+        * Coming soon: Anti-virus detector to give notice to potential antivirus running 
+	  on the system
+
+
+

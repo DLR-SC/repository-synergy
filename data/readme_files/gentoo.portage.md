@@ -1,0 +1,68 @@
+About Portage
+=============
+
+Portage is a package management system based on ports collections. The
+Package Manager Specification Project (PMS) standardises and documents
+the behaviour of Portage so that ebuild repositories can be used by
+other package managers.
+
+
+Dependencies
+============
+
+Python and Bash should be the only hard dependencies. Python 2.7 is the
+minimum supported version.
+
+Native Extensions
+=================
+
+Portage includes some optional native extensions which can be built
+in the source tree by running the following command:
+
+    python setup.py build_ext --inplace --portage-ext-modules
+
+The following setup.cfg settings can be used to enable building of
+native extensions for all invocations of the build_ext command (the
+build_ext command is invoked automatically by other build commands):
+
+   [build_ext]
+   portage-ext-modules=true
+
+Currently, the native extensions only include libc bindings which are
+used to validate LC_CTYPE and LC_COLLATE behavior for EAPI 6. If the
+native extensions have not been built, then portage will use ctypes
+instead.
+
+Licensing and Legalese
+=======================
+
+Portage is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+Portage is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Portage; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301, USA.
+
+
+More information
+================
+
+-DEVELOPING contains some code guidelines.
+-LICENSE contains the GNU General Public License version 2.
+-NEWS contains new features/major bug fixes for each version.
+-RELEASE NOTES contains mainly upgrade information for each version.
+-TEST-NOTES contains Portage unit test information.
+
+
+Links
+=====
+Gentoo project page: <https://wiki.gentoo.org/wiki/Project:Portage>
+PMS: <https://dev.gentoo.org/~ulm/pms/head/pms.html>
+PMS git repo: <https://gitweb.gentoo.org/proj/pms.git/>

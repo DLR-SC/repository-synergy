@@ -1,0 +1,35 @@
+Euca2ools are command line tools used to interact with Amazon Web
+Services (AWS) as well as other services that are compatible with AWS,
+such as Eucalyptus.  They aim to use the same input as similar tools
+provided by AWS for each service individually along with several
+enhancements that make them easier to use with multiple clouds at once.
+
+Euca2ools provide the functionality of AWS's REST-based and Query-based
+APIs for the following services:
+
+- Auto Scaling           (2011-01-01) (commands start with "euscale")
+- CloudFormation         (2010-05-15) (commands start with "euform")
+- CloudWatch             (2010-08-01) (commands start with "euwatch")
+- EC2                    (2015-10-01) (commands start with "euca")
+- Elastic Load Balancing (2012-06-01) (commands start with "eulb")
+- IAM                    (2010-05-08) (commands start with "euare")
+- Simple Token Service   (2011-06-15) (euare-assumerole)
+
+The source code comes with man pages that provide basic documentation.
+Running a command with --help will also provide information on how to
+use that specific command.  For more detailed documentation, see the
+online euca2ools documentation at http://www.eucalyptus.com/docs.
+
+For installation instructions, consult the INSTALL file that accompanies
+the source code.
+
+For a copy of the latest version of euca2ools, visit
+https://downloads.eucalyptus.com/software/euca2ools/.
+
+To obtain the latest development source code for euca2ools, visit
+https://github.com/eucalyptus/euca2ools.  Pull requests are welcome and
+appreciated.  They must be compatible with Python 2.6 and include any
+relevant changes to documentation.  By submitting code to this project
+you agree that code will be licensed under the 2-clause BSD license.
+A copy of this license is included in the COPYING file that accompanies
+the source code.

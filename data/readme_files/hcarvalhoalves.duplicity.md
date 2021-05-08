@@ -1,0 +1,42 @@
+INSTALLATION:
+
+Thank you for trying duplicity.  To install, run:
+
+        python setup.py install
+
+The build process can be also be run separately:
+
+        python setup.py build
+
+The default prefix is /usr, so files are put in /usr/bin,
+/usr/share/man/, etc.  An alternate prefix can be specified using the
+--prefix=<prefix> option.  For example:
+
+        python setup.py install --prefix=/usr/local
+        export PYTHONPATH='/usr/local/lib/python2.x/site-packages/'
+        /usr/local/bin/duplicity -V
+
+
+REQUIREMENTS:
+
+ * Python v2.4 or later
+ * librsync v0.9.6 or later
+ * GnuPG v1.x for encryption
+ * for normal ftp -- NcFTP version 3.1.9 or later, but not 3.2.0
+ * for ftp over SSL -- lftp version 3.7.15 or later
+ * Boto 0.9d or later
+
+If you install from the source package, you will also need:
+
+ * Python development files, normally found in module 'python-dev'.
+ * librsync development files, normally found in module 'librsync-dev'.
+
+
+HELP:
+
+For more information see the duplicity home page at:
+
+    http://www.nongnu.org/duplicity
+
+or post to the mailing list at
+http://mail.nongnu.org/mailman/listinfo/duplicity-talk/.

@@ -1,0 +1,11 @@
+###DISTRIBUTING THE RECONSTRUCTION OF HIGH-LEVEL INTERMEDIATE REPRESENTATION FOR LARGE SCALE MALWARE ANALYSIS
+
+Malware is acknowledged as an important threat and the number of new samples grows at an absurd pace. Additionally, targeted and so called advanced malware became the rule, not the exception. Analysts and companies use different degrees of automation to be able to handle the challenge, but there is always a gap. Reverse engineering is an even harder task due to the increased amount of work and the stricter time-frame to accomplish it. This has a direct impact on the investigative process and thus makes prevention of future threats more challenging.
+
+In this work, the authors discuss distributed reverse engineering techniques, using intermediate representation (thanks Hex-Rays team for support us in this research) in a clustered environment. The results presented demonstrate different uses for this kind of approach, for example to find algorithmic commonalities between malware families.
+
+A higher level abstraction of the malware code is constructed from the abstract syntax tree (ctree) provided by Hex-Rays Decompiler. That abstraction facilitates the extraction of characteristics such as domain generation algorithms (DGA), custom encryption and specific parsers for configuration data. In order to reduce the number of false positives in some C++ metadata identification, such as virtual function tables and RTTI, the authors created the object-oriented artifacts directly from the analyzed malware.
+
+The extracted characteristics of 2 million malware samples are analyzed and the presented results provide a rich dataset to improve malware analysis efforts and threat intelligence initiatives. With that dataset, other researchers will be able to extract a ctree from new samples and compare to the millions we performed.
+
+As an additional contribution, the gathered representation together with all the raw information from the samples will be available to other researchers after the presentation; together with additional ideas for future development. The developed Hex-Rays Decompiler plugin and analysis/automation tools used to extract the characteristics will also be made available to the audience on Github.

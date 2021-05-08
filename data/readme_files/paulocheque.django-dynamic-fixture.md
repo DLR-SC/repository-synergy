@@ -1,0 +1,38 @@
+Django Dynamic Fixture
+======================
+
+[![Build Status](https://travis-ci.org/paulocheque/django-dynamic-fixture.svg?branch=master)](https://travis-ci.org/paulocheque/django-dynamic-fixture)
+[![Docs Status](https://readthedocs.org/projects/django-dynamic-fixture/badge/?version=latest)](http://django-dynamic-fixture.readthedocs.org/en/latest/index.html)
+[![Coverage Status](https://coveralls.io/repos/paulocheque/django-dynamic-fixture/badge.svg?branch=master)](https://coveralls.io/r/paulocheque/django-dynamic-fixture?branch=master)
+[![PyPI version](https://badge.fury.io/py/django-dynamic-fixture.svg)](https://badge.fury.io/py/django-dynamic-fixture)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/django-dynamic-fixture)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/django-dynamic-fixture)
+
+**Latest version: 3.0.3 (Mar 2020)**
+
+Django Dynamic Fixture (DDF) is a complete and simple library to create dynamic model instances for testing purposes.
+
+It lets you focus on your tests, instead of focusing on generating some dummy data which is boring and polutes the test source code.
+
+Documentation
+-------------
+
+http://django-dynamic-fixture.readthedocs.org/en/latest/index.html
+
+
+Basic example
+-------------
+
+```python
+    from ddf import G
+
+    def test_search_book_by_author():
+        author1 = G(Author)
+        author2 = G(Author)
+        book1 = G(Book, authors=[author1], main_author__name='Eistein')
+        book2 = G(Book, authors=[author2])
+        books = Book.objects.search_by_author(author1.name)
+        assert book1 in books
+        assert book2 not in books
+        assert book1.main_author.name == 'Eistein'
+```

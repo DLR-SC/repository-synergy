@@ -1,0 +1,77 @@
+Description:
+============
+This is implementation of Stratum protocol for server and client side
+using asynchronous networking written in Python Twisted.
+
+Homepage: http://stratum.bitcoin.cz
+
+Contact to main developer:
+==========================
+Email info at bitcoin.cz
+Nickname slush at bitcointalk.org forum
+
+Installation
+============
+
+Requirements:
+python 2.6 or 2.7
+linux-based system (should work on Mac OS too, not tested)
+
+Following instructions will work on Ubuntu & Debian*:
+
+a) From GIT, for developers
+git clone git://github.com/slush0/stratum.git 
+sudo apt-get install python-dev
+sudo python setup.py develop
+
+b) From package, permanent install for production use
+sudo apt-get install python-dev
+sudo apt-get install python-setuptools
+sudo easy_install stratum
+
+*) Debian don't have a 'sudo' command, please do the installation
+process as a root user.
+
+Configuration
+=============
+
+a) Basic configuration
+Copy config_default.py to config.py
+Edit at least those values: HOSTNAME, BITCOIN_TRUSTED_*
+
+b) Message signatures
+For enabling message signatures, generate server's ECDSA key by
+python signature.py > signing_key.pem
+and fill correct values to SIGNING_KEY and SIGNING_ID (config.py)
+
+c) Creating keys for SSL-based transports
+For all SSL-based transports (HTTPS, WSS, ...) you'll need private key
+and certificate file. You can use certificates from any authority or you can
+generate self-signed certificates, which is helpful at least for testing.
+
+Following script will generate self-signed SSL certificate:
+
+#!/bin/bash
+openssl genrsa -des3 -out server.key 1024
+openssl req -new -key server.key -out server.csr
+cp server.key server.key.org
+openssl rsa -in server.key.org -out server.key
+openssl x509 -req -in server.csr -signkey server.key -out server.crt
+
+Then you have to fill SSL_PRIVKEY and SSL_CACERT in config file with
+values 'server.key' and 'server.crt'.
+
+Startup
+=======
+Start devel server:
+twistd -ny launcher.tac
+
+Devel server *without* lowlevel messages of Twisted:
+twistd -ny launcher.tac -l log/twistd.log
+ 
+Running in production
+=====================
+TODO: Guide for running twistd as a daemon, init scripts
+TODO: Loadbalancing and port redirecting using haproxy
+TODO: Tunelling on 80/443 using stunnel
+Any volunteer for this ^ ?

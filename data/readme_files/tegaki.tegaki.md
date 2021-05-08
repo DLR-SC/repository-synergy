@@ -1,0 +1,36 @@
+Welcome to the Tegaki git repository!
+=====================================
+
+Tegaki is composed of the following subprojects:
+
+* tegaki-python: Base Python library.
+* tegaki-pygtk: User-interface Python library.
+
+* tegaki-recognize: Main program.
+* tegaki-train: Character editor and training manager.
+* tegaki-tools: Advanced-user and developer tools.
+
+* ibus-tegaki: Tegaki integration in IBus.
+* scim-tegaki: Tegaki integration in SCIM.
+
+* tegaki-engines: Wagomu.
+* tegaki-models: Handwriting recognition data models.
+
+* tegaki-db: Community-based handwriting sample database.
+* tegaki-lab: Handwriting recognition experimentation.
+* tegaki-webcanvas: Canvas for the browser.
+
+In order to download the latest source code, please use git.
+
+$ git clone git://github.com/tegaki/tegaki.git
+
+License
+-------
+
+This package is distributed under the terms of the GNU General Public
+License. See the COPYING file for more information.
+
+Homepage
+--------
+
+http://www.tegaki.org

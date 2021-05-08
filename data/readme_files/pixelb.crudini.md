@@ -1,0 +1,62 @@
+crudini - A utility for manipulating ini files
+
+Usage: crudini --set [OPTION]...   config_file section   [param] [value]
+  or:  crudini --get [OPTION]...   config_file [section] [param]
+  or:  crudini --del [OPTION]...   config_file section   [param] [list value]
+  or:  crudini --merge [OPTION]... config_file [section]
+
+Options:
+
+  --existing[=WHAT]  For --set, --del and --merge, fail if item is missing,
+                       where WHAT is 'file', 'section', or 'param', or if
+                       not specified; all specified items.
+  --format=FMT       For --get, select the output FMT.
+                       Formats are sh,ini,lines
+  --inplace          Lock and write files in place.
+                       This is not atomic but has less restrictions
+                       than the default replacement method.
+  --list             For --set and --del, update a list (set) of values
+  --list-sep=STR     Delimit list values with "STR" instead of " ,"
+  --output=FILE      Write output to FILE instead. '-' means stdout
+  --verbose          Indicate on stderr if changes were made
+  --help             Write this help to stdout
+  --version          Write version to stdout
+
+Examples:
+
+# Add/Update a var
+  crudini --set config_file section parameter value
+
+# Update an existing var
+  crudini --set --existing config_file section parameter value
+
+# Add/Append a value to a space or comma separated list
+  crudini --set --list config_file section parameter a_value
+
+# Delete a var
+  crudini --del config_file section parameter
+
+# Delete a section
+  crudini --del config_file section
+
+# output a value
+  crudini --get config_file section parameter
+
+# output a global value not in a section
+  crudini --get config_file '' parameter
+
+# output a section
+  crudini --get config_file section
+
+# output a section, parseable by shell
+  eval $(crudini --get --format=sh config_file section)
+
+# update an ini file from shell variable(s)
+  echo name="$name" | crudini --merge config_file section
+
+# merge an ini file from another ini
+  crudini --merge config_file < another.ini
+
+# compare two ini files using standard UNIX text processing
+  diff <(crudini --get --format=lines file1.ini|sort) \
+       <(crudini --get --format=lines file2.ini|sort)

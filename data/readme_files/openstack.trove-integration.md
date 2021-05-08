@@ -1,0 +1,13 @@
+This project is no longer maintained.
+
+The contents of this repository are still available in the Git source
+code management system.  To see the contents of this repository before
+it reached its end of life, please check out the previous commit with
+"git checkout HEAD^1".
+
+The contents of this project were merged into the Trove project, see
+http://git.openstack.org/openstack/trove
+
+For any further questions, please email
+openstack-dev@lists.openstack.org or join #openstack-dev or
+#openstack-trove on Freenode.

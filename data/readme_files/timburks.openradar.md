@@ -1,0 +1,15 @@
+
+Open Radar
+
+Open Radar is a Google App Engine project for developers to share
+information about the radars they've posted.
+
+Open Radar runs at https://openradar.appspot.com.
+
+Source code is released under the Apache License.
+
+Developers and Contributors (please add your name below):
+---------------------------------------------------------
+Tim Burks (https://github.com/timburks)
+Chris Verwymeren (https://github.com/cvee)
+Ryosuke Ito (https://github.com/manicmaniac)

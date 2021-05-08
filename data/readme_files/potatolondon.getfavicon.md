@@ -1,0 +1,3 @@
+Retrieves the relevant favicon for a URL, or returns a default icon should it not be able to find it. Works better than the <a href="http://simonwillison.net/2008/Aug/30/favicons/">Google version</a> as it will find favicons specified by an HTML page's <code>&lt;link&gt;</code> element.
+
+Feel free to hotlink, although it would be nice if you could <a href="mailto:mail@jasoncartwright.com">email me</a> if you're going to make more than a couple of requests a second.

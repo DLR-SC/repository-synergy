@@ -1,0 +1,48 @@
+===================
+ Pbrain repository
+===================
+
+This is the development repository for pbrain, forked by Eli Albert, programmer for Dr. Towle's lab at the University of Chicago hospital.
+
+Pbrain is an analysis package for EEG, electrocorticography, and
+structural data.  The main developer was John Hunter, who was then at
+the university of Chicago.  More recently Micheal Castelle had been in
+charge of maintenance, and now Eli Albert is updating the suite for the new decade. This includes compatability with all new versions of matplotlib, numpy, scipy, and ubuntu.
+
+See http://nipy.sourceforge.net/pbrain for the introductory docs.
+
+You may well want the example CT and EEG data at http://nipy.sourceforge.net/example_data 
+
+system requirements:
+matplotlib > .9
+numpy
+scipy
+gtk > 2
+pygtk
+vtk
+python 2.6
+gtkgl
+pygtkgl
+mysqldb
+
+
+to install:
+type the following in your bash terminal from this directory:
+python setup.py build
+sudo python setup.py install 
+(and input your password)
+
+using the .eegviewrc file:
+the .eegviewrc file is by default stored and updated in your home folder. to edit it, make sure you have hidden files displayed, or open it through the terminal by typing:
+gedit ~/.eegviewrc
+at the bottom are 5 values that look like this:
+bni : 
+csv : 
+amp : 
+dat : 
+col : 
+you can replace them with paths to files of the respective extension, and this will streamline the execution of eegview tremendously. Any incorrect input will revert back to normal file loading behavior. Leaving them blank will result in normal eegview file loading behavior.
+Note: This file is updated every time the program exits. Thus, try not to edit it while the program is open, as you may lose your changes. 
+
+
+please contact ealbert@bsd.uchicago.edu with any problems.

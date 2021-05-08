@@ -1,0 +1,14 @@
+**** Archiving this project because I've moved to GitLab ****
+
+These scripts are for manipulating various file types used in Monster Hunter
+games for the Playstation Portable and Nintendo 3DS.
+
+You can report issues, get the latest version, and view the source at:
+  http://github.com/svanheulen/mhff
+
+To install the Blender add-ons, refer to this documentation:
+  http://www.blender.org/manual/extensions/python/add_ons.html
+
+All of these scripts require Python 3.x
+
+View the README file in each folder to learn more about those scripts.

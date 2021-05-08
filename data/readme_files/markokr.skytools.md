@@ -1,0 +1,136 @@
+= SkyTools - tools for PostgreSQL =
+
+This is a package of tools in use in Skype for replication and failover.
+It also includes a generic queuing mechanism called PgQ and a utility
+library for Python scripts, as well as a script for setting up and
+managing WAL based standby servers.
+
+== Overview ==
+
+It contains the following modules:
+
+=== PgQ ===
+
+PgQ is a queuing system written in PL/pgSQL, Python and C code. It is
+based on snapshot-based event handling ideas from Slony-I, and is
+written for general usage.
+
+PgQ provides an efficient, transactional, queueing system with
+multi-node support (including work sharing and splitting, failover and
+switchover, for queues and for consumers).
+
+Rules:
+
+- There can be several queues in a database.
+- There can be several producers than can insert into any queue.
+- There can be several consumers on one queue.
+- There can be several subconsumers on a consumer.
+
+PgQ is split into 3 layers: Producers, Ticker and Consumers.
+
+*Producers* and *Consumers* respectively push and read events into a
+queue. Producers just need to call PostgreSQL stored procedures (like a
+trigger on a table or a PostgreSQL call from the application).
+Consumers are frequently written in Python (the preferred language as it
+has a powerful Skytools Framework), but are not limited to Python; any
+language able to run PostgreSQL stored procedures can be used.
+
+*Ticker* is a daemon which splits the queues into batchs of events and
+handle the maintenance of the system. The Ticker is provided with
+Skytools.
+
+Documentation:
+
+- PgQ ticker daemon (pgqd) usage: link:doc/pgqd.html[]
+- PgQ admin tool (qadm) usage: link:doc/qadmin.html[]
+- PgQ SQL API overview: link:doc/pgq-sql.html[]
+- PgQ SQL reference: link:pgq/[]
+
+=== Londiste ===
+
+Replication tool written in Python, using PgQ as event transport.
+
+Features:
+
+- Tables can be added one-by-one into set.
+- Initial COPY for one table does not block event replay for other tables.
+- Can compare tables on both sides.
+
+Documentation:
+
+- Londiste script usage: doc/londiste3.txt
+  (also available as `man 1 londiste`)
+
+- Londiste HOWTOs: doc/howto/
+
+=== walmgr ===
+
+This script will setup WAL archiving, does the initial backup, and
+runtime WAL archive and restore.
+
+It can also be used for up-to-last-second partial file copying,
+so that less than the whole file is lost in case of loss of the master
+database server.
+
+== Source tree contents ==
+
+doc/::
+    Documentation in AsciiDoc format.  Source for both html and man pages.
+
+python/::
+    Python modules and primary executables - walmgr, londiste, qadmin, pgqadm.
+
+python/pgq/::
+    Python framework for PgQ.
+
+python/londiste/::
+    Londiste replication.
+
+python/skytools/::
+    Low-level utilities for writing database scripts in Python.
+
+sql/::
+    Database modules.
+
+sql/pgq/::
+    Table definitions and functions for PgQ queueing.
+
+sql/pgq_node/::
+    Framework for cascaded consuming.
+
+sql/pgq_coop/::
+    Functions for cooperative consuming.
+
+sql/londiste/::
+    Table definitions and functions for Londiste replication.
+
+sql/ticker/::
+    PgQ ticker written in C.
+
+scripts/::
+    Python scripts with lesser priority.
+
+lib/::
+    libusual C library, for pgqd.
+
+debian/::
+    Debian packaging.  This is for creating private packages,
+    official Debian packages use their own packaging code.
+
+misc/::
+    Random scripts used for building.
+
+== Upgrade from 2.1 ==
+
+Assuming PgQ + Londiste setup.  This will upgrade PgQ to 3.0 and install
+Londiste 3 in parallel with Londiste 2.
+
+1. Install Postgres modules.  They are backwards compatible with 2.1.
+2. Stop `pgqadm.py ticker` processes.
+3. Apply pgq.upgrade_2.1_to_3.0.sql
+3. Apply pgq.upgrade.sql
+4. Apply pgq_node.sql
+5. Apply londiste.sql - this will throw error on CREATE SCHEMA, but should otherwise apply fine.
+6. Start pgqd.
+
+The files mentioned above are installed under $PREFIX/share/skytools3/ directory.

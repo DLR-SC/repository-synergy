@@ -1,0 +1,9 @@
+This repository is unmaintained. Visit: https://github.com/xflux-gui/xflux-gui 
+
+f.lux indicator applet
+Better lighting for your computer
+
+f.lux indicator applet is an indicator applet to control xflux, an application
+that makes the color of your computer's display adapt to the time of day, warm
+at nights and like sunlight during the day
+

@@ -1,0 +1,118 @@
+pycassa
+=======
+
+[![Build Status](https://secure.travis-ci.org/pycassa/pycassa.png?branch=master)](http://travis-ci.org/pycassa/pycassa)
+
+pycassa is a Thrift-based python client library for [Apache Cassandra](http://cassandra.apache.org)
+
+**pycassa does not support CQL** or Cassandra's native protocol, which are a
+replacement for the Thrift interface that pycassa is based on. If you are
+starting a new project, **it is highly recommended that you use the newer**
+[DataStax python driver](https://github.com/datastax/python-driver) instead
+of pycassa.
+
+pycassa is open source under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
+
+Documentation
+-------------
+
+Documentation can be found here:
+
+[http://pycassa.github.com/pycassa/](http://pycassa.github.com/pycassa/)
+
+It includes [installation instructions](http://pycassa.github.com/pycassa/installation.html),
+a [tutorial](http://pycassa.github.com/pycassa/tutorial.html),
+[API documentation](http://pycassa.github.com/pycassa/api/index.html),
+and a [change log](http://pycassa.github.com/pycassa/changelog.html).
+
+Getting Help
+------------
+
+IRC:
+
+* Use the #cassandra channel on irc.freenode.net. If you don't have an IRC client,
+  you can use [freenode's web based client](http://webchat.freenode.net/?channels=#cassandra).
+
+Mailing List:
+
+* User list: [http://groups.google.com/group/pycassa-discuss](http://groups.google.com/group/pycassa-discuss)
+* Developer list: [http://groups.google.com/group/pycassa-devel](http://groups.google.com/group/pycassa-devel)
+
+Installation
+------------
+
+If pip is available, you can install the lastest pycassa release
+with:
+
+    pip install pycassa
+
+If you want to install from a source checkout, make sure you have Thrift
+installed, and run setup.py as a superuser:
+
+    pip install thrift
+    python setup.py install
+
+Basic Usage
+-----------
+
+To get a connection pool, pass a Keyspace and an optional list of servers:
+
+~~~~~~ {python}
+>>> import pycassa
+>>> pool = pycassa.ConnectionPool('Keyspace1') # Defaults to connecting to the server at 'localhost:9160'
+>>>
+>>> # or, we can specify our servers:
+>>> pool = pycassa.ConnectionPool('Keyspace1', server_list=['192.168.2.10'])
+~~~~~~
+
+To use the standard interface, create a ColumnFamily instance.
+
+~~~~~~ {python}
+>>> pool = pycassa.ConnectionPool('Keyspace1')
+>>> cf = pycassa.ColumnFamily(pool, 'Standard1')
+>>> cf.insert('foo', {'column1': 'val1'})
+>>> cf.get('foo')
+{'column1': 'val1'}
+~~~~~~
+
+insert() will also update existing columns:
+
+~~~~~~ {python}
+>>> cf.insert('foo', {'column1': 'val2'})
+>>> cf.get('foo')
+{'column1': 'val2'}
+~~~~~~
+
+You may insert multiple columns at once:
+
+~~~~~~ {python}
+>>> cf.insert('bar', {'column1': 'val3', 'column2': 'val4'})
+>>> cf.multiget(['foo', 'bar'])
+{'foo': {'column1': 'val2'}, 'bar': {'column1': 'val3', 'column2': 'val4'}}
+>>> cf.get_count('bar')
+2
+~~~~~~
+
+get_range() returns an iterable. You can use list() to convert it to a list:
+
+~~~~~~ {python}
+>>> list(cf.get_range())
+[('bar', {'column1': 'val3', 'column2': 'val4'}), ('foo', {'column1': 'val2'})]
+>>> list(cf.get_range(row_count=1))
+[('bar', {'column1': 'val3', 'column2': 'val4'})]
+~~~~~~
+
+You can remove entire keys or just a certain column:
+
+~~~~~~ {python}
+>>> cf.remove('bar', columns=['column1'])
+>>> cf.get('bar')
+{'column2': 'val4'}
+>>> cf.remove('bar')
+>>> cf.get('bar')
+Traceback (most recent call last):
+...
+pycassa.NotFoundException: NotFoundException()
+~~~~~~
+
+See the [tutorial](http://pycassa.github.com/pycassa/tutorial.html#connecting-to-cassandra) for more details.

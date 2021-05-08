@@ -1,0 +1,160 @@
+===========================================
+Jug: A Task-Based Parallelization Framework
+===========================================
+
+Jug allows you to write code that is broken up into
+tasks and run different tasks on different processors.
+
+.. image:: https://travis-ci.com/luispedro/jug.png
+       :target: https://travis-ci.com/luispedro/jug
+
+.. image:: https://zenodo.org/badge/205237.svg
+   :target: https://zenodo.org/badge/latestdoi/205237
+
+.. image:: https://anaconda.org/conda-forge/jug/badges/installer/conda.svg
+    :target: https://anaconda.org/conda-forge/jug
+
+.. image:: https://img.shields.io/badge/CITATION-doi.org%2F10.5334%2Fjors.161-green.svg
+   :target: http://doi.org/10.5334/jors.161
+
+.. image:: https://badges.gitter.im/Join%20Chat.svg
+   :alt: Join the chat at https://gitter.im/luispedro/jug
+   :target: https://gitter.im/luispedro/jug?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
+
+It uses the filesystem to communicate between processes and
+works correctly over NFS, so you can coordinate processes on
+different machines.
+
+Jug is a pure Python implementation and should work on any platform.
+
+Python 2.6/2.7 and Python 3.5+ are supported.
+
+*Website*: `http://luispedro.org/software/jug <http://luispedro.org/software/jug>`__
+
+*Documentation*: `https://jug.readthedocs.org/ <https://jug.readthedocs.org/>`__
+
+*Video*: On `vimeo <http://vimeo.com/8972696>`__ or `showmedo
+<http://showmedo.com/videotutorials/video?name=9750000;fromSeriesID=975>`__
+
+*Mailing List*: `http://groups.google.com/group/jug-users
+<http://groups.google.com/group/jug-users>`__
+
+Testimonials
+------------
+
+"I've been using jug with great success to distribute the running of a
+reasonably large set of parameter combinations" - Andreas Longva
+
+
+Install
+-------
+
+You can install Jug with pip::
+
+    pip install Jug
+
+or use, if you are using `conda <http://anaconda.org/>`__, you can install jug
+from `conda-forge <https://conda-forge.github.io/>`__ using the following
+commands::
+
+    conda config --add channels conda-forge
+    conda install jug
+
+Citation
+--------
+
+If you use Jug to generate results for a scientific publication, please cite
+
+    Coelho, L.P., (2017). Jug: Software for Parallel Reproducible Computation in
+    Python. Journal of Open Research Software. 5(1), p.30.
+
+    http://doi.org/10.5334/jors.161
+
+
+Short Example
+-------------
+
+Here is a one minute example. Save the following to a file called ``primes.py``
+(if you have installed jug, you can obtain a slightly longer version of this
+example by running ``jug demo`` on the command line)::
+
+    from jug import TaskGenerator
+    from time import sleep
+
+    @TaskGenerator
+    def is_prime(n):
+        sleep(1.)
+        for j in range(2,n-1):
+            if (n % j) == 0:
+                return False
+        return True
+
+    primes100 = [is_prime(n) for n in range(2,101)]
+
+This is a brute-force way to find all the prime numbers up to 100. Of course,
+this is only for didactical purposes, normally you would use a better method.
+Similarly, the ``sleep`` function is so that it does not run too fast. Still,
+it illustrates the basic functionality of Jug for embarassingly parallel
+problems.
+
+Type ``jug status primes.py`` to get::
+
+    Task name                  Waiting       Ready    Finished     Running
+    ----------------------------------------------------------------------
+    primes.is_prime                  0          99           0           0
+    ......................................................................
+    Total:                           0          99           0           0
+
+
+This tells you that you have 99 tasks called ``primes.is_prime`` ready to run.
+So run ``jug execute primes.py &``. You can even run multiple instances in the
+background (if you have multiple cores, for example). After starting 4
+instances and waiting a few seconds, you can check the status again (with ``jug
+status primes.py``)::
+
+    Task name                  Waiting       Ready    Finished     Running
+    ----------------------------------------------------------------------
+    primes.is_prime                  0          63          32           4
+    ......................................................................
+    Total:                           0          63          32           4
+
+
+Now you have 32 tasks finished, 4 running, and 63 still ready. Eventually, they
+will all finish and you can inspect the results with ``jug shell primes.py``.
+This will give you an ``ipython`` shell. The `primes100` variable is available,
+but it is an ugly list of `jug.Task` objects. To get the actual value, you call
+the `value` function::
+
+    In [1]: primes100 = value(primes100)
+
+    In [2]: primes100[:10]
+    Out[2]: [True, True, False, True, False, True, False, False, False, True]
+
+What's New
+----------
+
+version **2.0.0** (Fri Feb 21 2020)
+- jug.backend.base_store has 1 new method 'listlocks'
+- jug.backend.base_lock has 2 new methods 'fail' and 'is_failed'
+- Add 'jug execute --keep-failed' to preserve locks on failing tasks.
+- Add 'jug cleanup --failed-only' to remove locks from failed tasks
+- 'jug status' and 'jug graph' now display failed tasks
+- Check environmental exit variables by default (suggested by Renato Alves, issue #66)
+- Fix 'jug sleep-until' in the presence of barrier() (issue #71)
+
+
+version **1.6.9** (Tue Aug 6 2019)
+
+- Fix saving on newer version of numpy
+
+version **1.6.8** (Wed July 10 2019)
+
+- Add ``cached_glob()`` function
+- Fix NoLoad (issue #73)
+- Fix ``jug shell``'s invalidate function with Tasklets (issue #77)
+
+For older version see ``ChangeLog`` file.
+
+
+

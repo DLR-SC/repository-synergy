@@ -1,0 +1,115 @@
+This script implements distributed bug tracking for Git repositories.  It
+replicates the functionality of packages like ticgit, but does so in the form
+of a more standalone Python script.  You can check this script in along with
+your project in order to ensure that all contributors are able to view the bug
+database using the same version of the script that you used to create them.
+
+h1. Usage
+
+<pre>
+git issues new [-m "Comment for the issue"] "Issue title"
+
+git issues list      # show all issues
+
+git issues show OFFSET|HASH
+
+git issues push      # submit your issues via repo or e-mail
+git issues pull      # merge in the latest issues
+
+git issues close ID  # mark an issue as closed
+</pre>
+
+h1. Data Structure
+
+The data for @git-issues@ is kept in a separate branch configured through
+the issues.branch option. By default the branch is named @issues@.  The
+user is never intended to checkout this branch, it's used solely for record
+keeping by the @git-issues@ script.
+
+If you were to checkout this branch, you'd find a set of top-level
+directories, each giving the first two characters of a Git object name (hash
+id).  This mirrors the way that loose objects are organized within
+@.git/objects@.  In each of these directories is another set of directories,
+this time spelling out the remaining 38 characters of each issue's unique
+object name.  No matter what is done with an issue, this reference to it never
+changes.
+
+In each each uniquely named issue directory may be found one or more files of
+the following form:
+
+h2. @issue.xml@
+
+The data file changes throughout the history of an issue, even though the
+object name for the issue (it's 40-byte hash) is always used from the time of
+creation onward.  Issues are mutable, after all.
+
+The file is in a very straightforward form of XML, where each data string
+occupies its own line to facilitate merging.  Note that for any XML haters out
+there, you'll never have to look at this data.  I just picked XML because it's
+(a) relatively future-proof, and (b) very merge-friendly.
+
+The data contained maps directly on to what you see from the @git issues show@
+command.  Use @git issues dump@ to view the XML directly, or for importing
+into a higher-level script.
+
+Here's some of the data this file tracks:
+
+* Title
+* Summary
+* Description
+* Author: Who wrote the actual issue record
+* Reporter: Who reported this issue
+* Owner: Who is responsible for closure
+* Assigned: Who is it presently assigned to
+* Cc: Who else wants to know about it
+* Status: new, open, pending, deferred, closed
+* Resolution: fixed, wontfix, dup
+* Type: defect, feature, docs
+* Component
+* Version
+* Milestone
+* Severity: blocker, critical, major, minor, cosmetic
+* Priority: high, med, low
+* Tags
+
+h2. @comment_[ISO_TIMESTAMP]_[HASH].xml@
+
+A comment is a note attached to an issue.  This XML file records:
+
+* When the comment was created
+* When the comment was last edited
+* The author of the comment
+* The text of the comment itself
+* Any attachments associated with the comment.
+
+h2. filename
+
+An attachment is a text or binary file which has been linked to an issue.
+It's name is the same as the filename it's created under.  There must always
+be one or more comments that refer to the attachment, otherwise the system is
+free to delete it.
+
+h2. Top-level @project.xml@ file
+
+Also, at the top-level of the @issues@ branch is a file which contains
+information relating to the whole project.  The file is named @project.xml@
+and contains the following information.
+
+* Statuses
+* Resolutions
+* Types
+* Components
+* Versions
+* Milestones
+* Severities
+* Priorities
+
+Each of these identifies a legal set of values for the given field.  Only the
+"Tags" field is freely assignable to any value; all other fields must match
+one of the settings in the @project@ file.
+
+The Component field can also specify default "Owners" for each component.
+This is the person (or people) who get notified automatically about changes in
+the issue whenever they pull the new issue down from the public repository.
+
+Lastly, the Version field must match an existing tag name.

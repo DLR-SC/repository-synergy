@@ -1,0 +1,30 @@
+[![Documentation Status](https://readthedocs.org/projects/tensorvision/badge/?version=latest)](http://tensorvision.readthedocs.org/en/latest/?badge=latest)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/
+TensorVision/TensorVision/blob/master/LICENSE)
+
+TensorVision is a simple toolkit to easily apply image classification networks.
+
+
+## Installation
+
+You can install TensorVision and its requirements via:
+
+```bash
+$ pip install -r https://raw.githubusercontent.com/TensorVision/TensorVision/master/requirements.txt
+$ pip install https://github.com/TensorVision/TensorVision/archive/master.zip
+```
+
+For more details, please have a look at the
+[installation instructions](http://tensorvision.readthedocs.io/en/latest/user/installation.html)
+in the documentation.
+
+
+## Documentation
+
+Documentation is available online: http://tensorvision.readthedocs.io
+
+## Examples
+
+Examples of how to utilize TensorVision to perform various tasks can be found in our [KittiSeg](https://github.com/MarvinTeichmann/KittiSeg#kittiseg), [KittiBox](https://github.com/MarvinTeichmann/KittiBox#kittibox) and [MultiNet](https://github.com/MarvinTeichmann/MultiNet) repository.
+
+

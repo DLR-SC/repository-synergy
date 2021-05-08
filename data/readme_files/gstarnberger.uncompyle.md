@@ -1,0 +1,101 @@
+
+                          uncompyle
+        A Python 2.7 byte-code decompiler, written in Python 2.7
+                          0.13
+                          2012-2-22
+
+Introduction
+------------
+
+'uncompyle' converts Python byte-code back into equivalent Python
+source. It accepts byte-code from Python version 2.7 only. Additionally,
+it will only run on Python 2.7.
+
+The generated source is very readable: docstrings, lists, tuples and
+hashes get pretty-printed.
+
+'uncompyle' may also verify the equivalence of the generated source by
+by compiling it and comparing both byte-codes.
+
+'uncompyle' is based on John Aycock's generic small languages compiler
+'spark' (http://www.csr.uvic.ca/~aycock/python/) and his prior work on
+a tool called 'decompyle'. This tool has been vastly improved by
+Hartmut Goebel `http://www.crazy-compilers.com/`_
+
+Additional note (3 July 2004, Ben Burton):
+
+    This software is no longer available from the original website. It
+    has now become a commercial decompilation service, with no
+    software available for download.
+
+    Any developers seeking to make alterations or enhancements to this code
+    should therefore consider these debian packages an appropriate starting
+    point.
+
+Features
+--------
+
+  * decompiles Python byte-code into equivalent Python source
+
+  * decompiles byte-code from Python version 2.7
+
+  * pretty-prints docstrings, hashes, lists and tuples
+
+  * reads directly from .pyc/.pyo files, bulk-decompile whole
+    directories
+
+  * output may be written to file, a directory or to stdout
+
+  * option for including byte-code disassembly into generated source
+
+  For a list of changes please refer to the 'CHANGES' file.
+
+
+Requirements
+------------
+
+uncompyle requires Python 2.7
+
+
+Installation
+------------
+
+You may either create a RPM and install this, or install directly from
+the source distribution.
+
+Creating RPMS:
+
+  python setup.py bdist_rpm
+
+  If you need to force the python interpreter to eg. pyton2:
+     python2 setup.py bdist_rpm --python=python2
+
+
+Installation from the source distribution:
+
+     python setup.py install
+
+   To install to a user's home-dir:
+     python setup.py install --home=<dir>
+
+   To install to another prefix (eg. /usr/local)
+     python setup.py install --prefix=/usr/local
+
+  If you need to force the python interpreter to eg. pyton2:
+     python2 setup.py install
+
+  For more information on 'Installing Python Modules' please refer to
+     http://www.python.org/doc/current/inst/inst.html
+
+
+Usage
+-----
+
+uncompyler -h		prints short usage
+uncompyler --help	prints long usage
+
+
+Known Bugs/Restrictions
+-----------------------
+
+

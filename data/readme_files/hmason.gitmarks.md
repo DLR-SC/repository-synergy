@@ -1,0 +1,82 @@
+UPDATE: Far McKon's fork is the new official fork, follow that one instead! It's here: https://github.com/FarMcKon/gitmarks_2
+
+========
+Gitmarks
+========
+
+A web bookmark manager built on git and designed for github. It's searchable and social!
+
+Gitmarks is a script that, given a URL, description, and tags, will download the content of the web page and store it along with the metadata so that you can easily search it (with grep!) and comment on it (with github!)
+
+It's great for groups to collaboratively collect bookmarks in one spot (thanks to git itself!)
+
+=======
+Details
+=======
+
+For each URL, gitmarks will pull the content and store it under the 'content' directory. It stores the metadata under each tag in the 'tags' directory.
+
+You can use git as usual to see who committed what and when, or you can grep your way to bookmark happiness on the command line.
+
+=====
+Usage
+=====
+
+python gitmark.py [url]
+
+options:
+	-p = do not push to origin (store bookmark locally only)
+	-m = description of the bookmark
+	-t = a comma-delimited list of tags
+	
+Example:
+
+python gitmark.py -m 'my site' -t me,hilary_mason,code,bookmarks http://www.hilarymason.com
+
+
+===============
+OMG Delicious?!
+===============
+
+Yes, you can import your delicious bookmarks!
+
+Usage:
+
+python delicious_import.py [username] [password]
+
+(be patient if you have a lot of them.)
+
+
+=============================
+Using the Browser Bookmarklet
+=============================
+
+First, run the gitmark_web server:
+
+python gitmark_web.py
+
+Then, go to the following URL and drag the bookmarklet into your browser's toolbar:
+
+http://localhost:44865/
+
+(where 44865 is the port you set in settings.py)
+
+
+=======
+License
+=======
+
+Copyright 2010 Hilary Mason.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.

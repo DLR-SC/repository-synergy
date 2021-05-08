@@ -1,0 +1,609 @@
+README
+======
+
+About Shaape
+------------
+Shaape processes ascii drawings of diagrams and converts them to pixel or
+vector graphics. 
+The word *Shaape* itself is a neologism from *shape* and *ascii art*.
+
+Why to use Shaape
+~~~~~~~~~~~~~~~~~
+
+- Shaape is consistent between ascii source code and the produced image,
+  What-You-See-Is-What-You-Generate
+- Shaape supports a very natural form of ascii drawing (see the examples below)
+  and attempts to keep the ascii source picture readable
+- Shaape has an extensive feature set while maintaining a small and natural
+  syntax
+
+What is supported
+~~~~~~~~~~~~~~~~~
+- arbitrary shapes (e.g. polygons, paths, planar graphs)
++
+["shaape",scaling="0.7"]
+----
++-+  +-+   /\
+ \ \/  |  +  +-
+  \    |  |
+   +---+ -+
+----
+- arrows (that even can snap to target points)
++
+["shaape",scaling="0.7"]
+----    
+        +-->
+       /     /\
+  >---+---->+  +
+             \/
+----
+- extensive styles:
+  * color
++
+["shaape",scaling="0.7"]
+----    
+ +---+ +---+ +---+
+ | a | | b | | c |
+ +---+ +---+ +---+
+options:
+- ".*" : {text : [[0,0,0,0]]}
+- "a" : {fill : [[1,0,0,1]]}
+- "b" : {fill : [[0,1,0,1]]}
+- "c" : {fill : [[0,0,1,1]]}
+----
+  * gradients
++
+["shaape",scaling="0.7"]
+----    
+ +---+ 
+ | a |
+ +---+
+options:
+- ".*" : {text : [[0,0,0,0]]}
+- "a" : {fill : [[1,0,0,1], [0.2,0.5,0.7,1]]}
+----
+  * shadows
++
+["shaape",scaling="0.7"]
+----    
+ +---+ +---+ 
+ | a | | b | 
+ +---+ +---+ 
+options:
+- ".*" : {text : [[0,0,0,0]]}
+- "a" : {fill : [shadow]}
+- "b" : {fill : [no-shadow]}
+----
+  * transparency
++
+["shaape",scaling="0.7"]
+----    
+ +---+ 
+ | a |
+ +---+
+options:
+- ".*" : {text : [[0,0,0,0]]}
+- "a" : {fill : [[1,0,0,0.5]]}
+----
+  * line types: solid, dotted, dashed, dash-dotted
++
+["shaape",scaling="0.7"]
+----    
+a------
+b------
+c------
+d------
+options:
+- ".*" : {text : [[0,0,0,0]], fill: [3]}
+- "a" : {fill : [solid]}
+- "b" : {fill : [dotted]}
+- "c" : {fill : [dashed]}
+- "d" : {fill : [dash-dotted]}
+----
+- monospaced text in the whole drawing
++
+["shaape",scaling="0.7"]
+----    
+ +-----+ 
+ | abc |
+ +-----+
+----
+- all objects can be stacked or crossing, z-order is automatically determined
++
+["shaape",scaling="0.5"]
+----    
+   +--+
+   |  |
+ +-|--|---+ 
+ | |  |   |
+ +-|--|---+
+   |  |
+   +--+
+----
+- corners can be either miter or round (the '*' character)
++
+["shaape",scaling="0.7"]
+----    
+ *---+ 
+ |   |  ***   *
+ +---* *   ***
+----
+- renders to png, svg, eps(experimental), pdf(experimental)
++
+["shaape",scaling="0.6"]
+----    
++-------+   +-------+   +-------+   +-------+
+|       |\  |       |\  |       |\  |       |\ 
+|       +-+ |       +-+ |       +-+ |       +-+
+|   PNG   | |   SVG   | |   EPS   | |   PDF   |
+|         | |         | |         | |         |
+|         | |         | |     exp.| |     exp.|
++---------+ +---------+ +---------+ +---------+
+----
+- md5sum generation/checking to prevent image generation on unchanged sources
++
+["shaape",scaling="0.7"]
+----     
+            '[changed]'
+            +----------> regenerate >----+
+           /                              \
+source >--+                                +---> result
+           \                              /
+            +---> use old image >--------+
+            '[unchanged]'
+----
+
+What will be supported
+~~~~~~~~~~~~~~~~~~~~~~
+- advanced text styles without markup inside the drawing
+
+What will *not* be supported
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- rotated text: (cannot be displayed in ascii art)
+- circles: (cannot be displayed consistently in ascii art)
+
+Dependencies
+------------
+- NetworkX python graph package
+- pycairo
+- pango
+- pangocairo
+- scipy
+- numpy
+- pyyaml
+- networkx
+- setuptools
+
+- additionally for development:
+ * nose
+ * coverage
+ * mock
+
+Installation
+------------
+
+System dependencies
+~~~~~~~~~~~~~~~~~~~
+
+Prior to installing shaape, make sure that you have installed http://cairographics.org[cairo] and http://www.pango.org[pango] libraries with Python bindings.
+
+.OS X using Homebrew:
+`$ brew install pygtk py2cairo pango`
+
+.Gentoo:
+`$ emerge -av dev-python/pycairo x11-libs/pango`
+
+Shaape
+~~~~~~
+
+.Install from PyPI:
+`$ pip install shaape`
+
+.or from source:
+....
+$ git clone https://github.com/christiangoltz/shaape.git
+$ cd shaape
+$ sudo make install
+$ make install-filter  # install asiidoc filter
+....
+
+Usage
+-----
+
+To run shaape after the installation:
+
+`$ shaape`
+
+You can also run shaape without any installation by using following line inside the root directory of your git clone:
+
+`$ shaape/run.py`
+
+Asciidoc integration
+~~~~~~~~~~~~~~~~~~~~
+
+Shaape uses an asciidoc block listing definition to integrate into asciidoc:
+....
+[shaape]
+---------------------------------------------------------------------
+    +--------+    +-------------+
+    |        |     \           /
+    | Hello  |--->  \ Goodbye /
+    |   ;)   |      /         \
+    |        |     /           \
+    +--------+    +-------------+
+---------------------------------------------------------------------
+....
+
+Drawing
+~~~~~~~
+==== Lines
+The most basic elements of shaape are lines. There are 4 different line elements:
+---------------------------------------------------------------------
+- | \ /
+
+ --------
+
+| \       /
+|  \     /
+|   \   /
+|    \ /
+---------------------------------------------------------------------
+
+renders:
+
+[shaape]
+---------------------------------------------------------------------
+- | \ /
+
+ --------
+
+| \       /
+|  \     /
+|   \   /
+|    \ /
+---------------------------------------------------------------------
+
+==== Text
+Text can be directly written into the diagram. Words that contain special 
+characters need to be quoted.
+
+---------------------------------------------------------------------
+ +---------+
+ | foo bar |  +------------+
+ +---------+  |'foo|=/baar'|
+              +------------+
+---------------------------------------------------------------------
+renders:
+
+[shaape]
+---------------------------------------------------------------------
+ +---------+
+ | foo bar |  +------------+
+ +---------+  |'foo|=/baar'|
+              +------------+
+---------------------------------------------------------------------
+
+==== Arrows
+There are 4 types of arrows supported:
+---------------------------------------------------------------------
+< > ^ v
+---------------------------------------------------------------------
+
+renders:
+
+[shaape]
+---------------------------------------------------------------------
+< > ^ v
+---------------------------------------------------------------------
+
+Arrows can also be used in connection with lines
+---------------------------------------------------------------------
+<-- --> ^ |   >-- --< | v
+        | v           ^ |
+---------------------------------------------------------------------
+
+renders:
+
+[shaape]
+---------------------------------------------------------------------
+<-- --> ^ |   >-- --< | v
+        | v           ^ |
+---------------------------------------------------------------------
+
+Arrows snap to corners, that are near where they are pointing to:
+---------------------------------------------------------------------
+    +---+   v      <     v
+ -->|   |    \    /     >+<
+ -->+   |     \  /       ^
+    |   |     ^ >        
+    +---+
+---------------------------------------------------------------------
+
+renders:
+
+[shaape]
+---------------------------------------------------------------------
+    +---+   v      <     v
+ -->|   |    \    /     >+<
+ -->+   |     \  /       ^
+    |   |     ^ >        
+    +---+
+---------------------------------------------------------------------
+
+==== Connectors
+
+The `+` character is used to connect lines:
+---------------------------------------------------------------------
+  \|/          |        
+ --+--   +--   +---  ---+---
+  /|\   /               |
+---------------------------------------------------------------------
+
+renders:
+
+[shaape]
+---------------------------------------------------------------------
+  \|/          |        
+ --+--   +--   +---  ---+---
+  /|\   /               |
+---------------------------------------------------------------------
+
+If you want to visually connect two lines, without actually connecting them
+internally, to avoid closing a polygon, you can just directly connect
+perpendicular lines without the `+`:
+
+---------------------------------------------------------------------
+ +----+     +----+
+ |    |-----|    |
+ |    |-----|    |
+ +----+     +----+
+---------------------------------------------------------------------
+
+renders:
+
+[shaape]
+---------------------------------------------------------------------
+ +----+     +----+
+ |    |-----|    |
+ |    |-----|    |
+ +----+     +----+
+---------------------------------------------------------------------
+
+==== Bezier curves
+Bezier curves are drawn using the `*` character. Shaape tries to match the
+drawn curve smoothly. Bezier curves can be connected to lines and connectors.
+The `*` itself is a similar connector as `+` and thus can be used to create
+junctions in special cases too. 
+----
+ **  **  **  ---+       ****
+*      **        \     *
+*                 +--**
+----
+
+renders:
+
+[shaape]
+---------------------------------------------------------------------
+ **  **  **  ---+       ****
+*      **        \     *
+*                 +--**
+---------------------------------------------------------------------
+
+==== Crossings
+Crossings are used to let lines go over or under each other without creating
+a junction between them.
+You can use brackets and braces to explicitly indicate these junctions via
+curved lines in the generated image or you can use normal line characters
+to draw straight crossing lines.
+
+e.g.
+
+---------------------------------------------------------------------
+   | | | | | |
+ +-]-[-(-)-|----+
+ | | | | | | |  |
+ | | | | | | +--|--
+ | | | | | +-------
+ | | | | |      |
+ | +-+-+-+------~--
+ |              |
+ +--------------+
+---------------------------------------------------------------------
+
+renders:
+
+[shaape]
+---------------------------------------------------------------------
+   | | | | | |
+ +-]-[-(-)-|----+
+ | | | | | | |  |
+ | | | | | | +--|--
+ | | | | | +-------
+ | | | | |      |
+ | +-+-+-+------~--
+ |              |
+ +--------------+
+---------------------------------------------------------------------
+
+Styles
+~~~~~~
+
+Although I basically want to disencourage you using fancy colors and styles,
+there may be some use cases when you need it.
+
+A style defines how an object is drawn. Styles can be defined in a special
+area below the diagram. This area starts with the identifier 'options:'.
+On the next line the style description starts. The general syntax for the style
+description is http://www.yaml.org/spec/1.2/spec.html[YAML].
+
+==== Shaape Identification
+To apply a style to an element in the drawing, you need to give it a name.
+Polygons are named by writing the name into the polygon. Lines are named by
+writing the name next to them:
+
+---------------------------------------------------------------------
+                   +---->
+  +------+        /         
+  | box1 |  -----+ 
+  +------+    line1    
+---------------------------------------------------------------------
+
+==== Style definition
+The actual style definition is a yaml list element consisting itself
+of a dictionary with one element. The key of this element represents the names
+of the shapes that it should be applied to.
+The key should always be quoted. It is interpreted as a regular expression and
+matched against the names of all polygons. Polygons with matching names get
+this style applied.
+
+----
+options:
+ - "box[0-9]": {fill: [red, no-shadow], frame: [blue, dashed]}
+----
+==== Multiple style application & Style order
+If a polygon matches multiple style definitions, then all matching styles are
+applied sequentially from top to bottom of the style definition. That way you
+can use a default style for some attributes and change specific attributes for
+some polygons:
+
+----
+options:
+ - ".*": {fill: [red, no-shadow], frame: [blue, dashed]}
+<<<<<<< HEAD
+ - "boxname[0-9]": {fill: [blue]}
+=======
+ - "box[0-9]": {fill: [blue]}
+>>>>>>> develop
+----
+
+==== Default Styles
+Every drawn element matches the regular expression ".*". Thus you can use this
+expression for the default style.
+To set the default style for arrows, use "_arrow_" as key and to set the
+default style for lines, use "_line_".
+
+==== Possible style attributes
+The style definition itself contains a yaml dictionary, that may have 3 keys:
+
++fill+:: defines style properties for filling a polygon, arrow or line
++frame+:: defines the style properties for the frame of a polygon or arrow
++text+:: defines the style properties for text
+
+===== Fill
+Fill may contain:
+
+* +shadow+ / +no-shadow+: selects wether the object drops a shadow 
+                      (default is shadow)
++
+.Example: All shapes without shadow
+----
+- ".*" : {fill : [no-shadow]}
+----
+* +solid+ / +dashed+ / +dotted+ / +dash-dotted+: selects the line style (only 
+                                                 applied to lines, default is
+                                                 solid)
++
+.Example: All lines dotted
+----
+- "_line_" : {fill : [dotted]}
+----
+* multiple color definitions, where a color is:
+  - +red+ / +green+ / +blue+
+  - a list with three floats from +0.0+ to +1.0+, representing RGB 
+   (e.g. +[0.5, 0.5, 0.5]+)
+  - a list with four floats from +0.0+ to +1.0+, representing RGBA
+    NOTE: If you provide more than one color, then the polygon will use a
+          gradient for it's fill.
++
+.Example: Yellow flat fill color
+----
+- ".*" : {fill : [[1, 1, 0]]}
+----
++
+.Example: Gradient from red to green
+----
+- ".*" : {fill : [red, [0, 1, 0]]}
+----
+
+* a number defining the width of the line, if the fill applies to a line
++
+.Example: Apply width 3.5 to all lines
+----
+- "_line_" : {fill : [3.5]}
+----
+
+===== Frame
+Frame may contain:
+
+* +solid+ / +dashed+ / +dotted+ / +dash-dotted+: selects the line style 
++
+.Example: All frames dotted
+----
+- ".*" : {frame : [dotted]}
+----
+* a color definition, where a color is:
+  - +red+ / +green+ / +blue+
+  - a list with three floats from +0.0+ to +1.0+, representing RGB 
+   (e.g. +[0.5, 0.5, 0.5]+)
++
+.Example: All frames blue
+----
+- ".*" : {frame : [blue]}
+----
+* a number defining the width of the frame line, if the fill applies to a polygon
++
+.Example: Apply width 3.5 to all frames
+----
+- ".*" : {frame : [3.5]}
+----
+
+===== Text
+Text may contain:
+
+* a font family description in the pango.FontDescription format(see http://www.pygtk.org/docs/pygtk/class-pangofontdescription.html#constructor-pangofontdescription[pygtk])
+* a color definition, where a color is:
+  - +red+ / +green+ / +blue+
+  - a list with three floats from +0.0+ to +1.0+, representing RGB 
+* +shadow+ / +no-shadow+: selects wether the object drops a shadow (default is no-shadow)
+
+.Example: All text red, italic, Courier, size 9 with shadows
+----
+- ".*" : {text : ["Courier italic 9", red, shadow]}
+----
+
+===== Advanced Examples
+
+image:shaape/tests/expected_images/example_1.shaape.png[]
+----
+include::shaape/tests/input/example_1.shaape[]
+----
+
+image:shaape/tests/expected_images/example_2.shaape.png[]
+----
+include::shaape/tests/input/example_2.shaape[]
+----
+
+image:shaape/tests/expected_images/example_3.shaape.png[]
+----
+include::shaape/tests/input/example_3.shaape[]
+----
+
+image:shaape/tests/expected_images/feature_z_order2.shaape.png[]
+----
+include::shaape/tests/input/feature_z_order2.shaape[]
+----
+
+image:shaape/tests/expected_images/feature_gradients.shaape.png[]
+----
+include::shaape/tests/input/feature_gradients.shaape[]
+----
+
+image:shaape/tests/expected_images/example_5.shaape.png[]
+----
+include::shaape/tests/input/example_5.shaape[]
+----
+
+Copyright
+---------
+include::LICENSE[]
+

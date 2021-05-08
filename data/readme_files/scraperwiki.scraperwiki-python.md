@@ -1,0 +1,100 @@
+ScraperWiki Python library
+==========================
+
+.. image:: https://travis-ci.org/scraperwiki/scraperwiki-python.png?branch=master
+   :alt: Build Status
+   :target: https://travis-ci.org/scraperwiki/scraperwiki-python
+
+This is a Python library for scraping web pages and saving data.
+It is the easiest way to save data on the ScraperWiki platform, and it
+can also be used locally or on your own servers.
+
+Installing
+----------
+
+::
+
+   pip install scraperwiki
+
+Scraping
+--------
+
+scraperwiki.scrape(url[, params][,user_agent])
+  Returns the downloaded string from the given url.
+
+  ``params`` are sent as a POST if set.
+
+  ``user_agent`` sets the user-agent string if provided.
+
+Saving data
+-----------
+
+Helper functions for saving and querying an SQL database. Updates
+the schema automatically according to the data you save.
+
+Currently only supports SQLite. It will make a local SQLite database.
+It is based on `SQLAlchemy <https://pypi.python.org/pypi/SQLAlchemy>`_.
+You should expect it to support other SQL databases at a later date.
+
+scraperwiki.sql.save(unique_keys, data[, table_name="swdata"])
+  Saves a data record into the datastore into the table given by ``table_name``.
+
+  ``data`` is a dict object with field names as keys; ``unique_keys`` is a subset of data.keys() which determines when a record is overwritten. For large numbers of records `data` can be a list of dicts.
+
+  ``scraperwiki.sql.save`` is entitled to buffer an arbitrary number of
+  rows until the next read via the ScraperWiki API, an exception is hit,
+  or until process exit. An effort is made to do a timely periodic flush.
+  Records can be lost if the process experiences a hard-crash, power outage
+  or SIGKILL due to high memory usage during an out-of-memory condition. The
+  buffer can be manually flushed with ``scraperwiki.sql.flush()``.
+
+scraperwiki.sql.execute(sql[, vars])
+  Executes any arbitrary SQL command. For example CREATE, DELETE, INSERT or DROP.
+
+  ``vars`` is an optional list of parameters, inserted when the SQL command contains ‘?’s. For example::
+
+    scraperwiki.sql.execute("INSERT INTO swdata VALUES (?,?,?)", [a,b,c])
+
+  The ‘?’ convention is like "paramstyle qmark" from `Python's DB API 2.0 <http://www.python.org/dev/peps/pep-0249/>`_ (but note that the API to the datastore is nothing like Python's DB API).  In particular the ‘?’ does not itself need quoting, and can in general only be used where a literal would appear. (Note that you cannot substitute in, for example, table or column names.)
+
+scraperwiki.sql.select(sqlfrag[, vars])
+  Executes a select command on the datastore.  For example::
+
+    scraperwiki.sql.select("* FROM swdata LIMIT 10")
+
+  Returns a list of dicts that have been selected.
+
+  ``vars`` is an optional list of parameters, inserted when the select command contains ‘?’s.  This is like the feature in the ``.execute`` command, above.
+
+scraperwiki.sql.commit()
+  Commits to the file after a series of execute commands. (sql.save auto-commits after every action).
+
+scraperwiki.sql.show_tables([dbname])
+  Returns an array of tables and their schemas in the current database.
+
+scraperwiki.sql.table_info(name)
+  Returns an array of attributes for each element of the table.
+
+scraperwiki.sql.save_var(key, value)
+  Saves an arbitrary single-value into a table called ``swvariables``. Intended to store scraper state so that a scraper can continue after an interruption.
+
+scraperwiki.sql.get_var(key[, default])
+  Retrieves a single value that was saved by ``save_var``. Only works for string, float, or int types. For anything else, use the `pickle library <http://docs.python.org/library/pickle.html>`_ to turn it into a string.
+
+Miscellaneous
+-------------
+
+scraperwiki.status(type, message=None)
+  If run on the ScraperWiki platform (the new one, not Classic), updates the visible status of the dataset.  If not on the platform, does nothing. ``type`` can be 'ok' or 'error'. If no ``message`` is given, it will show the time since the update. See `dataset status API <https://scraperwiki.com/help/developer#boxes-status>`_ in the documentation for details.
+
+scraperwiki.pdftoxml(pdfdata)
+  Convert a byte string containing a PDF file into an XML file containing the coordinates and font of each text string (see `the pdftohtml documentation <http://linux.die.net/man/1/pdftohtml>`_ for details). This requires ``pdftohtml`` which is part of ``poppler-utils``. 
+
+Environment Variables
+---------------------
+
+SCRAPERWIKI_DATABASE_NAME
+  default: ``scraperwiki.sqlite`` - name of database
+
+SCRAPERWIKI_DATABASE_TIMEOUT
+  default: ``300`` - number of seconds database will wait for a lock

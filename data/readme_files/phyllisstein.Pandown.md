@@ -1,0 +1,75 @@
+# Deprecation Warning
+## Abandon All Hope, Ye Who Enter Here
+Proud as I was of Pandown when I put it together, at this point I can't really recommend you build your workflow around it. Not only is it _old_---I made the first commit in 2012, when Sublime Text was at major version 2---it's chock full of amateurish design problems---I was just picking up Python at the time, and wouldn't even start developing software professionally for another couple of years. Which is less about humility or perfectionism than about than about concern for the stability of your writing process.
+
+Pandoc has seen a nontrivial amount of evolution over the past seven years, and Pandown isn't equipped to support it---you can't specify multiple filers through Pandown, for example, or multiple bibliography files. And although Pandown is more flexible than other Sublime Markdown packages were at the time, it still thinks about Pandoc in a fairly brittle way. Pandoc is very powerful, and Pandown's efforts to expose and manage its power are clumsy at best. Glitches and hacks that look small now are going to grow exponentially as Pandoc gets more evolved and packs in more power. And since I'm not a Sublime user anymore and there's no community momentum to channel towards support, eventually Pandown is going to stop functioning.
+
+By comparison, John MacFarlane is by all evidence _way_ smarter than I am---in general for starters, but in particular about how to usefully extend Pandoc. Ditto Jon Skinner with Sublime. Their work is going to be around much, much longer than Pandown. So it might be worth pouring your time into getting familiar with them, rather than my clumsy interface between them. On the dev and customization side, Pandoc's filters are very much the way of the future; on the integration side, Sublime's custom build systems (q.v. <https://www.sublimetext.com/docs/3/build_systems.html> and <http://docs.sublimetext.info/en/latest/reference/build_systems/basics.html>) _should_ be easy enough to adapt to your particular workflow.
+
+This is pretty much the path I wound up taking myself, first with Atom's [`build`](https://github.com/noseglid/atom-build) package and then VS Code's [tasks](https://code.visualstudio.com/docs/editor/tasks). Wrapping a general-purpose build tool around my specific workflow was far easier and far more robust than trying to build and maintain a semi-general/semi-specific wrapper around Pandoc.
+
+Godspeed,
+d
+
+---
+
+# Pandown for Sublime Text 2 and 3
+## Introduction
+This package is designed as a complete, versatile, and highly Subliminal [Sublime Text 2](http://sublimetext.com) and [Sublime Text 3](http://sublimetext.com/3) build wrapper for [Pandoc][] **version 1.10 or higher**. Written by [Daniel Shannon](http://daniel.sh) and inspired by jclement's [Pandoc (Markdown)](https://github.com/jclement/SublimePandoc) plugin, Pandown is intended to be simple and understandable out of the box but highly customizable behind the scenes. All Pandoc options are configurable, and all input and output formats are theoretically supported, with the [Markdown][] reader implemented most completely and some support for the HTML reader.
+
+
+## Installation
+Since this is just a build script, you'll need to download and install [Pandoc][] **version 1.10 or higher** before it'll be of any use to you. The preferred installation method is through [Sublime Package Control](http://wbond.net/sublime_packages/package_control), but, you can also install it with the "Clone in Mac" and "Download ZIP" buttons above. Clone or copy it to your `Packages` folder and you'll be cooking with gas. You can also use the command line. The commands looks something like this:
+
+    cd <Sublime Packages Directory>
+    git clone git://github.com/phyllisstein/Pandown.git
+
+
+## Usage
+A [Markdown][] build system, which Pandoc [extends](http://johnmacfarlane.net/pandoc/README.html#pandocs-markdown) in a number of interesting ways, is included with the package; open a Markdown file, set your build system to "Automatic" or "Pandown Markdown," and run the build command to generate, by default, an HTML file. Open the Command Palette and search for "Pandown" to see the other options available. Notably, if you have a LaTeX package installed, Pandoc can easily convert your Markdown into a lovely PDF; however, most of of the possible outputs have been pre-configured. A similar build system, though with fewer possible writers, is available for HTML.
+
+The package also includes a special build command, accessible through the Command Palette: "Pandown: Build to Window". This mimics the behavior of most of the other Pandoc wrappers extant, in case you're married to it, and attempts to open a new, unsaved buffer with the results of a Pandoc build.
+
+This is, of course, not very much fun: you wouldn't be using Sublime if you didn't want your workflow customized to the hilt, and you wouldn't be using Markdown if you wanted to see the frankly ugly page generated by default. Enter configuration and templates.
+
+
+### Configuration
+You'll find menu items for Pandown's configuration files under "Preferences&rarr;Package Settings&rarr;Pandown". The Default package settings file is heavily and informatively commented, making it an excellent place to start. Make what changes you'd like in the User settings, which override the defaults, and they'll be reflected on your next build.
+
+However, because so many of the arguments passed to Pandoc will change from project to project, Pandown features a second way to configure Pandoc. Clicking "Preferences&rarr;Package Settings&rarr;Pandown&rarr;Settings -- Project" or choosing "Pandown: Project Settings" in the Command Palette will place a file called `pandoc-config.json` in your current project folder. Setting the values for the `pandoc_arguments` dictionary there will override the settings in your `sublime-settings` files (though some values, notably lists and dictionaries, will be merged). If a config file does not exist in the same folder as the file you're building, Pandown will check the folders above it until it reaches a main project folder---that is, config files apply to the folder they're placed in and all its subfolders.
+
+And this feature is extra-configurable: once you're familiar enough with the Pandoc options you care about to not need the complete set in each new project, you can place a `pandoc-config.json` file in your `Packages/User` folder and it, rather than the default file, will be copied. You can always delete it to restore the original behavior.
+
+Only arguments to Pandoc and settings for Pandoc's Markdown extensions will be recognized in per-project configuration files.
+
+### Templates
+The basic template from which Pandoc generates its HTML is just that: basic. And not very attractive. Without much trouble, you can do better on your own. For a non-designer and non-coder type, the stylesheets included with [Brett Terpstra](http://brettterpstra.com)'s wonderful [Marked](http://markedapp.com) app are probably worth taking a look at; run an empty Markdown file through Marked and save it as HTML to get something that can become a lovely template file. (Brett has kindly made uncompressed versions of his CSS [available here](http://support.markedapp.com/kb/how-to-tips-and-tricks/writing-custom-css-for-marked).)
+
+Even more kindly, Brett has given the go-ahead for one of those templates to be distributed with this package. Consult the files in `Packages/Pandown/Samples` for a quickstart guide to building custom template files. The guide consists of a sample Markdown file, a sample template, a sample Pandoc configuration JSON, and the output HTML file generated from all those. Once you've played around with these files, you can use them for your own projects, too.
+
+### Critic Markup
+Pandown includes basic for the [Critic Markup][critic] syntax. By switching the `"preprocess_critic"` setting to `true` and adding the variable `"critic": true` to your Pandoc variables, you can compare changes and annotations against your original text in the constructed HTML file. Some JavaScript and HTML is added to the file that's built in that case, but it can be removed by deleting the `critic` key from your Pandoc variables. This is something of a quick-and-dirty implementation that will hopefully be developed somewhat more in the future.
+
+### Build Systems
+In theory, the build command syntax supports all of Pandoc's possible `from` and `to` formats. In practice, I am but one man and haven't written and tested `sublime-build` settings for each and every one of them. Markdown is completely configured from the get-go, but if you wish to use another input language you'll need to write a `sublime-build` file. At minimum, it must contain the following:
+
+* **The package's target.** Include the line `"target": "pandown_build"`.
+* **Information about the language being built.** Set `pandoc_from` to one of the input languages listed in the [documentation].
+* **Information about the default output.** Set `pandoc_to` to a dictionary whose first item is one "to" languages listed in the [documentation] and whose second item is the file extension to output.
+
+If the output file is not a type that Sublime can open, setting `prevent_viewing` to `true` will keep the script from trying to open it, even if the user's settings would normally cause it to do so.
+
+## Help and Support
+If you have any difficulties with or suggestions for Pandown, please don't hesitate to get in touch. You can use the GitHub "Issues" interface, or send an e-mail to Daniel at `d at daniel dot sh`.
+
+## Thanks and Credits
+The bare bones of the code were originally a modification of [Pandoc (Markdown)](https://github.com/jclement/SublimePandoc); though not much of what was there has survived, I'm grateful for the springboard. Almost all of the process-management code is from the `Defaults/exec.py` module. The package includes Gerald Storer's `minify_json` module, which is distributed under the MIT license and is obtainable [here](https://github.com/getify/JSON.minify). Thanks to Gerald for working around Python's (and Douglas Crockford's) obdurate refusal to allow comments in JSON. I'm grateful to the [Critic Markup][critic] project for allowing me to integrate their work into this package. Github user [jareciog](https://github.com/jareciog) deserves a special high-five for catching a catastrophic bug under ST2. [Brett Terpstra](http://brettterpstra.com)'s generous permission to include his CSS with this package is appreciated above all.
+
+
+
+
+[pandown]: http://sublime.daniel.sh/pandown/ "Pandown Home"
+[pandoc]: http://johnmacfarlane.net/pandoc/ "Pandoc Home"
+[markdown]: http://daringfireball.net/projects/markdown/ "Daring Fireball: Markdown"
+[documentation]: http://johnmacfarlane.net/pandoc/README.html "Pandoc: README"
+[critic]: http://criticmarkup.com "Critic Markup"

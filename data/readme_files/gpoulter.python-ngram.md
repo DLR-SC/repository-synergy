@@ -1,0 +1,61 @@
+The NGram class extends the Python 'set' class with efficient
+fuzzy search for members by means of an N-gram similarity measure.
+It also has static methods to compare a pair of strings.
+
+The N-grams are character based not word-based, and the class does not
+implement a language model, merely searching for members by string similarity.
+
+The `documentation`_,  `tutorial`_ and `release notes`_ are on the
+PyPI package documentation site.  Please use the `GitHub issue tracker`_
+to report issues.
+
+Installation
+============
+
+Install python-ngram from `PyPI`_ using `pip installer`_::
+
+   pip install ngram
+
+It should run on Python 2.6, Python 2.7 and Python 3.6
+
+How does it work?
+=================
+
+The set stores arbitrary items, but for non-string items a `key` function
+(such as `str`) must be specified to provide a string represenation.  The key
+function can also be used to normalise string items (e.g. lower-casing) prior
+to N-gram indexing.
+
+To index a string it pads the string with a specified dummy character, then
+splits it into overlapping substrings of N (default N=3) characters in length
+and associates each N-gram to the items that use it.
+
+To find items similar to a query string, it splits the query into N-grams,
+collects all items sharing at least one N-gram with the query,
+and ranks the items by score based on the ratio of shared to unshared
+N-grams between strings.
+
+History
+=======
+
+In 2007, Michel Albert (exhuma) wrote the python-ngram module based on Perl's
+`String::Trigram`_ module by Tarek Ahmed, and committed the code for 2.0.0b2 to
+a now-disused `Sourceforge`_ subversion repo.
+
+Since late 2008, Graham Poulter has maintained python-ngram, initially refactoring
+it to build on the `set` class, and also adding features, documentation, tests,
+performance improvements and Python 3 support.
+
+Primary development takes place on `GitHub`_, but changes are also pushed
+to the earlier repo on `Google Code`_.
+
+.. _documentation: http://packages.python.org/ngram/
+.. _tutorial: http://packages.python.org/ngram/tutorial.html
+.. _release notes: http://packages.python.org/ngram/releasenotes.html
+.. _GitHub issue tracker: https://github.com/gpoulter/python-ngram/issues
+.. _PyPI: http://pypi.python.org/pypi/ngram
+.. _pip installer: http://www.pip-installer.org
+.. _String::Trigram: http://search.cpan.org/dist/String-Trigram/
+.. _Sourceforge: https://sourceforge.net/projects/python-ngram/
+.. _GitHub: http://github.com/gpoulter/python-ngram
+.. _Google Code: http://code.google.com/p/python-ngram/

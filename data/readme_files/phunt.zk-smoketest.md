@@ -1,0 +1,195 @@
+h1. ZooKeeper Smoketest
+
+*Author: "Patrick Hunt":http://people.apache.org/~phunt/* (follow me on "twitter":http://twitter.com/phunt)
+
+h2. Summary
+
+"This project":http://github.com/phunt/zk-smoketest provides a simple smoketest client for a ZooKeeper ensemble. Useful for verifying new, updated, existing installations.
+
+I've recently added a new zk-latencies.py client, which tests latencies of various operations against the servers in the cluster. This is useful when you setup a new cluster and wish to ensure it will be adequate to the task (in particular operation latencies). Try varying the numbers and sizes of the znodes used in the test, also compare asynchronous latencies vs synchronous (will give you insight into your network latencies).
+
+*Note*: python's "time" library is used to time the operations, on some systems the resolution of the timer may be as low as 1 second, depending on the python interpreter implementation for that platform.
+
+h3. What's Apache ZooKeeper?
+
+From the "official site":http://zookeeper.apache.org: "ZooKeeper is a high-performance coordination service for distributed applications."
+
+It exposes common services - such as naming, configuration management, synchronization, and group services - in a simple interface so you don't have to write them from scratch. You can use it off-the-shelf to implement consensus, group management, leader election, and presence protocols.
+
+h2. License
+
+This project is licensed under the Apache License Version 2.0
+
+h2. Requirements to run without binaries
+
+The examples below (PYTHONPATH/LD_LIBRARY_PATH) use the included ZooKeeper client c libraries. Modern distributions often include these as part of their packaging. Alternately you can use the following instead:
+
+<code>apt-get install python-dev</code>
+<code>apt-get install libzookeeper-mt-dev</code>
+<code>pip install zkpython</code>
+
+h2. zk-smoketest.py
+
+This tool uses the ZooKeeper python binding to exercise the server. In general the script does the following:
+
+# create a root znode for the test, i.e. /zk-smoketest
+# attach a zk session to each server in the ensemble (the --servers list)
+# each client will create ephemeral znodes and attach watches on znodes of the other clients
+# each client will then delete the the ephemeral znodes it owns, all clients verify watches are triggered properly
+# client then cleans up, removing /zk-smoketest znode
+
+This project is a work in progress - so please don't hesitate to suggest ideas, complain about problems found, or contribute patches.
+
+h3. Usage
+
+<pre>
+Usage: zk-smoketest.py [options]
+
+Options:
+  -h, --help           show this help message and exit
+  --servers=SERVERS    comma separated list of host:port (default localhost:2181)
+  --config=CONFIGFILE  zookeeper configuration file to lookup servers from
+  --timeout=TIMEOUT    session timeout in milliseconds (default 5000)
+  -v, --verbose        verbose output, include more detail
+  -q, --quiet          quiet output, basically just success/failure
+</pre>
+
+The exit code is 0 on success, non-0 exit code on failure.
+
+Verbose output includes timing information for some critical operations (connection establishment, creating/deleting nodes, etc...).
+
+<code>
+PYTHONPATH=lib.linux-i686-2.6 LD_LIBRARY_PATH=lib.linux-i686-2.6 ./zk-smoketest.py --servers "host:port(,host:port)*"
+</code>
+
+*Note*: you may need to compile the zookeeper python binding yourself, this project includes only 32/64-bit Linux binaries. Additionally, the smoketest scripts rely on some changes to the zkpython binding that are not yet released, so if you do compile yourself you will need to compile zkpython from the Apache "ZooKeeper SVN trunk":http://zookeeper.apache.org/svn.html (this should be addressed as soon as ZooKeeper 3.3.0 is released).
+
+On success the last line of output will be "Smoke test successful", otw an exception will be raised.
+
+ZooKeeper client output is written to "cli_log_%d.txt" where %d is the process id of the python process.
+
+
+h3. Example
+
+Say you have a ZooKeeper ensemble with 5 servers (host1,host2,host3,host4,host5, where each host is running ZK with a client port of 2181):
+
+<code>
+PYTHONPATH=lib.linux-i686-2.6 LD_LIBRARY_PATH=lib.linux-i686-2.6 ./zk-smoketest.py --servers "host1:2181,host2:2181,host3:2181,host4:2181,host5:2181"
+</code>
+
+or, for a ZK-style configuration file:
+
+<code>
+PYTHONPATH=lib.linux-i686-2.6 LD_LIBRARY_PATH=lib.linux-i686-2.6 ./zk-smoketest.py --config zk.conf
+</code>
+
+h2. zk-latencies.py
+
+This tool uses the ZooKeeper python binding to test various operation latencies. In general the script does the following:
+
+# create a root znode for the test, i.e. /zk-latencies
+# attach a zk session to each server in the ensemble (the --servers list)
+# run various (create/get/set/delete) operations against each server, note the latencies of operations
+# client then cleans up, removing /zk-latencies znode
+
+By default asynchronous operations are run, specify the "--synchronous" flag if you want synchronous operations to be used. Typically the difference between the two will give you insight into your network latency.
+
+This project is a work in progress - so please don't hesitate to suggest ideas, complain about problems found, or contribute patches.
+
+h3. Usage
+
+<pre>
+Usage: zk-latencies.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  --servers=SERVERS     comma separated list of host:port (default
+                        localhost:2181)
+  --cluster=CLUSTER     comma separated list of host:port, test as a cluster,
+                        alternative to --servers
+  --config=CONFIGFILE   zookeeper configuration file to lookup servers from
+  --timeout=TIMEOUT     session timeout in milliseconds (default 5000)
+  --root_znode=ROOT_ZNODE
+                        root for the test, will be created as part of test
+                        (default /zk-latencies)
+  --znode_size=ZNODE_SIZE
+                        data size when creating/setting znodes (default 25)
+  --znode_count=ZNODE_COUNT
+                        the number of znodes to operate on in each performance
+                        section (default 10000)
+  --watch_multiple=WATCH_MULTIPLE
+                        number of watches to put on each znode (default 1)
+  --force               force the test to run, even if root_znode exists -
+                        WARNING! don't run this on a real znode or you'll lose
+                        it!!!
+  --synchronous         by default asynchronous ZK api is used, this forces
+                        synchronous calls
+  -v, --verbose         verbose output, include more detail
+  -q, --quiet           quiet output, basically just success/failure
+</pre>
+
+The --servers options will test each server in turn while the --cluster option tests a server in the cluster chosen at random.
+
+<code>
+PYTHONPATH=lib.linux-i686-2.6 LD_LIBRARY_PATH=lib.linux-i686-2.6 ./zk-latencies.py --servers "host:port(,host:port)*"
+</code>
+
+*Note*: you may need to compile the zookeeper python binding yourself, even though this project includes both 32bit and 64bit linux binaries. Additionally, the scripts rely on some changes to the zkpython binding that are not yet released, so if you do compile yourself you will need to compile zkpython from the Apache "ZooKeeper SVN trunk":http://zookeeper.apache.org/svn.html (this should be addressed as soon as ZooKeeper 3.3.0 is released).
+
+On success the last line of output will be "Latency test complete", otw an exception will be raised.
+
+ZooKeeper client output is written to "cli_log_%d.txt" where %d is the process id of the python process.
+
+
+h3. Example
+
+Say you have a ZooKeeper ensemble with 5 servers (host1,host2,host3,host4,host5, where each host is running ZK with a client port of 2181). This runs the latency test with 100 znodes per phase, where the data size is 100 bytes. You'll want to change the number of znodes and size of data based on your expected requirements.
+
+<code>
+ PYTHONPATH=lib.linux-i686-2.6 LD_LIBRARY_PATH=lib.linux-i686-2.6 ./zk-latencies.py --servers "host1:2181,host2:2181,host3:2181,host4:2181,host5:2181" --znode_count=100 --znode_size=100 --synchronous
+</code>
+
+or, for a ZK-style configuration file:
+
+<code>
+PYTHONPATH=lib.linux-i686-2.6 LD_LIBRARY_PATH=lib.linux-i686-2.6 ./zk-latencies.py --config zk.conf --znode_count=100 --znode_size=100 --synchronous
+</code>
+
+Result:
+
+<pre>
+Testing latencies on server host1:2181 using syncronous calls
+created 100 permanent znodes in 177 ms (1.772718 ms/op 564.105378/sec)
+set     100           znodes in 140 ms (1.408131 ms/op 710.161138/sec)
+get     100           znodes in 22 ms (0.224919 ms/op 4446.038712/sec)
+deleted 100 permanent znodes in 134 ms (1.347141 ms/op 742.312648/sec)
+created 100 ephemeral znodes in 231 ms (2.313130 ms/op 432.314674/sec)
+deleted 100 ephemeral znodes in 127 ms (1.277809 ms/op 782.589486/sec)
+Testing latencies on server host2:2181 using syncronous calls
+created 100 permanent znodes in 141 ms (1.417971 ms/op 705.233211/sec)
+set     100           znodes in 135 ms (1.352711 ms/op 739.256356/sec)
+get     100           znodes in 19 ms (0.194461 ms/op 5142.410161/sec)
+deleted 100 permanent znodes in 133 ms (1.333392 ms/op 749.967189/sec)
+created 100 ephemeral znodes in 133 ms (1.336930 ms/op 747.982431/sec)
+deleted 100 ephemeral znodes in 128 ms (1.286640 ms/op 777.218080/sec)
+.... more ....
+Latency test complete
+</pre>
+
+h2. Running Under Docker
+
+*Docker Official Images:* "ZooKeeper":https://hub.docker.com/_/zookeeper/
+
+<pre>
+# Start a quorum of 3 ZooKeeper instances
+> docker stack deploy -c docker/stack.yml zookeeper
+
+# Build the smoke test image
+> docker build --tag=zk-smoketest docker
+
+# Run the smoke test against the quorum
+> docker run --network="host" zk-smoketest:latest
+
+# Stop the ZooKeeper quorum
+> docker stack rm zookeeper
+</pre>

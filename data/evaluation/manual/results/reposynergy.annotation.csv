@@ -1,0 +1,344 @@
+a_id,user_id,repository_pair_id,annotation_date,synergy,direction,explanation
+1,8,1,2020-04-28 06:15:39.160859+00:00,1,0,
+2,8,2,2020-04-28 06:17:09.583797+00:00,1,0,
+3,8,3,2020-04-28 06:18:08.330773+00:00,1,0,
+4,8,4,2020-04-28 06:22:18.505190+00:00,3,21,"Skypipe can be integrated into Lamvery to use AWS account instead of the dotcloud account. This way, may be users can pipe logs from a Lamvery server to any other machine (which itself accumulates logs from AWS lambdas)"
+5,8,5,2020-04-28 06:22:58.513519+00:00,1,0,
+7,8,7,2020-04-28 06:28:48.323357+00:00,3,12,"May be the Corpus Crawler can display a world map of the supported languages (alongside the existing list). This is not necessarily to make it better, but a nice feature to have."
+8,8,8,2020-04-28 06:31:25.897000+00:00,2,2,They both seem to visualize genome sequences but I am not sure if they complement each other as my background knowledge about types of genome visualizations is very limited. Therefore I cannot decide if one type of sequence can be better visualized or complemented by the other repository. 
+9,8,9,2020-04-28 06:32:33.720960+00:00,1,0,
+10,8,10,2020-04-28 06:33:42.030093+00:00,1,0,
+11,9,1,2020-04-28 12:26:44.748893+00:00,1,0,"None None
+"
+12,9,2,2020-04-28 12:26:57.881211+00:00,2,12,weak 1 to 2
+13,9,3,2020-04-28 12:27:08.916751+00:00,2,21,weak 2 to 1
+14,9,4,2020-04-28 12:27:18.825042+00:00,2,2,weak both
+15,9,5,2020-04-28 12:27:30.876235+00:00,3,12,"somewhat 1 to 2
+"
+16,9,6,2020-04-28 12:27:41.801838+00:00,3,21,somewhat 2 to 1
+17,9,7,2020-04-28 12:28:02.369666+00:00,3,2,somewhat both
+18,9,8,2020-04-28 12:28:12.189123+00:00,4,12,strong 1 to 2
+19,9,9,2020-04-28 12:28:23.283464+00:00,4,21,strong 2 to 1
+20,9,10,2020-04-28 12:28:32.031089+00:00,4,2,strong both
+6,8,6,2020-04-28 06:26:31.272272+00:00,2,2,"They both solve the same task but with a few features missing in both. Merging them will create a more ""complete"" tool for scanning metadata for videos. "
+21,8,11,2020-04-30 08:44:51.771137+00:00,4,2,Repo 1 provides an authorization-backend and Repo 2 provides model behaviours for Django applications. They both can be used together as independent modules to build a new Django application. 
+22,8,12,2020-04-30 08:45:21.963955+00:00,1,0,
+23,8,13,2020-04-30 08:46:01.081396+00:00,1,0,
+24,8,14,2020-04-30 08:50:12.036207+00:00,1,0,"I referred to some additional resources in the README files to understand what problem they are trying to solve. Still, my background knowledge is very limited and I am not sure about my decision for this one."
+25,8,15,2020-04-30 08:53:21.624594+00:00,2,12,Both provide automation of smart home devices. Repo 1 seems to be a standard/ open source protocol while Repo 2 is clearly proprietary.
+26,8,16,2020-04-30 08:54:34.125125+00:00,1,0,Repo 1 is only a collection of other repositories. 
+27,8,17,2020-04-30 08:55:30.074462+00:00,1,0,
+28,8,18,2020-04-30 08:56:48.571990+00:00,1,0,
+29,8,19,2020-04-30 08:57:23.263294+00:00,1,0,
+30,8,20,2020-04-30 09:00:14.274876+00:00,3,2,"Repo 1 seems to be about encryption, while Repo 2 is about Bitcoin. May be they can benefit from each other, but I am not sure due to my limited background knowledge in both domains."
+31,8,21,2020-04-30 09:00:43.640251+00:00,1,0,
+32,8,22,2020-04-30 09:03:35.535744+00:00,1,0,
+33,8,23,2020-04-30 09:05:15.150074+00:00,4,2,They are different modules of the same course (Data science). 
+34,8,24,2020-04-30 09:06:18.255028+00:00,1,0,
+35,8,25,2020-04-30 09:06:45.823217+00:00,1,0,
+36,8,26,2020-04-30 09:08:22.149835+00:00,1,0,They are the same repositories. 
+37,8,27,2020-04-30 09:11:18.178888+00:00,3,12,Repo 1 can use the location features from Repo 2 to create more detailed motion profiles. 
+38,8,28,2020-04-30 09:11:42.985591+00:00,1,0,
+40,8,30,2020-04-30 09:13:42.598063+00:00,1,0,Repo 2 is only a collection of other repositories.
+39,8,29,2020-04-30 09:13:02.911268+00:00,1,0,Insufficient background knowledge.
+41,15,31,2020-04-30 09:18:38.513456+00:00,4,12,"Repo 1 provides a forward-merge that can automatically merge unchecked branches. However, it is possible only for branches without any merge conflicts. May be the interactive-merge from Repo 2 can be helpful to resolve conflicts on the fly?"
+42,15,32,2020-04-30 09:20:43.215141+00:00,3,12,Pattern matching from Repo 2 can be integrated into the automatic tests from Repo 1 
+43,15,33,2020-04-30 09:21:42.004035+00:00,1,0,
+44,15,34,2020-04-30 09:26:53.111779+00:00,2,21,"Repo 1 is only limited to a specific driver version for Raspberry Pi LED controls, and is not efficient (educational purpose only). Repo 2 is more complete by including automation of many more devices. If Repo 2 does not support Pi devices, may be Repo 1 can be used as a starting point."
+45,15,35,2020-04-30 09:27:52.489028+00:00,4,2,Can be combined into a new Django application with better admin panels and model behaviours.
+46,19,61,2020-04-30 09:44:19.507526+00:00,1,0,"RSOCKS is a reverse Proxy, cpppo a parser who parses commands into binary and send it via TCP/IP to an e.g L35E Maschine.
+Yes, they both use TCP/IP but RSOCKS manages Network packages and cpppo translates commands."
+47,19,62,2020-04-30 09:54:42.592621+00:00,3,21,"You can extend the OSXCollector with  EAPEAK.  An extended OSXCollector, would be able to analyze the wireless network and can give a reason why the computer would be infected e.g by an insecure wireless network."
+48,15,36,2020-04-30 10:41:40.855782+00:00,1,0,
+49,15,37,2020-04-30 10:42:18.002772+00:00,1,0,
+50,19,63,2020-04-30 10:52:43.771068+00:00,1,0,"SaltStack is a system to manged and configures server farms. Feature pyramid network is a feature extractor designed for such a pyramid concept with accuracy and speed in mind, it's a neuronal network concept."
+51,15,38,2020-04-30 11:06:13.297910+00:00,1,0,
+52,15,39,2020-04-30 11:07:01.480440+00:00,3,21,Visualization of simulation results from Repo 2 can use Repo 1
+53,19,64,2020-04-30 11:07:51.453459+00:00,3,12,After finishing digitizing the historical map for Minecraft you can use MCprep to make the Minecraft version of the historical map more beautiful.
+54,15,40,2020-04-30 11:15:27.995064+00:00,1,0,README unclear.
+55,15,41,2020-04-30 11:15:39.635040+00:00,1,0,
+56,15,42,2020-04-30 11:15:53.918022+00:00,1,0,
+57,15,43,2020-04-30 11:17:12.977603+00:00,3,12,Visualization from Repo2 can be integrated into Repo 1 for stl meshes
+58,15,44,2020-04-30 11:18:07.512900+00:00,3,12,Tutorials from Repo 2 can be merged into Repo 1
+59,15,45,2020-04-30 11:18:41.465875+00:00,1,0,
+60,15,46,2020-04-30 11:19:35.942390+00:00,1,0,
+61,15,47,2020-04-30 11:19:47.894246+00:00,1,0,
+62,15,48,2020-04-30 11:20:08.645178+00:00,1,0,
+63,15,49,2020-04-30 11:21:39.764241+00:00,1,0,
+64,15,50,2020-04-30 11:22:34.477246+00:00,3,2,Both are modules of the same course that may be combined together. 
+65,15,51,2020-04-30 11:23:01.729768+00:00,1,0,
+69,15,55,2020-04-30 11:25:49.525687+00:00,4,12,RBM network from Repo1 can be visualized using Repo2
+66,15,52,2020-04-30 11:23:37.322916+00:00,1,0,
+67,15,53,2020-04-30 11:24:08.640200+00:00,1,0,
+68,15,54,2020-04-30 11:24:36.597563+00:00,1,0,
+70,15,56,2020-04-30 11:26:13.470646+00:00,1,0,
+71,15,57,2020-04-30 11:28:17.345027+00:00,3,21,BPE tokenization from Repo1 can be used in Repo2 for preprocessing classification datasets. 
+72,15,58,2020-04-30 11:40:03.495582+00:00,4,12,Examples of each machine learning approach in Repo1 can be presented as notebooks from Repo2 to increase reproducibility. 
+73,15,59,2020-04-30 11:40:34.382054+00:00,1,0,
+74,15,60,2020-04-30 11:41:05.788977+00:00,1,0,
+75,16,61,2020-04-30 13:46:34.430508+00:00,3,21,Rerouting for special routes in Repo 2 can benefit from Repo 1
+76,16,62,2020-04-30 13:48:51.781665+00:00,3,21,"If a Mac is configured to use EAP wireless network, then may be Repo 2 can include Repo 1 to get more evidence/ probabilities of any malware through WLAN"
+77,16,63,2020-04-30 13:49:06.779222+00:00,1,0,
+78,16,64,2020-04-30 13:50:06.155873+00:00,4,21,Maps from Repo 1 can be used to improve the Minecraft renders in Repo 2
+79,16,65,2020-04-30 13:50:35.999322+00:00,1,0,
+80,16,66,2020-04-30 13:52:48.319145+00:00,4,21,"Although monitoring of voltages for air quality sensors might be included in Repo 2, Repo 1 provides that for the Raspberry Pi boards themselves."
+81,16,67,2020-04-30 13:55:48.239430+00:00,3,2,They both do similar tasks of managing messaging queues. Repo 1 provides more scalability and merging the two seeems like  a good idea. 
+82,16,68,2020-04-30 13:56:18.587653+00:00,1,0,
+83,16,69,2020-04-30 13:57:18.182525+00:00,3,2,Merging the two will improve task management on a larger scale. 
+84,16,70,2020-04-30 13:58:23.266562+00:00,3,21,Tensorflow tutorials from Repo1 can be integrated into the deep learning resources in Repo 2
+85,16,71,2020-04-30 13:59:47.549118+00:00,4,21,Repo  2 can add support for statistical models using Repo 1
+86,16,72,2020-04-30 13:59:58.716978+00:00,1,0,
+87,16,73,2020-04-30 14:00:22.468408+00:00,1,0,
+88,16,74,2020-04-30 14:01:22.382563+00:00,1,0,
+89,16,75,2020-04-30 14:03:41.738797+00:00,1,0,
+90,16,76,2020-04-30 14:04:35.996023+00:00,1,0,
+91,16,77,2020-04-30 14:06:05.966632+00:00,4,21,Keyphrases suited to a writing style (from Repo1) can be generated along with domain relevant key phrases in Repo 2
+92,16,78,2020-04-30 14:07:31.544370+00:00,3,21,Tutorials from Repo 1 can be integrated into Repo 2 for completeness. 
+93,16,79,2020-04-30 14:07:43.175010+00:00,1,0,
+94,16,80,2020-04-30 14:08:44.671743+00:00,3,21,Python applications specific to Linux from Repo 1 can be listed in Repo 2
+95,16,81,2020-04-30 14:12:14.740149+00:00,4,21,Repo 2 can benefit by including the panic button protocol from Repo 1 to prevent attacks on tire pressure monitoring systems.
+96,16,82,2020-04-30 14:14:40.486986+00:00,1,0,
+97,16,83,2020-04-30 14:14:57.787570+00:00,1,0,
+98,16,84,2020-04-30 14:15:13.723344+00:00,1,0,
+99,16,85,2020-04-30 14:16:20.849317+00:00,1,0,
+100,16,86,2020-04-30 14:18:27.103727+00:00,3,12,"Limited background knowledge, but may be the RTC clients can use Repo 2? "
+101,16,87,2020-04-30 14:19:18.513512+00:00,2,2,They can be merged into one list of deep learning tutorials. 
+102,16,88,2020-04-30 14:20:33.007243+00:00,4,2,Web applications using Python as backend and React as front end can leverage these libraries for better data visualizations in Python. 
+103,16,89,2020-04-30 14:20:49.880466+00:00,1,0,
+104,16,90,2020-04-30 14:21:04.156501+00:00,1,0,
+105,20,61,2020-04-30 14:34:55.909960+00:00,3,21,The reverse proxy features in Repository 1 can enhance the proxy feature provided by Repository 2.
+106,20,62,2020-04-30 14:42:08.338441+00:00,4,2,A combination of this projects can produce a fully fletched analyzing tool to detect possible vulnerabilities of computer systems.
+107,20,63,2020-04-30 14:44:43.769886+00:00,1,0,Readme of Repository 2 is too poorly maintained to get any information regarding synergy from this files.
+108,20,64,2020-04-30 14:47:52.651659+00:00,3,21,The maps of Repository 1 can be offered inside Repository 2 as a starting point.
+109,20,65,2020-04-30 14:50:41.630280+00:00,1,0,No relation found
+110,20,66,2020-04-30 14:54:40.099343+00:00,4,12,Use the features of repository 2 to creater a accurate forecasting on how long the attached battery pack will last under the measured outside conditions.
+111,20,67,2020-04-30 14:58:36.196985+00:00,2,2,Both Repositorys implement a similar function.
+112,20,68,2020-04-30 15:00:39.428960+00:00,1,0,Totally different.
+113,20,69,2020-04-30 15:02:24.298345+00:00,2,2,Similar functionalty
+114,20,70,2020-04-30 15:03:59.853485+00:00,4,2,A combination of this repositorys may create a more complete introduction into machine learning with tensorflow and deep learning
+115,20,71,2020-04-30 15:06:00.327566+00:00,3,21,Include Repository 1 into Repository 2 to enable statistical computations in the machine learning library of repository 2. This may enhance the processing of the results.
+116,20,72,2020-04-30 15:07:26.004088+00:00,1,0,
+117,20,73,2020-04-30 15:08:53.526892+00:00,1,0,
+118,20,74,2020-04-30 15:10:22.990470+00:00,1,0,
+119,20,75,2020-04-30 15:12:28.093550+00:00,1,0,
+120,20,76,2020-04-30 15:15:05.814241+00:00,3,21,Repository 1 can be used inside of repository 2 to make it more lightweight
+121,20,77,2020-04-30 15:17:33.140945+00:00,4,21,Use both repositorys to create a platform to safely parse handwritten documents and generate domain knowledge about the contents.
+122,20,78,2020-04-30 15:21:01.661263+00:00,3,12,Use Repository 1 to provide a more easy introduction into deeplearning topics
+123,20,79,2020-04-30 15:23:42.822258+00:00,3,12,I think every project ever can benefit of Repository 2
+124,20,80,2020-04-30 15:27:28.424680+00:00,2,12,"A language localization is missing in repository 1. Otherwise both projects do the same for a different topic (Python, UNIX)"
+125,20,81,2020-04-30 15:29:35.515100+00:00,1,0,
+126,20,82,2020-04-30 15:31:26.930316+00:00,3,12,Use Repository 2 as a connector to store data in MongoDB
+127,20,83,2020-04-30 15:36:36.974375+00:00,3,12,Use the high performance techniques for scanned documents in higher quality
+128,20,84,2020-04-30 15:37:48.317608+00:00,1,0,
+129,20,85,2020-04-30 15:40:20.930969+00:00,3,12,RBM Support can be added to Repo 1
+130,20,86,2020-04-30 15:42:01.499782+00:00,3,12,Add protocol parser to Application Server described in Repo 1
+131,20,87,2020-04-30 15:43:32.712283+00:00,4,2,Create a combined introduction to DeepLearning and GAN in one Project
+132,20,88,2020-04-30 15:47:26.068776+00:00,4,2,Use both repos to create a enhanced framework to build interactive frontend applications using python
+133,20,89,2020-04-30 15:49:29.037174+00:00,1,0,
+134,20,90,2020-04-30 15:53:02.859384+00:00,3,12,Add google maps support additionally to STL Files
+135,12,1,2020-05-01 08:14:52.242210+00:00,1,0,"image generation from text vs. testing wireless security.
+operate on different type of information: natural language vs. bit streams"
+136,12,2,2020-05-01 08:25:00.647728+00:00,1,0,visualize program code vs. maintain certificates
+137,12,3,2020-05-01 08:30:53.980447+00:00,1,0,image scraping for some websites vs. word embedding provider
+138,12,4,2020-05-01 08:46:06.059340+00:00,2,21,"transfer terminal output to other terminals/machines vs. user friendly remote code processing
+somehow similar, but the first is good for self hosed services, while the last is just a better front end for a application that is hosted by amazon"
+139,12,5,2020-05-01 08:49:47.663573+00:00,1,0,web font vs. generating corpora for different languages using the web
+140,12,6,2020-05-01 09:06:19.245489+00:00,4,21,"project 1 is already build into project 2, because Absolute Series Scanner is project 1"
+141,12,7,2020-05-01 09:08:43.211273+00:00,1,0,create corpora for different languages using the web vs. visualization of the Greenhouse Gas
+142,12,8,2020-05-01 09:25:29.726941+00:00,4,12,"project 1 visualizes genomic data, and project 2 provides data for T-cell receptor sequences of known antigen specificity
+i don't know if this is actually genomic data, so there might be no synergy "
+143,12,9,2020-05-01 09:33:35.176347+00:00,2,2,"project 1 makes reading inconsistent pdfs easier, while project 2 formats python code to a predefined format and makes reading a python project consistent. Maybe one could integrate both tools to clean a messy python project with a messy documentation in pdf format, but i think if such a project exits no one would use it anyway."
+144,12,10,2020-05-01 09:38:32.671192+00:00,1,0,python package mirror vs. modding of some nintendo 3ds games
+145,12,11,2020-05-01 09:45:39.741278+00:00,4,12,"one can easily build a python django project using both projects.
+project 1 can define rules based on information added by project 2"
+146,12,12,2020-05-01 09:54:30.424386+00:00,1,0,"hosting python applications on heroku vs. fit topic model to massiv data
+one could use the first project to host the second on heroku as a webservice to apply topic modeling "
+147,12,13,2020-05-01 10:01:35.265686+00:00,1,0,better manage amazon cluster vs. natural language model for question answering
+148,12,14,2020-05-01 10:12:21.679336+00:00,1,0,"project 1 finds somatic fusion genes and project 2 finds interactions between dna and proteins
+it could be beneficial but i don't enough about this level of biology to understand how "
+149,12,15,2020-05-01 10:21:40.156372+00:00,4,21,"project 1 implements zigbee protocol as a python library to manage Internet of Things devices.
+project 2 is a python library for managing IoT devices produced by Xiaomi, it uses its own protocol (miIO protocol), maybe it could use zigbee but only if these devices support zigbee"
+150,12,16,2020-05-01 12:22:40.986648+00:00,1,0,project 2 is mentioned in project 1
+151,12,17,2020-05-01 12:39:35.369992+00:00,1,0,"both projects use a tree structure for their task
+project 1 is a pattern matcher, while project 2 is a interval matcher
+i can't think of any useful combination"
+152,12,18,2020-05-01 12:48:54.468885+00:00,3,12,one could write a extension for project 1 which would allow to update the documentation on commit/push with one click on the server hosted using project 2
+153,12,19,2020-05-01 13:00:16.983479+00:00,3,12,project 1 can mention project 2 since project 1 is a survey
+154,12,20,2020-05-01 13:03:23.940275+00:00,1,0,analysis of program code vs. bitcoin transactions 
+155,12,21,2020-05-01 13:12:26.558042+00:00,1,0,"virtual machine vs. trigger events based on music
+maybe one could use project 1 to isolate project 2 from ones own system"
+156,12,22,2020-05-01 13:15:40.203806+00:00,1,0,different fields: information theory vs. software testing
+170,13,36,2020-05-01 15:30:36.844227+00:00,1,0,"project 1 benchmarks elasticsearch and project 2 adds a slack interface to python
+project 1 is deprecated and unknown to work
+they could be combined into a new project, but not by using only these 2 projects"
+157,12,23,2020-05-01 13:21:40.447120+00:00,2,21,project 2 is a older version of project 1
+158,12,24,2020-05-01 13:29:35.101982+00:00,3,21,project 2 could use data structures provided by project 1 to implement a second data structure which is persistent
+159,12,25,2020-05-01 13:35:43.271563+00:00,1,0,communication api for african people vs. stock market trends for 150 years
+160,12,26,2020-05-01 13:37:08.904952+00:00,1,0,duplicate
+161,12,27,2020-05-01 13:54:08.089930+00:00,4,12,project 1 could generate locations that could be loaded by the plugin developed by project 2 for visualization
+162,12,28,2020-05-01 14:15:31.671590+00:00,3,12,project 1 could use project 2 for async jobs if it needs them
+163,12,29,2020-05-01 14:19:45.767692+00:00,1,0,it could be beneficial but i don't enough about this level of biology to understand how
+164,12,30,2020-05-01 14:21:00.098352+00:00,1,0,duplicate of 16
+165,13,31,2020-05-01 14:31:48.840251+00:00,4,2,both have different ideas to simplify and extend the git merge and rebase functionality
+166,13,32,2020-05-01 14:45:56.124513+00:00,1,0,"project 1 makes unit tests more readable, while project 2 matches expressions
+project 2 can not benefit by project 1
+project 1 can not benefit by project 2, because it would not add extra functionality but extra dependencies"
+167,13,33,2020-05-01 14:58:06.916156+00:00,2,12,"project 2 contains multilingual datasets that could be used by project 1, but they are not embeddings and it is unknown if they are state of the art"
+168,13,34,2020-05-01 15:04:01.173353+00:00,4,12,"project 1 is made for raspberry pi but one could imagine using project 2 to send the color commands to the pi or use an external device and send the commands via zigbee, since project 1 has some problems with the power supply "
+169,13,35,2020-05-01 15:26:53.961536+00:00,2,2,"since they are both django extensions, they can easily be used together in a project, but since project 1 is focused on modelless views and project 2 is focused on extending models with information, they seem not to be directly beneficial for each other "
+171,13,37,2020-05-01 16:19:01.984360+00:00,1,0,download tool vs. graph generating model
+172,13,38,2020-05-01 16:20:57.575518+00:00,1,0,"project 1 could be benefiting of project 2, if it needs persistent data
+structures, but i don't think it does"
+173,13,39,2020-05-01 16:22:38.018744+00:00,1,0,"both plot something, but it seems not to interact"
+174,13,40,2020-05-01 16:29:39.090335+00:00,1,0,benchmark code vs. a empty python project structure for reference
+175,13,41,2020-05-01 16:33:53.532134+00:00,1,0,bidirectional communication browser server vs. sublime plugin for visualization
+176,13,42,2020-05-01 16:38:26.852546+00:00,1,0,schema definition for constraint checking vs. neural network for relation extraction
+177,13,43,2020-05-01 16:40:29.600019+00:00,1,0,working with 3D objects vs. 2D trend data
+178,13,44,2020-05-01 16:43:19.128051+00:00,4,2,both have some machine learning tutorials
+179,13,45,2020-05-01 16:44:46.445102+00:00,1,0,scraper vs. better readable django orm
+180,13,46,2020-05-01 16:51:43.971508+00:00,3,12,project 1 can use project 2 to implement some operations
+181,13,47,2020-05-01 16:53:53.639070+00:00,1,0,neural network vs. web development async database query
+182,13,48,2020-05-01 16:58:18.655610+00:00,1,0,programming problems to practice problem solving vs. color manipulation
+183,13,49,2020-05-01 17:05:35.387043+00:00,1,0,
+184,13,50,2020-05-01 17:06:03.445382+00:00,2,12,project 1 is older version of project 2
+185,13,51,2020-05-01 17:10:51.729012+00:00,1,0,business intelligence vs film creation 
+186,13,52,2020-05-01 17:12:32.554520+00:00,2,12,"repository 2 is a Turkish stemmer, repository 1 contains a turkish dataset"
+187,13,53,2020-05-01 17:15:25.919635+00:00,1,0,custom linux configuration vs. vietnamese nlp toolkit
+188,13,54,2020-05-01 17:18:55.354591+00:00,1,0,rpm packaging assistance vs. a library similar to os.path and pathlib
+189,13,55,2020-05-01 17:32:58.662478+00:00,3,12,repository 2 checks for safety of neural networks but repository 1 is a harmless neural network
+190,13,56,2020-05-01 17:35:15.605116+00:00,1,0,vscode c++ debuger vs. align blender objects easy
+191,13,57,2020-05-01 17:39:33.955062+00:00,2,21,project 1 could be included in project 2 as an example
+192,13,58,2020-05-01 17:44:03.960658+00:00,4,21,"repository 2 provides some machine learning tutorials for python and repository 1 provides some algorithms
+repository one can be integrated to give further examples"
+193,13,59,2020-05-01 17:51:09.370289+00:00,4,12,"project 2 can power raspberry pi by batteries and project 1 handles some IoT devices
+when the raspberry pi uses batteries and they are low, the raspberry pi could notify some critical devices to stand by. it could also notify the owner to change batteries.
+this could be useful, to avoid problems when the main power source is suddenly not available"
+194,13,60,2020-05-01 17:57:07.582880+00:00,1,0,project to control knitting vs. project to benchmark functions
+195,14,61,2020-05-01 18:19:20.973792+00:00,1,0,i don't know what project 2 does
+196,14,62,2020-05-01 18:23:31.711278+00:00,4,2,"repository 1 checks security of wireless networks, while repository 2 checks if the machine is already infected
+they can be combined to create a more powerful security tool"
+197,14,63,2020-05-01 18:25:42.163013+00:00,1,0,machine orchestration vs. neural network
+198,14,64,2020-05-01 18:29:55.044657+00:00,4,2,"one can create animations of historical events in the minecraft universe
+project 1 creates the terrain and project 2 assists the creation of animation "
+199,14,65,2020-05-01 18:32:29.924180+00:00,1,0,communication with bootloader vs. led driver
+200,14,66,2020-05-01 18:34:33.157050+00:00,1,0,"measure battery power vs. measure humidity, air quality and temperature"
+202,14,68,2020-05-01 18:53:55.702038+00:00,1,0,"first project prettifies html, while the second project gathers code coverage"
+203,14,69,2020-05-01 22:34:05.405302+00:00,3,12,"repository 1 implements its own worker, while repository 2 uses redis
+repository 2 has a functionality that avoids running duplicated tasks"
+201,14,67,2020-05-01 18:49:54.777884+00:00,3,12,"repository 1 implements its own worker, while repository 2 uses redis
+repository 2 can be used as alternative for Amazon SQS for the queue and redis for the workers"
+204,14,70,2020-05-01 22:40:38.318734+00:00,4,21,"repository 2 is general tutorial of deep learning, while repository 1 is a concrete tutorial based on tensorflow
+repository 1 could be integrated into repository 2 to provide real examples"
+205,14,71,2020-05-01 22:49:34.696597+00:00,2,2,both implement some machine learning algorithms which the other doesn't have
+206,14,72,2020-05-01 22:56:48.579657+00:00,4,21,"project 2 is for educational purpose and has some animations to visualize algorithms, while project 1 provides easy color management in python
+maybe project 2 could use project 1 to make the creation of animations easier"
+207,14,73,2020-05-01 23:08:58.040530+00:00,4,2,"project 1 is for processing tasks while serving a flask web app, while project 2 is for scraping linked in job offers
+they could be combined to display certain job offers in ones own web app"
+208,14,74,2020-05-01 23:18:26.237620+00:00,1,0,check account security vs. parsing java code
+209,14,75,2020-05-01 23:25:28.375660+00:00,1,0,software for aiding science vs. software for password cracking
+210,14,76,2020-05-01 23:27:03.298926+00:00,1,0,fast web server vs. project to automate knitting
+211,14,77,2020-05-01 23:33:59.334448+00:00,4,2,"one could use both projects to create an app that finds text based on a certain domain and writing style
+it could be used to find texts that fit to an author, because authors often use the same words over again and have one writing style"
+212,14,78,2020-05-01 23:36:06.130432+00:00,4,21,"project 1 provides deep learning tutorials based on tensor flow, while project 2 provides deep learning resources"
+213,14,79,2020-05-01 23:37:32.657251+00:00,1,0,enhance anime with metadata vs. extend git merge
+214,14,80,2020-05-01 23:40:54.078138+00:00,2,2,"project 1 is a resource for python projects, while project 2 is a resource for linux software
+both are basically a resource of sofware and could be used to build a combined resource"
+216,14,82,2020-05-02 00:01:08.597343+00:00,1,0,text summarization vs. web app for social network
+217,14,83,2020-05-02 00:05:05.171156+00:00,1,0,digitize paper vs. face recognition
+219,14,85,2020-05-02 00:09:32.781253+00:00,1,0,maybe project 2 can use GAN provided by project 1
+220,14,86,2020-05-02 00:13:11.196331+00:00,1,0,still don't know what project 2 does but it doesn't seem like it can be used with project 1
+221,14,87,2020-05-02 00:17:00.576562+00:00,4,12,"project 1 gives overview over deep learing, while project 2 gives especially overview over GANs
+project 2 could be used to update project 1 "
+222,14,88,2020-05-02 00:20:39.339611+00:00,3,12,"visualization from python using javascript with d3.js vs. react components
+maybe project 1 could use project 2 to provide further functionality for the d3.js charts"
+215,14,81,2020-05-01 23:53:30.694405+00:00,1,0,fast cluster shutdown vs. car tire information
+223,14,89,2020-05-02 00:21:14.676610+00:00,1,0,make pdf files more readable vs. create rpm packages
+224,14,90,2020-05-02 00:21:55.326271+00:00,1,0,3d data vs. coordinates
+218,14,84,2020-05-02 00:06:54.631592+00:00,1,0,data manipulation vs. ui elements in website
+225,19,65,2020-05-04 06:17:11.595534+00:00,1,0,"A Python tool to read/write ESP32 Chips on the other side apa102-pi, a program to control LEDs on a Raspberry Pi.Perhaps you can write LEDs command with esptool.py in chips. "
+226,19,66,2020-05-04 06:27:15.104935+00:00,3,21,"If you use sensors with battery, PiCheckVoltage would be a way to control Voltage Status."
+227,19,67,2020-05-04 06:46:04.884111+00:00,2,2,Both Repository gives you a task queue solution.
+228,19,68,2020-05-04 07:11:41.215049+00:00,1,0,"Codecov Global Python Uploader combines your repository, is a nice tool BeautifulSoup to work with HTML/XML"
+229,19,69,2020-05-04 07:13:32.087872+00:00,2,2,Both Repositories give you a task queue.
+230,19,70,2020-05-04 07:18:15.749109+00:00,2,21,"The ""Deep Learning - All You Need to Know""-Notebook can use TensorFlow as base system."
+231,19,71,2020-05-04 07:25:55.449537+00:00,3,2,If you combine these Repositories you can create a powerful library for statistic and machine learning.
+232,19,72,2020-05-04 07:40:48.947079+00:00,1,0,Colour would be nice if you polt your data.
+233,19,73,2020-05-04 07:52:03.200472+00:00,1,0,Flask handles and scales large background processes and LinkedIn Jobs Scaper looks for jobs on your account. But LinkedIn Jobs Scaper is not a tool to handle big data on background processes.
+234,19,74,2020-05-04 08:06:20.357177+00:00,3,12,"If there some configurations in Java, Javalang could be a good choice to check java code with python"
+235,19,75,2020-05-04 08:18:00.673629+00:00,1,0,"BioStar Central ist a web-based tool to produce better software with an installation process and minimal dependencies, and PACK is just a script to crack passwords."
+236,19,76,2020-05-04 08:24:07.019444+00:00,3,21,Knitlib can use Sanic to build a highly performant HTTP server.
+237,19,77,2020-05-04 08:27:54.322416+00:00,3,12,You expand Identifying Different Writing Styles with bayzee to chance the classification algorithm from K-Means to Naive Bayes.
+238,19,78,2020-05-04 08:30:53.757077+00:00,3,21,They can use TensorFlow as their Basesystem.
+239,19,79,2020-05-04 08:35:49.735382+00:00,1,0,Their is no synergy! Plex is a media server and git cascade and git forward-merge is a tool to merge git-branches without checking them out.
+240,19,80,2020-05-04 08:47:04.439462+00:00,3,21, Add Awesome Python Applications to Awesome Linux Software
+241,10,1,2020-05-04 08:48:58.350193+00:00,1,0,"Maybe at some point in the future something like Repo 1 could be used to generate visualizations for the wireless scanning in Repo 2. But this is far too speculative to consider it a real synergy, in my view."
+242,10,2,2020-05-04 08:54:02.315776+00:00,1,0,"I cannot see most of the Readme for Repository 1 in the annotation UI. From what I can gather: Repo1 generates control flow graphs for Java code, Repo2 is implemented in Python. "
+243,10,3,2020-05-04 08:55:53.445985+00:00,1,0,
+244,10,4,2020-05-04 09:01:15.239898+00:00,3,12,Repo2 could potentially provide an alternative backend service for Repo1
+245,10,5,2020-05-04 09:02:16.144067+00:00,1,0,
+246,19,81,2020-05-04 09:02:52.984477+00:00,1,0,TPMS monitors automotive tire pressure and panic_bcast  is a network security feature which prevents a cold-boot attack
+247,10,6,2020-05-04 09:04:13.102585+00:00,2,2,Both projects appear to do essentially the same thing.
+248,10,7,2020-05-04 09:04:55.789268+00:00,1,0,
+249,10,8,2020-05-04 09:10:02.227800+00:00,1,0,"I don't know enough computational biology to be sure, but maybe the genome database in Repo 2 can benefit from the visualization tool in Repo 1? The fact that they use different technology stacks (Python vs Groovy) kind of speaks against this, though."
+250,10,9,2020-05-04 09:10:13.545975+00:00,1,0,
+251,10,10,2020-05-04 09:11:32.576018+00:00,1,0,
+252,10,11,2020-05-04 09:15:46.958635+00:00,4,2,"I'd prefer to select 'None' for Synergy direction, but it is greyed out: I don't think the two Repos can directly benefit from each other, because they have clear, non-overlapping responsibilities. However, a new, third project could easily use both as dependencies, and benefit from their combination."
+253,19,82,2020-05-04 09:16:00.739034+00:00,1,0,i see no synergy between Repository 1 and Repository 2. 
+254,19,83,2020-05-04 09:42:36.211918+00:00,3,12,"So Paperless is a monitoring tool for scanned paper. My first thought was, okay is there a synergy? And, yes I have an Idea.
+Every Document can be classified as e.g. bill, whitepaper, or just as a letter. But all of these documents have a structure and you know, without reading, this paper is a bill or a letter. So what if we use the logic from Face Recognition, depending on the used algorithm, eg. PCA to reduce the paper to his representative principal component. And classify the scanned paper in its Classification. Now the paperless would be able to know what for a paper was scanned and sort it."
+255,19,84,2020-05-04 09:46:09.741292+00:00,1,0,django-menu creates navigation menus for websites. fuddly is a framework for modeling and plot data.
+256,19,85,2020-05-04 09:54:51.757001+00:00,2,12,Add RBM to tensorflow-generative-model-collections
+257,19,86,2020-05-04 09:57:13.511981+00:00,1,0, Cpppo a parser who parses commands into binary and send it via TCP/IP to an e.g L35E Maschine.
+258,19,87,2020-05-04 09:59:24.222510+00:00,2,2,"Deep learning at the finest on both repositories, both repositories benefit from each other."
+259,19,88,2020-05-04 10:08:09.884507+00:00,4,2,"There are some Repositories who combine Recat and NVD3, so this would be a good idea for python, too."
+260,19,89,2020-05-04 10:14:35.726001+00:00,1,0,"Autospec helps you to create RPM´s and pdfcropmargins crops PDF´s, there is no synergy."
+261,19,90,2020-05-04 10:25:52.695234+00:00,1,0,I cant see that there is a synergy
+262,11,31,2020-05-04 23:00:30.441491+00:00,3,2,"Since both the repositories discuss about merging in Git, the features are interlinked between each other. But the details given in both repositiories are not the same but there are relations between them."
+263,11,32,2020-05-04 23:10:19.968600+00:00,1,0,Both repos doesn't relate between each other. The first repo talks about a matcher that is used to match some objects and used for writing test cases. But the second repo discusses about pattern matching library which doesn't relate with the previous one. 
+264,11,33,2020-05-04 23:21:07.113075+00:00,3,21,"Both the repositories briefs about words (language). The first repo deals with multilingual word embeddings library and ways to evaluate them but the second repo only explains about the three datasets (3 languages) and ways to process them, So repo 2 can be used with repo 1 to extent its functionalities"
+265,11,34,2020-05-04 23:26:29.030045+00:00,1,0,"Both repositories are not related with each other. Even both repos covers about embedded systems, there is n relationship between them. The first repo talks about LED strands and the second repo talks about Zigbee home automation. So there couldn't be any synergy between them"
+266,11,35,2020-05-04 23:32:49.556135+00:00,2,2,Both explain about Django but only some features like model (for example) can be related .
+267,10,12,2020-05-05 10:03:22.977289+00:00,1,0,
+268,10,13,2020-05-05 10:06:55.736421+00:00,4,2,I might be possible to use the code from Repo 1 to train the QA models from Repo 2 on an amazon EMR cluster.
+270,10,15,2020-05-05 10:14:42.578076+00:00,4,2,"Both are Python libraries for home automation, and the set of supported devices appears to be non-overlapping, so potentially a new project could use both as subsystems to support all of the devices involved."
+271,10,16,2020-05-05 10:19:06.096590+00:00,2,12,"Repo 1 is a collection of links to various software. Repo 2 is some kind of ROM database for a gaming emulation software called RetroArch. Since RetroArch itself is already included in the list in Repo1, it might make sense to include Repo 2 in this list, as well."
+272,10,17,2020-05-05 10:44:38.674520+00:00,1,0,"Repository 1 probably uses some sort of tree data structure under the hood, but the one from Repo2 is for numerical keys only, and wouldn't apply here."
+273,10,18,2020-05-05 11:20:37.829251+00:00,1,0,
+274,10,19,2020-05-05 11:22:06.483410+00:00,3,12,Repo1 seems to implement various text classification algorithms. Repo2 has a particular word embedding implementation that could be used in classification. Both are implemented in Python.
+275,10,20,2020-05-05 11:24:26.813600+00:00,1,0,Repo1 generates control flow graphs for java programs. Repo2 is implemented in Python.
+276,10,21,2020-05-05 11:27:52.661868+00:00,1,0,"Weak potential for synergy, but really no common features: Repo1 is a generic system for orchestrating virtualized development environments that could potentially be used to develop Repo2, as well. "
+277,10,22,2020-05-05 12:28:16.272691+00:00,1,0,"Both are Python libraries, but I see no potential synergy beyond a third project using both as dependencies by coincidence."
+278,10,23,2020-05-05 12:30:05.265046+00:00,2,12,"Both repos contain course materials for the exact same data science course with different dates. Repo1 is a newer iteration of the course, so presumably it would have been built upon repo2."
+279,10,24,2020-05-05 12:31:55.084975+00:00,3,21,"Both repositories implement fundamental data structures. The ones in repo1 appear to be more low-level, and could perhaps be used as a foundation for repo2. At the same time, a third project could easily benefit from using both as dependencies."
+280,10,25,2020-05-05 13:17:03.570850+00:00,1,0,"Repo1 is an API for a Kenyan mobile network operator, Repo2 is a collection of historical stock market data."
+281,10,26,2020-05-05 14:10:57.406173+00:00,1,0,"as far as I can tell, these two are identical except for the title. I suspect this is spam created in order to sell some product or service."
+282,10,27,2020-05-05 14:18:22.512590+00:00,3,21,Repo 2 is a plugin for a geographic information system. Repo 1 is a python library to generate simulated GPS data. Repo1 could conceivably be incorporated into Repo2 for testing purposes.
+283,10,28,2020-05-05 14:29:05.313363+00:00,3,12,"Repo1 is a tool for managing jupyter notebooks across multiple nodes; jupyter uses the tornado web server, and the zmq message queue. Repo2 is a library for accessing a different message queue, Celery, from a tornado web server. If Repo1 wanted to replace zmq with Celery for some reason, they could use Repo2 to achieve that."
+284,11,36,2020-05-05 17:04:11.117116+00:00,1,0,Both repos are not related in any aspects. First repo talks about some benchamarking tools and other repo is for slack API. So there is no synergy
+285,11,37,2020-05-05 23:17:00.188880+00:00,1,0,There is no relation between both the repositories because the first repo explains about downloading stuff and the other repo discuss about Graph RNN
+286,11,38,2020-05-05 23:22:05.225041+00:00,3,12,"Since the second repo explains about some data structures, it can be used for pattern matching especially for computation by matchpy in an efficient way. "
+287,11,39,2020-05-06 00:20:50.748709+00:00,4,21,"Both repositories are related to each other. So, there is a strong synergy between them. Both are used for plotting and since the second repository deals with some sensor data and there is a need to plot it, the plotting library in first repo can be used to plot the data in a new dimension efficiently. "
+288,11,40,2020-05-06 00:30:10.641318+00:00,2,2,Both repositories look similar but there is little difference and little synergy between them.
+289,11,41,2020-05-06 00:50:08.916686+00:00,1,0,There is no synergy between the 2 repositories as they are not related to each other because the first repo is a socket library and another repo is a rendering tool for diagram. So synergy is not found between them at any perspective. 
+290,11,42,2020-05-06 00:59:58.822092+00:00,2,21,"There is some synergy between two repositories but they arent very closely related with each other. Since Pyschema can be used for data, it will be benefitted for processing NLP data used in repo 2.  "
+291,11,43,2020-05-06 01:06:06.729755+00:00,3,2,Synergy exists between both repositories but their complete functionalities are not clear. Both repositories are used for plotting but they can collectively contribute to new functionality or representation.
+292,11,44,2020-05-06 02:28:44.606078+00:00,2,2,The first repo gives a detailed tutorial about ML and Neural networks with Python libraries. The second repo only gives an overview and implementation about machine learning algorithms. There can be little synergy between them
+293,11,45,2020-05-06 11:42:44.732460+00:00,4,2,The first repository talks about Scrapy which is a data extraction library and other repository talks about Django querying. So both can be combined to develop some efficient tool for web scraping. So there is a strong synergy between them. 
+294,11,46,2020-05-06 11:53:13.206495+00:00,3,21,"Since both, the repositories explain about 3D models or objects, they can be related to each other. From the first repo, it is clear that MCprep can be used with blender and can be saved as .STL files which can further be modified and worked using NumPy STL that was discussed in repo 2 and vice versa. But it is not clear that blender supports NumPy. But there exists synergy so that both features in repos can be combined to develop a new tool or technique in the future."
+295,11,47,2020-05-06 11:58:58.729446+00:00,2,12,"Repository 2 handles mongo databases and the data from the databases can be used in the neural networks that were mentioned in repository 1. Since not all features are clear, there are chances for weak synergy between them. "
+296,11,48,2020-05-06 12:16:54.037318+00:00,1,0,No synergy exists between both repositories as the first repo consists of solkutions to problems and second repo consists of color representation python library.
+297,11,49,2020-05-06 12:26:01.468160+00:00,2,2,"It is really unclear to prove that there exists strong synergy but it can be given that it has little amount of synergy between them as the first repo discusses about hosting python or other web apps, so the neural networks deployed in python can also be hosted, but it is pretty unclear."
+298,11,50,2020-05-06 13:15:41.144214+00:00,4,2,There exists a strong synergy between both repositories  but the difference is that there are some features that are uncommon between them.
+300,10,30,2020-05-06 15:15:29.013847+00:00,2,21,already saw (a duplicate of?) this pair in #16 in opposite order; annotated accordingly
+299,10,29,2020-05-06 15:13:17.372320+00:00,3,2,"very low confidence due to lack of subject area expertise, but: repo1 appears to be a database of gene sequences, repo2 some sort of software for gene sequencing. There could be some possibility for synergy?"
+269,10,14,2020-05-05 10:11:15.836978+00:00,3,2,very low confidence for this annotation due to lack of subject area expertise: both Repositories do some kind of computational biology / gene sequence analysis
+301,11,51,2020-05-06 15:27:41.724467+00:00,2,2,There can weak synergy as both deals with data but it is unclear. An optimal selection cannot be made.
+302,11,52,2020-05-06 15:32:19.812349+00:00,4,21,"The first repository consists of dataset containing three languages, one among them is Turkish, so since the second repo consists of stemmer algorithm for Turkish language, it will be highly efficient to use Turkish dataset from the first repository (wikireading) . There is strong synergy between them."
+303,11,53,2020-05-06 15:38:45.103074+00:00,2,21,There is a small synergy between both the repositories. The first repo explains about the installation of GNU/Linux systems whereas the second repo discusses about NLP toolkit that is GNU/Linux based. So this toolkit can be configured in the Linux systems configured using linux-salted mentioned in the first repo. 
+304,11,54,2020-05-06 15:46:16.528666+00:00,3,12,"There is a medium level of synergy between both repositories. Using unipath from the second repo, it will ease the creation of rpm package mentioned in the first repo."
+305,11,55,2020-05-06 16:07:57.717273+00:00,4,2,Both repositories are closely related to each other. The first repo explains about RBM which is a neural network. It can be verified in terms of robustness using ERAN from the second repo. So it's a good practice to verify a neural network. Thus there is a strong synergy between both repositories.
+306,11,56,2020-05-06 17:01:25.366618+00:00,1,0,There seems to no synergy between the repositories as the information given is very abstract. 
+307,11,57,2020-05-06 17:15:36.622016+00:00,4,2,"As both the repository deals with text data as part of NLP, it is pretty evident that many features can be combined to form a new dimension or feature. The syngergy is high o strong. "
+308,11,58,2020-05-06 17:19:53.832636+00:00,3,2,There is a medium level synergy between two repositories. They both provide information about machine learning and deep learning while the first repo is focussed on providing general tutorials on machine learning whereas the second repo provides more detailed and wide explanantion about deep learning and many popular libraries.  
+309,11,59,2020-05-06 17:46:06.268400+00:00,3,2,Both repositories are related to each other. The first repo talks about an interface library to be used with Xiaomi devices called as python-miio. The second repo consists of voltage checker python library. Features from both repos can be combined for better functionality. The voltage checker can be used and combined with python-miio to check the battery status and more added functionality. There exists synergy between them.
+310,11,60,2020-05-06 17:53:32.720407+00:00,3,2,The first repository contains information on knitlib which is a library for knitting machines. The second repository contains pytest library for benchmarks code. The features from both repositories can be combined for new functionality (i.e.) The pytest library from second repo can be used along with knitlib to benchmark python code written for knitting machines. There exists a synergy between them.

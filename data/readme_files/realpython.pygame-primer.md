@@ -1,0 +1,1 @@
+blog post > https://realpython.com/blog/python/pygame-a-primer/

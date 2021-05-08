@@ -1,0 +1,15 @@
+Wsadminlib is a file which simplifies configuration of IBM WebSphere AppServer using python scripting.
+
+What is wsadminlib?...
+	http://wsadminlib.blogspot.com/2010/03/blog-creation.html
+
+How to use it...
+	http://wsadminlib.blogspot.com/2010/03/how-to-use-wsadminlibpy.html
+
+General blog...
+	http://wsadminlib.blogspot.com/
+
+More IBM repos here... 
+	http://ibm.github.io/
+	
+	

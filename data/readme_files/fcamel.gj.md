@@ -1,0 +1,219 @@
+# gj #
+
+Usually we have two needs when reading codes:
+
+* Find out the definition (or declaration) of `foo`. `foo` may be a class, method or a function.
+* Find out all places which use `foo`.
+
+`grep -R foo .` is good for the second case since it won't miss any direct use. However, `grep` is not
+fast enough for large projects and it's somewhat inconvent for the first case. This is why [gj] is created.
+
+The goals of [gj] from high to low are:
+
+* Low miss: it's bad to miss a caller when you refactor codes or want to find out who modifies the target variable.
+* Speed: list possible targets instantly.
+* Less reading time: interactively narrow down to your target.
+
+[gj] is used in two ways:
+
+* Run as an interactive command line tool to edit and filter candidate files interactively.
+* As a plugin in [Vim] to find files which contain the word under the cursor.
+
+## Demo ##
+
+![Example usage of gj](https://raw.github.com/fcamel/screenshots/master/gj/gj_demo.gif)
+
+1. `gj -i`: build the index.
+2. `gj main argc argv`: find out the main functions. C/C++ main() typically has these three keywords.
+3. `example`: keep files with the substring *example* in the file name.
+4. `!test`: remove files with the substring *test* in the file name.
+5. `1`: Use [Vim] to edit the first file and jump to the corresponding line.
+6. Exit [Vim] and back to [gj].
+7. `2`: Edit the second one.
+8. In [Vim], `<leader>G` under *DoLogin*: list possible definitions or declarations of *DoLogin*.
+9. In [Vim], `<leader>g` under *DoLogin*: list all callers, definitions or declarations of *DoLogin*.
+
+## Installation ##
+
+### Prerequisite ###
+
+[gj] is based on [ID Utils] which finds patterns instantly. Install [ID Utils] by:
+
+```bash
+$ sudo apt-get install id-utils  # Debian / Ubuntu
+$ sudo port install idutils      # OS X with MacPorts
+$ brew install idutils           # OS X with Homebrew
+```
+
+### Vim Plugin + Command Line Tool ###
+
+#### Vundle ####
+
+Install [gj.vim] via [Vundle]. Please refer documents in [Vundle]: a highly recommended tool to manage [Vim] plugins.
+
+#### Vim plugins ####
+
+Add these to your `.vimrc`:
+
+```vim
+Plugin 'fcamel/gj'
+```
+
+Then launch `vim` and run `:VundleInstall`.
+
+In order to use the command line tool, add this to your `$HOME/.bashrc` (or other shell config file):
+
+```bash
+export PATH="$PATH:$HOME/.vim/bundle/gj/bin"
+```
+
+### (optional) Command Line Tool Only ###
+
+```bash
+$ cd /path/to/somewhere/
+$ git clone https://github.com/fcamel/gj
+$ export PATH="$PATH:`pwd`/bin"
+```
+
+## Usage ##
+
+### Command Line Tool ###
+
+```bash
+$ cd /path/to/project/
+$ gj -i                 # Build the index.
+$ gj PATTERN            # Find out PATTERN
+$ gj -p BASE PATTERN    # Find out PATTERN which under BASE folder
+```
+
+Then follow the instructions in terminal. 
+
+If you don't use [Vim] as your main editor, please set the environment variable `EDITOR` to your favorite editor.
+However, currently only [Vim] supports "jump to the line" and "highlight the searched pattern" when opening
+the file.
+
+Other useful arguments:
+
+```bash
+$ gj -s LITERAL         # Show all symbols which contain LITERAL (case-insensitive)
+$ gj -sv LITERAL        # Same as above, but also display file lists for each symbol.
+$ gj -d PATTERN         # Try to find out PATTERN's definition or declaration. Work for C++ or Python. 
+```
+
+Examples of using [gj] for special scenarios:
+
+```bash
+$ gj TYPE typedef       # Find the declaration of typedef TYPE.
+$ gj CLASS public       # Find all classes which inherit from CLASS
+$ gj CLASS METHOD       # Find definition of a C++ method.
+$ gj FILE include       # Find all files which include FILE.
+                        # You can enter "1-N" to select all files. This is useful to
+                        # refactor include paths after moving a header to a different path.
+```
+* forget method name: gj -s SUBSTRING
+* need to filter by file name: gj -s -v SUBSTRING
+* find assignment via "=": gj SYMBOL = 
+
+#### Advanced Feature ####
+
+[gj] supports two kinds of indexes. 
+* text index: Index the source codes via [ID Utils].
+* binary index: Index the debug info of the ELF binaries ([DWARF]) via `readelf` and `nm`.
+
+To use the binary index, you need to build the binaries with the debug info (e.g., `g++ -g`) and tell [gj] the path of binaries:
+
+```bash
+$ gj -c                  # Generate the config file ".gjconfig"
+( edit .giconfig and fill the paths of binaries. )
+
+$ gj -i                  # Now gj index both the source codes and the binaries.
+```
+
+Then use `gj -D SYMBOL` to search the definitions. The result is much faster and more accurately. For example, to find `main`, we need the keywords "argc" and "argv" to filter the candidates previously. Now just `gj -D main` is enough.
+
+**NOTE** I only test this feature on Linux and haven't tested it on other platforms.
+
+
+### Vim Plugin ###
+
+In Normal mode:
+
+* `<leader>g`: Find all matched files of the word under the cursor.
+* `<leader>G`: Find all possible declarations or definitions of the word under the cursor.
+* `<leader>d`: Find all possible definitions of the word under the cursor based on the index of [DWARF].
+
+Then use the following commands in quickfix window:
+
+* `o` : open file (same as enter).
+* `go`: open file (but maintain focus in quickfix window). 
+* `t` : open in a new tab.
+* `T` : open in new tab silently.
+* `h` : open in horizontal split.
+* `H` : open in horizontal split silently.
+* `v` : open in vertical split.
+* `gv`: open in vertical split silently.
+* `q` : close the quickfix window.
+
+## Troubleshooting ##
+
+### How to index the shared library on Ubuntu? ###
+
+Take libgdbm as an example. Here is how:
+```
+$ apt-get source libgdbm3:amd64  # Get the source codes.
+$ cd gdbm-1.8.3/
+$ ./configure && make
+$ make --dry-run install | grep libtool  # Find out how to build the shared library.
+/bin/bash ./libtool --mode=install /usr/bin/install -c -T libgdbm.la /usr/local/lib/libgdbm.la
+$ mkdir local
+$ /bin/bash ./libtool --mode=install /usr/bin/install -c -T libgdbm.la `pwd`/local/libgdbm.la  # Create libgdbm.so in local/.
+(...)
+$ /bin/bash ./libtool --mode=install /usr/bin/install -c -T libgdbm_compat.la `pwd`/local/libgdbm_compat.la
+(...)
+$ gj_index.py local/*.so
+Index local/libgdbm_compat.so ...
+Index local/libgdbm.so ...
+Save the index to gj.index
+$ gj -D gdbm_close -b
+./gdbmclose.c:42:0:gdbm_close
+$ gj -D dbm_delete -b
+./dbmdelete.c:45:0:dbm_delete
+```
+
+### How to use gj on Fedora? ###
+
+[Fedora doesn't support id-utils](https://lists.fedoraproject.org/pipermail/devel/2012-May/166914.html). You need to build it by yourself and copy the required binary to your `PATH`.
+
+**Step 1**: Fetch the code and generate build files.
+```
+$ wget https://ftp.gnu.org/gnu/idutils/idutils-4.6.tar.xz
+$ tar xf idutils-4.6.tar.xz
+$ cd idutils-4.6/
+$ ./configure
+$ make
+```
+**Step 2**: Patch `lib/stdio.h` to make the build pass: 
+
+Comment out all `_GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");` in `lib/stdio.h`. The file is generated by `make` and `id-utils` doesn't use `gets()` anywhere.
+
+**Step 3**: Continue the build and copy `mkid` and `gid` to some directory in your `PATH`.
+```
+$ make
+$ mkdir -p ~/bin
+$ cp src/mkid src/gid ~/bin/
+```
+
+## Todo ##
+
+* Improve `-d`'s speed.
+* Improve `-d`'s accuracy.
+* Support Emacs as well.
+* Add more screenshots.
+
+
+[gj]:https://github.com/fcamel/gj
+[gj.vim]:https://github.com/fcamel/gj/blob/master/plugin/gj.vim
+[Vim]:http://www.vim.org/
+[ID Utils]:http://www.gnu.org/software/idutils/
+[Vundle]:http://github.com/gmarik/vundle
+[DWARF]:https://en.wikipedia.org/wiki/DWARF

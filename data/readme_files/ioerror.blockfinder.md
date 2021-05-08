@@ -1,0 +1,44 @@
+blockfinder by Jacob Appelbaum <jacob@appelbaum.net>
+
+"All that Blockfinder does is allow you to identify, contact and potentially
+hack into every computer network in the world." - Rolling Stone, August 2010 [0]
+
+Contrary to popular media claims, blockfinder is a simple text based console
+tool that returns a list of netblocks for a given country.  It does this by
+fetching the following lists of allocations:
+
+    ftp://ftp.arin.net/pub/stats/arin/delegated-arin-latest
+    ftp://ftp.ripe.net/ripe/stats/delegated-ripencc-latest
+    ftp://ftp.afrinic.net/pub/stats/afrinic/delegated-afrinic-latest
+    ftp://ftp.apnic.net/pub/stats/apnic/delegated-apnic-latest
+    ftp://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest
+
+The list of ISO codes is ISO 3166-1 as found here:
+
+    http://www.iso.org/iso/home/standards/country_codes/country_names_and_code_elements_txt-temp.htm
+    http://en.wikipedia.org/wiki/ISO_3166-1
+
+blockfinder has two methods of operation:
+
+    Update the lists of network object allocations
+    Returning a list of all netblocks (or asn, etc) for a given country
+
+To use blockfinder, first create or update the cache:
+
+    blockfinder -i
+
+Once you have a proper cache, search for the desired resource in the country
+of your choice:
+
+    ./blockfinder -v -t mm
+
+Additionally, to filter results for a specific protocol you can use a selector:
+
+    ./blockfinder -v -t mm:ipv4 
+
+
+On Windows (in cmd, PowerShell and 4nt) one may find blockfinder.bat useful:
+
+  blockfinder.bat
+
+[0] http://www.rollingstone.com/culture/news/17389/192242

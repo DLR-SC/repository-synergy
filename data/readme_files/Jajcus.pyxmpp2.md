@@ -1,0 +1,162 @@
+============================================
+PyXMPP2 – Python Jabber/XMPP implementation
+============================================
+
+Note: This code is far from being complete and is not actively developed.
+Though, it has proven to be useful for some, anyway.
+
+Introduction
+------------
+
+The goal of this project is to rewrite PyXMPP so:
+
+- it doesn't rely on libxml2 any more
+- it uses most current Python APIs
+- its API is cleaned up
+- etc.
+
+Requirements
+------------
+
+- Python 2.7 or 3.3 or newer
+- `DNSPython`_  Limited functionality is available without it.
+
+.. _DNSPython: http://www.dnspython.org/
+
+Python 3 support
+----------------
+
+The source code is written for Python 2.7, but automated facilities are
+available for conversion to 3.3. For this to work you need the `Distribute`_
+package installed for Python 3.
+
+.. _Distribute: http://pypi.python.org/pypi/distribute
+
+To build or install the py3k package run the ``setup.py`` script using the
+Python 3 interpreter::
+
+    python3 setup.py build
+    python3 setup.py install
+
+You may want to give ``--build-base py3-build`` option to build if you are
+also building Python 2 version.
+
+If you have the GNU Make utility (every Linux distribution provides it) you
+may use ``make`` command instead::
+
+    make py3-build
+    make py3-install
+
+Those will also make the Python3 version of the examples in the py3-examples
+directory if you are using a GIT checkout (source distributions already
+provide those).
+
+As for now (2011-07-02) there is no official `DNSPython`_ release for
+Python 3, you may want to check their `experimental branch`_.
+
+.. _experimental branch: http://www.mail-archive.com/dnspython-dev@howl.play-bow.org/msg00008.html
+
+Features
+--------
+
+- `RFC 6120`_ – XMPP Core:
+
+  - SRV record look-up (requires `DNSPython`_)
+
+  - XML streams:
+
+    - both initiator and receiver side
+    - 'xml:lang' attribute handling on the root element
+    - 'version' attribute handling, including special '0.9' (no version) case
+    - full XML namespace support
+    - does not generate and does not accept XML that is not well-formed
+    - stream errors
+
+  - StartTLS:
+
+    - initiator (client) side implemented
+    - cerificate verification:
+
+      - 'Subject Alt Name' / 'DNS' field
+      - 'Subject' / 'Common Name' field
+
+  - SASL:
+
+    - both initiator and receiver side
+    - supported mechanisms:
+
+      - PLAIN
+      - DIGEST-MD5
+      - SCRAM-SHA-1
+      - SCRAM-SHA-1-PLUS (python 3.3, not released yet, needed)
+
+  - Resource binding
+
+  - XMPP Stanzas:
+
+    - ``<iq/>``, ``<presence/>`` and ``<message/>`` stanzas
+    - stanza errors
+
+- `RFC 6121`_ – XMPP Instant Messaging and Presence:
+
+  - Roster Management:
+
+    - versioned rosters
+    - subscription pre-approval flag
+
+- `RFC 6122`_ – XMPP Address Format:
+
+  - Full unicode support
+  - 'Nameprep' strinprep profile for the local part (for validation and
+    comparision)
+  - 'Resourceprep' for the resource part
+  - 'IDNA' encoding for the domain part
+
+- XMPP Extensions:
+
+  - `XEP-0092`_ – Software Version
+
+- I/O framework:
+
+  - asynchronous main event loop
+  - alternative implementation with threads
+  - non-blocking connect
+  - non-blocking TLS handshake
+
+- stanza processing framework:
+
+  - chained handlers for ``<message/>`` and ``<presence/>`` stanzas,
+    matched by stanza type and, optionally, payload class (derivied from
+    namespace-qualified element name)
+
+  - handlers for ``<iq type='get'/>`` and ``<iq type='set'/>`` stanzas,
+    matched by payload element name (namespace-qualified)
+
+  - handlers for ``<iq type='result'/>`` and ``<iq type='error'/>``
+    registered for outbound ``<iq type='get'/>`` and ``<iq type='set'/>``
+    stanzas and matched by the stanza id
+
+A bit more formal list of the XMPP features implemented is available in the
+wiki: https://github.com/Jajcus/pyxmpp2/wiki/Conformance-declaration
+
+.. _RFC 6120: http://xmpp.org/rfcs/rfc6120.html
+.. _RFC 6121: http://xmpp.org/rfcs/rfc6121.html
+.. _RFC 6122: http://xmpp.org/rfcs/rfc6122.html
+.. _XEP-0092: http://xmpp.org/extensions/xep-0092.html
+
+Links
+-----
+
+- Project GitHub page: https://github.com/Jajcus/pyxmpp2/
+- API reference: http://jajcus.github.io/pyxmpp2/api/
+
+Contact
+-------
+
+- Author: Jacek Konieczny <jajcus@jajcus.net>, <xmpp:jajcus@jajcus.net>
+
+- Mailing lists:
+
+  - general discussion: `pyxmpp@lists.jajcus.net`_
+
+.. _pyxmpp@lists.jajcus.net: http://lists.jajcus.net/mailman/listinfo/pyxmpp

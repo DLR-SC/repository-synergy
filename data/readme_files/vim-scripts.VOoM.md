@@ -1,0 +1,77 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2657
+
+VOoM (Vim Outliner of Markups) is a plugin for Vim that emulates a two-pane text outliner.
+
+Screenshots and an animation: http://vim-voom.github.io/
+Bug reports, questions, requests: https://github.com/vim-voom/vim-voom.github.com/issues
+GitHub mirror: https://github.com/vim-voom/VOoM
+Supplementary Materials: https://github.com/vim-voom/VOoM_extras
+
+VOoM was originally written to work with start fold markers with level numbers, that is {{{1, {{{2, {{{3, etc. This is the most versatile outline markup -- it is suitable for organizing all kinds of files, including source code, and it allows features not possible with other markups. See :help fold-marker. (Markers are specified by option 'foldmarker'. End fold markers with levels, }}}3, }}}2, etc. are not supported.)
+
+VOoM can currently handle a variety of markup formats that have headlines and support an outline structure, including popular lightweight markup languages. (Headlines are also called headings, headers, section headers, titles.) The following markup modes are available:
+        fmr, fmr1, fmr2  -- start fold markers with levels (variations of the default mode);
+        wiki  -- MediaWiki, headlines are surrounded by '=';
+        vimwiki  -- vimwiki plugin (vimscript #2226);
+        viki  -- Viki/Deplate plugin (vimscript #861);
+        dokuwiki  -- DokuWiki;
+        org  -- Emacs Org-mode;
+        rest  -- reStructuredText section titles;
+        markdown  -- Markdown headers, both Setext-style and Atx-style;
+        pandoc    -- Pandoc Markdown;
+        hashes  -- #, ##, ###, etc. (Atx-style headers, a subset of Markdown format);
+        txt2tags  -- txt2tags titles and numbered titles;
+        asciidoc  -- AsciiDoc document and section titles, both styles;
+        latex  -- LaTeX sectioning and some other commands;
+        taskpaper  -- TaskPaper (vimscript #2027);
+        thevimoutliner  -- The Vim Outliner plugin (vimscript #517);
+        vimoutliner  -- VimOutliner plugin (vimscript #3515);
+        cwiki  -- vimscript #2176;
+        inverseAtx -- inverse Atx-style headers;
+        html  -- HTML heading tags, single line only;
+        python  -- Python code browser, blocks between 'class' and 'def' are also nodes.
+
+NOTE: By default, the command :Voom without an argument creates the outline from lines with start fold markers with level numbers. To outline another format, an argument specifying the desired markup mode must be provided.
+For a Markdown file:
+        :Voom markdown
+For LaTeX file:
+        :Voom latex
+For an Orgmode file:
+        :Voom org
+And so on. There is argument completion -- type ":Voom " and press <Tab> or <C-d>.
+The name of the current markup mode, if any, is noted on the first line of the Tree buffer. You can also run the command :Voominfo [all] to see detailed information.
+
+
+FEATURES AND BENEFITS:
+        - VOoM is a full-featured outliner. It has a complete set of commands for outline structure manipulation: move nodes up/down, promote/demote, copy/cut/paste, insert new node, sort in various ways, randomize.
+        - There are many one-character mappings for efficient outline navigation which can be combined into complex commands, e.g., "UVD" selects all siblings of the current node.
+        - VOoM is mice-friendly: outlines can be browsed with a mouse.
+        - An outline can be searched (:Voomgrep). Boolean AND/NOT searches (OR is provided by Vim's \|). Hierarchical searches (tag inheritance).
+        - An outline is updated automagically on entering the corresponding Tree buffer.
+        - VOoM works with Vim buffers, not with files on disk as ctags-based tools.
+        - VOoM is not a 'filetype' plugin. It has (almost) no side effects on the buffer being outlined.
+        - VOoM is not tied to a particular outline format. It works with many popular light-weight markup languages.
+        - VOoM is fast and efficient enough to handle MB-sized files with >1000 headlines. (Some markup modes are slower than other.)
+
+
+There are four main Ex commands: Voom, Voomhelp, Voomexec, Voomlog.
+
+:Voom [MarkupMode]
+        Scan the current buffer for headlines and construct an outline from them. By default, headlines are lines with a start fold marker (specified by option 'foldmarker') followed by a number. To work with headlines in a different format, an argument specifying the desired markup mode must be provided, see above. There is argument completion for installed markup modes: type ":Voom " and press <Tab> or <C-d>.
+        The outline is displayed in a special buffer in a separate window which emulates the tree pane of a two-pane outliner. Such buffers are referred to as Tree buffers. The current buffer becomes a Body buffer. Each Tree line is associated with a region (node) of the corresponding source buffer (Body). Nodes can be navigated and manipulated in the Tree: moved up/down, promoted/demoted, copied/cut/pasted, sorted, etc.
+
+:Voomhelp
+        Open help file voom.txt as an outline in a new tabpage.
+
+:Voomexec [vim|py]
+        Execute the contents of the current node or fold as a Vim script or Python script. This is useful for testing code snippets and for organizing short scripts by segregating them into nodes or folds. This command can be used independently of the outlining functionality provided by the command :Voom.
+
+:Voomlog
+        Create scratch buffer __PyLog__ and redirect Python's sys.stdout and sys.stderr to it. This is useful when developing Python scripts and when scripting Vim with Python. This feature is completely independent from the rest of the plugin.
+
+NOTE: Commands Voomexec and Voomlog attempt to emulate similar features of Leo outlining editor. A Python file with code snippets organized via fold markers, plus the command :Voomexec, plus the PyLog buffer is an alternative to Python's interactive interpreter.
+
+
+For a quick introduction to VOoM outlining, see section "Quick Start" in the help file (|voom-quickstart|).
+For a concise list of all VOoM commands (cheat sheet), see section "ALL MAPPINGS & COMMANDS" in the help file (|voom-map|).
+

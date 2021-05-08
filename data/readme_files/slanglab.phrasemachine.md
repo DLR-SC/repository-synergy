@@ -1,0 +1,151 @@
+Have you ever tried using word counts to analyze a collection of documents?
+Lots of important concepts get missed, since they don't appear as single words
+(unigrams).  For example, the words "social" and "security" don't fully
+represent the concept "social security"; the words "New" and "York" don't
+really represent "New York." Phrasemachine identifies these sort of multiword
+phrases automatically so you can use them in text analysis. Here's how it works in Python.
+
+    $ import phrasemachine
+    $ text = "Barack Obama supports expanding social security."
+    $ phrasemachine.get_phrases(text)
+    {'num_tokens': 7, 'counts': Counter({'barack obama': 1, 'social security': 1})}
+
+For more details, see our paper: [Bag of What?](http://brenocon.com/handler2016phrases.pdf), or [this slidedeck](http://brenocon.com/oconnor_textasdata2016.pdf).  By default, this package uses the (FilterFSA, k=8, SimpleNP) method from the paper.
+
+The software only supports English texts.
+
+#### Installation
+
+We have implementations in both R and Python.  For Python, install with:
+
+    pip install phrasemachine
+
+For the R version, [see the R vignette here](R/phrasemachine/vignettes/getting_started_with_phrasemachine.Rmd).
+
+#### Near duplicates and merging
+
+You might notice that phrasemachine sometimes extracts nested phrases. For instance,  
+
+    text = "The Omnibus Crime Control and Safe Streets Act of 1968 was signed into law by President Lyndon B. Johnson"
+    phrasemachine.get_phrases(text)
+
+extracts 'lyndon b. johnson' and 'b. johnson'.
+
+This is intentional: phrasemachine tries to extract **all** phrases that might be useful for downstream analysis. In some cases, you might want to try to merge similar, overlapping or cofererent terms. For strategies, see section 4.3.1 from our paper: [Bag of What?](http://brenocon.com/handler2016phrases.pdf)
+
+#### Can I use `phrasemachine` with spaCy or CoreNLP? 
+ 
+Yep! By default, phrasemachine depends on [NLTK](http://www.nltk.org/) for part-of-speech
+tagging. But it can also be used with the higher accuracy
+[spaCy](https://spacy.io/) tagger, or with Stanford [CoreNLP](https://stanfordnlp.github.io/CoreNLP/). Here is an example with spaCy:
+
+    $ import spacy
+    $ import phrasemachine
+    $ nlp = spacy.load("en_core_web_sm")
+    $ doc = nlp(u"Barack Obama supports expanding social security.")
+    $ tokens = [token.text for token in doc]
+    $ pos = [token.pos_ for token in doc]
+    $ print(tokens)
+    ['Barack', 'Obama', 'supports', 'expanding', 'social', 'security', '.']
+    $ print(pos)
+    ['PROPN', 'PROPN', 'VERB', 'VERB', 'ADJ', 'NOUN', 'PUNCT']
+    $ phrasemachine.get_phrases(tokens=tokens, postags=pos)
+    {'num_tokens': 7, 'counts': Counter({'barack obama': 1, 'social security': 1})}
+
+Notice that when you use a custom POS tagger from some other
+package, you pass a list of tokens and a list of POS tags to the get_phrases method
+in [phrasemachine.py](py/phrasemachine/phrasemachine.py).  If you are familiar
+and comfortable with POS tagging yourself, all you really need is the
+[phrasemachine.py](py/phrasemachine/phrasemachine.py) file.
+
+#### What if I want the token indexes for phrases? 
+
+Phrasemachine supports this.
+
+```
+$ tokens = ['Barack', 'Obama', 'supports', 'expanding', 'social', 'security', '.']
+$ pos = ['PROPN', 'PROPN', 'VERB', 'VERB', 'ADJ', 'NOUN', 'PUNCT']
+$ phrasemachine.get_phrases(tokens=tokens, postags=pos, output="token_spans")
+{'num_tokens': 7, 'token_spans': [(0, 2), (4, 6)]}
+$ out = phrasemachine.get_phrases(tokens=tokens, postags=pos, output="token_spans")
+$ start,end = out['token_spans'].pop()
+$ tokens[start:end]
+['social', 'security']
+```
+
+
+#### What tagsets are supported? 
+
+Different POS tagging schemes use different tagsets (i.e. possible POS tags). The python version of `phrasemachine` supports the following:
+
+- [Universal POS tags](https://universaldependencies.org/u/pos/)
+- [Penn Treebank tags](https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html)
+- The [Ark Coarse Tagset](http://www.cs.cmu.edu/~ark/TweetNLP/)
+
+
+#### How is `phrasemachine` different from named-entity recognition? 
+
+If you've spent some time working with text data you've probably heard of named
+entities. Maybe you’ve used tools like StanfordCoreNLP or AlchemyAPI to extract
+entities from text. Phrasemachine is related but a little different.  Instead
+of trying to just label, for example, people or places, it tries to extract all
+of the important **noun phrases** from documents.  This includes names, but also
+more general concepts like "defense spending," "estate tax," or "car mechanic."
+The downside is it doesn't place phrases into categories like "New
+York"=LOCATION.
+
+If you are familiar with the idea of a "bag of words" you can think of
+phrasemachine as finding extra phrases to place into this bag.  For example, it
+can be used to find frequently occurring terms in political debates.
+Mathematically, its output can be used to augment the term-document matrix.
+
+Phrasemachine is an elaboration of work from Justeston and Katz (1995);
+they found that many technical terms such as ''gaussian distribution'' matched
+a regular expression over the part of speech tags for a sequence of words.
+Researchers have found the approach useful in
+[many](http://vis.stanford.edu/papers/keyphrases)
+[different](http://personalpages.manchester.ac.uk/staff/sophia.ananiadou/ijodl2000.pdf)
+[contexts](http://www.aclweb.org/anthology/Q14-1029).
+
+phrasemachine was written by Abram Handler, Matthew J. Denny, and Brendan O'Connor.
+
+More details can be found in [this paper](http://brenocon.com/handler2016phrases.pdf): "Bag of What? Simple Noun Phrase Extraction for Text Analysis," Handler, Denny, Wallach, and O'Connor, 2016; or, [this slidedeck](http://brenocon.com/oconnor_textasdata2016.pdf).
+
+
+#### In the future, we will add discussion of the following:
+- twitter pos tagger
+- normalization (Barack Obama => barack obama)
+- tokenization
+- not just noun phrases (noun-verb? adj phrases, any coordinations, verb groups?)
+- custom regex
+
+
+#### Repository structure
+
+ * `py/`: the Python implementation
+ * `R/`: the R implementation
+ * `fst/`: the OpenFST/pyfst implementation, which is not packaged for use by
+ default.  It does the FullNP grammar as specified in the paper.  Since the
+ dependencies can be difficult to run, the main implementations above use what
+ the paper calls SimpleNP grammar with the FilterFSA matching method.
+
+#### Comparing R and Python implementations
+
+The R and Python implementations of POS tagging currently rely on different libraries, and will thus give different results. However, given the same input POS tag sequences, both implementations will return identical results. To verify that this is the case, simply navigate to the `R/comparison_tests` directory, then run the `run_POS_to_spans_test.sh` shell script. This can be done using the following lines of code (assuming you are in the top level directory for this repo).
+
+	cd R/comparison_tests
+	bash run_POS_to_spans_test.sh
+
+The script will produce a set of phrase spans using both implementations and print out any mismatches between the two sets of results.
+
+#### Projects using phrasemachine
+
+Email abram.handler@gmail.com to add your project to the list!
+
+- Adam Lauretig at Ohio State uses phrasemachine for his project, ''Do Casualties Change the Conversation?''.
+- A team at Northeastern uses phrasemachine to explore the [ideology of journalists](https://drive.google.com/file/d/0B8CcT_0LwJ8QVnJMR1QzcGNuTkk/view). 
+
+#### Acknowledgment
+
+"phrasemachine" is named after [Michael Heilman](http://www.cs.cmu.edu/~mheilman/)'s
+"phraseomatic" script.

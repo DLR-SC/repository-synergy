@@ -1,0 +1,94 @@
+Turku Event Extraction System 2.3
+=================================
+
+Turku Event Extraction System (TEES) is a free and open source natural language
+processing system developed for the extraction of events and relations from 
+biomedical text. It is written mostly in Python, and should work in generic 
+Unix/Linux environments.
+
+TEES has been evaluated in the following Shared Tasks and models for predicting
+their targets are included in this release.
+
+ * BioNLP 2009 Shared Task (1st place)
+ * BioNLP 2011 Shared Task (1st place in 4/8 tasks, only system to participate
+    in all tasks)
+ * DDI 2011 (Drug-drug interactions) Challenge (4th place, at 96% of the 
+    performance of the best system)
+ * DDI 2013 (Drug-drug interactions) Challenge (2nd and 3rd place)
+ * BioNLP 2013 Shared Task (1st place in 4/8 tasks)
+
+For more information and documentation, see the TEES wiki at 
+https://github.com/jbjorne/TEES/wiki
+
+
+Quick Start
+===========
+
+To get started with TEES, download the latest stable release from
+http://sourceforge.net/projects/tees/files or the current 
+version from the repository. After downloading, TEES can optionally be installed 
+as a module using "setup.py", but this is not required, and the program can 
+simply be used from the unpacked archive.
+
+However, before using TEES the external programs and datafiles need to be 
+installed using the interactive configuration tool "configure.py", located
+in the package root directory:
+
+python configure.py
+
+After TEES had been configured, you can predict events or relations for text 
+with classify.py. Using the "-m" (model) switch, you can select one of the 
+pre-computed models (listed at https://github.com/jbjorne/TEES/wiki/Classifying). 
+For example, to run TEES prediction for the BioNLP 2011 GENIA development 
+corpus, use:
+
+python classify.py -m GE11-devel -i GE11-devel -o OUTSTEM
+ 
+where "OUTSTEM" is the output file stem. To try TEES on unannotated text, you 
+can give "classify.py" a PubMed citation id, such as:
+
+python classify.py -m GE11 -i 9668063 -o OUTSTEM
+  
+TEES will download the abstract and use the
+integrated preprocessing pipeline to split the text into sentences (with the
+GENIA Sentence Splitter, http://www.nactem.ac.uk/y-matsu/geniass/), detect
+named entities (with BANNER, http://banner.sourceforge.net/) and parse the
+text (with BLLIP Parser using David McClosky's biomodel, 
+http://bllip.cs.brown.edu/resources.shtml and Stanford format
+conversion, http://nlp.stanford.edu/software/lex-parser.shtml), after which
+events are detected from the document.
+
+Using TEES
+==========
+
+The primary user interface to TEES consists of the following programs
+
+ * classify.py - Predict events/relations with an existing model
+ * train.py - Train a new event/relation extraction model
+ * batch.py - Batch process large sets of input files
+ * configure.py - Install TEES models, external tools and corpora
+ * visualize.py - Visualize the events and parse for a sentence
+ * preprocess.py - Format conversion, sentence splitting, parsing, NER etc.
+ 
+For information on using these programs, see the TEES wiki at 
+https://github.com/jbjorne/TEES/wiki
+
+TEES also has a number of modules that can be used as standalone executables,
+including the wrappers for external tools such as parsers. A list of these
+executables can be found at https://github.com/jbjorne/TEES/wiki/Programs
+
+Citing
+======
+
+If you use TEES in a publication, please cite the following book:
+
+@phdthesis{bjorne2014biomedical,
+  title={Biomedical Event Extraction with Machine Learning},
+  author={Bj{\"o}rne, Jari},
+  year={2014},
+  school={University of Turku},
+  publisher={TUCS Dissertations}
+}
+
+TEES uses several external components, for more information on their licensing
+terms please see https://github.com/jbjorne/TEES/wiki/Licenses.

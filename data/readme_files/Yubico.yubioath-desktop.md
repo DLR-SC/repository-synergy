@@ -1,0 +1,39 @@
+== Yubico Authenticator
+Cross-platform application for generating Open Authentication (OATH) time-based TOTP and event-based HOTP one-time password codes, with the help of a YubiKey that protects the shared secrets.
+
+image:screenshot.png[]
+
+=== Features
+* Add a credential by scanning a QR code on the screen
+* Favorite your most used credentials for easy access
+* Keep your secret seeds safe by storing them on a YubiKey
+* Require a touch on YubiKey to generate the code
+* Protect your credentials with a device password
+* Connect an external smart card reader and use the YubiKey over NFC
+
+=== Supported devices
+Usage of this software requires a compatible YubiKey device. Yubico
+Authenticator is capable of provisioning and using both slot-based credentials
+(compatible with any YubiKey that supports OTP) as well as the more powerful
+standalone OATH functionality found on the NEO, YubiKey 4 and YubiKey 5 series.
+To use the standalone OATH functionality your YubiKey must have the CCID mode enabled,
+which can be done by using the https://developers.yubico.com/yubikey-manager-qt/[YubiKey Manager].
+
+=== Installation
+
+Downloads for all supported operating systems are available https://developers.yubico.com/yubioath-desktop/Releases/[here].
+
+
+=== System Requirements
+The following operating systems are considered supported. The application may still run on other platforms.
+
+* Windows 7 or later
+* macOS High Sierra 10.13 or later
+* Ubuntu 16.04 LTS or later
+
+On Linux systems, make sure the `pcscd` service is installed and running.
+
+
+=== CLI
+
+Looking for a command line option? That is available in https://developers.yubico.com/yubikey-manager/[YubiKey Manager CLI] with the `ykman oath` commands.

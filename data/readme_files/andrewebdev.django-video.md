@@ -1,0 +1,41 @@
+h1. django-video Documentation
+
+© Copyright 2009 Andre Engelbrecht. All Rights Reserved.
+
+h2. LICENSE
+
+Please see the LICENCE file for information on the License
+
+h2. django-video Use Cases
+
+Before you decide to use django-video on any commercial project, please be aware that this application only does some cms management and conversion into flv, and is perfect to personal sites, small company sites that want to incorporate video etc. Note however that if you want to build a large community driven site, of which video will be a big part, you will have to do a little more research into commercial, high volume streaming media. You may have to modify this app to hook into those solutions.
+
+h2. Requirements
+
+* The full version of FFMPEG, if you want to use @python manage.py encode@, to encode a video clip from avi, mov or ogv to flv. Note that, some operating systems, like Ubuntu, by default does not have the full version of FFMPEG installed, so make sure to install the full version.
+* django-oembed
+* django-tagging (optional but recommended if you want to use it's tagging features.)
+
+h2. Installing
+
+# Check that videostream folder is on your python path
+# Next, add the videostream and oembed apps to your django INSTALLED_APPS
+@'videostream',@
+@'oembed,@
+# If you're using the app directories template loader (enabled by default) django should find the default templates on its own.
+# Override the default settings if you want to.
+See the settings below.
+# Add the urls
+@( r'^videos/', include( 'videostream.urls' ) ),@
+
+h2. Settings you may want to override.
+
+@VIDEOSTREAM_SIZE = "320x240"@
+
+@VIDEOSTREAM_THUMBNAIL_SIZE = "320x240"@
+
+@VIDEOSTREAM_FEED_TITLE = "Video Feeds"@
+
+@VIDEOSTREAM_FEED_DESCRIPTION = "Video Feeds"@
+
+@VIDEOSTREAM_FEED_LINK = ""@

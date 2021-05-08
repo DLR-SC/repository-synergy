@@ -1,0 +1,41 @@
+// vim: ft=asciidoc
+
+= openshift-tools repository
+:toc: macro
+:toc-title:
+
+toc::[]
+
+
+== Description
+
+This repository contains scripts used by OpenShift Operations for various
+purposes, many of which do not pertain directly to management of OpenShift
+itself.
+
+Code here may be under heavy development, and none of these scripts are
+officially supported by Red Hat.  Use at your own risk.
+
+The repository layout is designed for use with http://github.com/dgoodwin/tito/[Tito]
+
+See our https://github.com/openshift/openshift-tools/blob/prod/docs/build.adoc[Build instructions] for more information.
+
+== Builds
+RPMs from this repo can be found on our https://copr.fedoraproject.org/coprs/g/OpenShiftOnlineOps/openshift-tools/[Copr Project].
+
+== Directory Structure
+
+----
+openshift-tools
+├── docker                Docker image definitions used by OpenShift Operations
+├── docs                  Documentation specific to this repository
+├── jenkins               Build bot checks for our PRs
+├── openshift             Contains OpenShift v3 specific files (templates, pod defs, etc)
+├── openshift_tools       Python openshift_tools module
+├── pmdas                 Custom PCP PMDAs
+├── README.adoc           This file
+├── rel-eng               Files used by tito (rpm build tool)
+├── scripts               Scripts that usually use the openshift_tools module
+├── support-tools         Support related tooling (will be moved into the above structure in the future)
+└── web                   Python Web based tooling (e.g. the Zagg REST API)
+----

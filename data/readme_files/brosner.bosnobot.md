@@ -1,0 +1,147 @@
+
+========
+bosnobot
+========
+
+bosnobot is a Python IRC bot. It will pretty much do whatever you want it to
+do. It is very easy to get up and running.
+
+Dependancies
+============
+
+Like most software there will be some dependancy. bosnobot currently depends
+on:
+
+    * Python 2.5.1 (Could work with pre-2.5, but not tested.)
+    * Twisted 2.4 (Twisted 2.4 ships with OS X 10.5, but I have also tested
+      with 8.0.1.)
+
+If you decide you want to use the built-in ``DatabaseLogger`` you will also
+need:
+
+    * SQLAlchemy 0.4.6
+
+Installation
+=============
+
+To get bosnobot on your local machine you will need to grab a clone of it
+from GitHub. To do this you should have git installed on your system. Once
+that is installed you can execute::
+
+    git clone git://github.com/brosner/bosnobot.git
+
+This will create a new directory in your current working directory named
+``bosnobot``. You will then need to get bosnobot on your PYTHONPATH::
+
+    export PYTHONPATH=`pwd`/bosnobot
+
+You are all set! In the future there will be a provided setup.py file that can
+take care doing the installation into site-packages.
+
+Configuration
+=============
+
+To get up and running you will need to have a settings file read to rock and
+roll. This file is a Python script that sets up the configuration for the bot.
+
+Currently this file must be set in an environment variable,
+``BOSNOBOT_SETTINGS_MODULE``. Create the file ``bosnobot_settings.py``
+somewhere on your ``PYTHONPATH``. Then you can execute::
+    
+    export BOSNOBOT_SETTINGS_MODULE=bosnobot_settings
+
+BOT_NICKNAME
+------------
+
+Default: ``''`` (Empty string)
+
+This will be the nickname that the bot uses to identify itself on the IRC
+server.
+
+BOT_PASSWORD
+------------
+
+Default: ``''`` (Empty string)
+
+The password associated with the nickname to verify your identity on the IRC
+server.
+
+BOT_CHANNELS
+------------
+
+Default: ``()`` (Empty tuple)
+
+A tuple of channels the bot should auto-join once connected to the server.
+This could potentionally look like::
+
+    BOT_CHANNELS = (
+        "#django",
+    )
+
+BOT_IRC_SERVER
+--------------
+
+Default: ``''`` (Empty string)
+
+The IRC server the bot should establish a connection.
+
+BOT_IRC_PORT
+------------
+
+Default: ``6667``
+
+The port on which ``BOT_IRC_SERVER`` listens on.
+
+MESSAGE_HANDLERS
+----------------
+
+Default: ``()`` (Empty tuple)
+
+A tuple of strings that indicate the Python class to use as a message handler.
+bosnobot comes with a few message handlers. Let's say you want to log all
+messages to a database, this would look like::
+
+    MESSAGE_HANDLERS = (
+        "bosnobot.message_handlers.database_logger.DatabaseLogger",
+    )
+
+Be sure to read the message handler documentation before running with scissors
+with this setting. TODO: write that documentation.
+
+Running the Bot
+===============
+
+To run the bot based on its installation above you can simply execute::
+
+    python -m bosnobot
+
+Need more help?
+===============
+
+You can give our mailing list a shot on Google Groups
+(http://groups.google.com/group/bosnobot) or via e-mail
+bosnobot@googlegroups.com.
+
+We also hang out on freenode (irc.freenode.org) on the #bosnobot channel.
+
+Contributing
+============
+
+When others contribute to an open-source project it makes it that much better.
+If you are so inclined to assist me with making bosnobot even better here is
+the run down you need to know.
+
+bosnobot is hosted on GitHub. This makes it painless to fork bosnobot for
+development. Grab an account or just click the fork icon on GitHub. This will
+create a copy of the repo for your own use. Then hop into a shell and type::
+
+    git clone git@github.com:<your-user-name>/bosnobot.git
+
+This will give you a local copy. Be sure to read git documentation if you have
+never used it before. I am really telling you what GitHub is doing, so go check
+out their documentation for more information.
+
+Once you have done some super awesome patch you will want to notify brosner
+that your work is done. You can issue a pull request. This documentation has
+no idea how that works on GitHub. Maybe your first patch is fixing this file.
+

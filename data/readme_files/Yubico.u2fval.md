@@ -1,0 +1,88 @@
+== Yubico U2F Validation Server ==
+The Yubico U2F Validation Server (u2fval) is a server that provides U2F
+registration and authentication through a simple JSON based REST API.
+
+=== Installation
+u2flib-server is installable by one of three means
+
+1. via `pip`
+2. via `git`
+3. via `python setup.py`
+
+==== Installation via `pip` ====
+
+Run
+
+  pip install u2fval
+
+Alternatively, you can run:
+
+  pip install u2fval-<version>.tar.gz
+
+Where the `.tar.gz` file is a source release of the project.
+
+==== Installation via `git` ====
+
+* Run these commands to check out the source code:
+
+  git clone https://github.com/Yubico/u2fval.git
+  cd u2fval
+  git submodule init
+  git submodule update
+
+* Build a source release tar ball by running:
+
+  python setup.py sdist
+
+The resulting build will be created in the `dist/` subdirectory.
+
+==== Installation via `python setup.py` ====
+
+You can install directly from the git checkout by running the following
+commands:
+
+  python setup.py install
+
+=== Configuration ===
+Configuration is kept in `/etc/yubico/u2fval/u2fval.conf`, see the default
+configuration file for more information (also available in the conf/ directory
+of any source release of this project).
+
+The Yubico U2F Validation Server needs an SQL database to work. Optionally a
+memcached server can be used to store transient data which doesn't need to be
+persisted to the database (if not available this data will be stored in the
+main database). The default configuration uses an in-memory SQLite3 database
+which you probably want to change to something like
+
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////etc/yubico/u2fval/u2fval.db'
+
+Once the configuration file has been configured with database
+credentials, the database can be initialized by running the following command:
+
+  u2fval db init
+
+=== API Clients ===
+To be able to use the server, a client needs to be created. This is done using
+the `u2fval client create` command. For example:
+
+  u2fval client create example \
+    https://example.com/app-identity.json \
+    https://example.com
+
+See `u2fval client create --help` for more information.
+
+==== Authenticating Clients ====
+Each client request needs to be authenticated. This authentication is outside
+of the scope of the Yubico U2F Validation Server and can be handled by the
+webserver or some WSGI middleware. Once authenticated, the client name should
+be set in the REMOTE_USER server environment variable.
+
+=== Deployment ===
+The server can either be run standalone (intended for testing purposes) using
+the `u2fval run` command, or be hosted by any WSGI capable web server, such as
+Apache with mod_wsgi enabled.
+
+=== Accessing the Server ===
+Once the server is set up and at least one client has been created, the client
+can access the server via the REST API. Find the API documentation in the doc/
+directory.

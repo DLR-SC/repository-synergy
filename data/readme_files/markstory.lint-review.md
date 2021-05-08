@@ -1,0 +1,528 @@
+# Lint Review
+
+[![Build Status](https://api.travis-ci.org/markstory/lint-review.svg?branch=master)](https://travis-ci.org/markstory/lint-review)
+[![codecov.io](https://codecov.io/github/markstory/lint-review/coverage.svg?branch=master)](https://codecov.io/github/markstory/lint-review?branch=master)
+[![Docker Pulls](https://img.shields.io/docker/pulls/markstory/lint-review.svg?maxAge=2592000)](https://hub.docker.com/r/markstory/lint-review/)
+[![Docker Stars](https://img.shields.io/docker/stars/markstory/lint-review.svg?maxAge=2592000)](https://hub.docker.com/r/markstory/lint-review/)
+
+Lint Review helps automate a tedious part of code review - enforcing coding
+standards. By using the GitHub API Lint Review runs a repository's configured linters
+and updates pull requests with line comments where lint errors would be introduced.
+
+Lint Review requires:
+
+* Python 2.7 or Python 3.6+
+* RabbitMQ (or any other Message broker that is compatible with Celery)
+* A publically addressable hostname/IP that either GitHub or your github:enterprise
+  can reach.
+* A GitHub account with read/write access to the repositories you want linted. This
+  account is used to post comments on pull reviews.
+* Docker as all tools are executed in containers.
+
+Lint Review runs as two processes. A web process handles accepting webhooks from
+github, and a celery process handles cloning repositories and running containers
+for lint tools.
+
+## Hosted Lint Reviews
+
+If you don't want to go through the trouble of setting up your own installation
+of lint-review, [stickler-ci.com provides a hosted version of
+lint-review](https://stickler-ci.com) featuring all the linters installed, and
+an easier to use YAML config file.
+
+In the free plan, Stickler CI provides the following for open source projects:
+
+- Hosted service
+- Connection to public repositories
+- Commenting on style errors
+- Auto fixing for style errors
+- Clean user interface
+- Robust documentation
+- Automatic upgrades for linting tools.
+
+A paid plan of Stickler CI allows you to enable private repositories and
+leverage organization user accounts to do reviews instead of adding the `stickler-ci`
+account as a collaborator.
+
+## Installation
+
+You install Lint Review by cloning the repository and installing dependecies,
+or by using docker. If you are not using docker, it is recommended that you use
+`virtualenv` to save shaving yaks down the road.
+
+```bash
+git clone git://github.com/markstory/lint-review.git
+cd lint-review
+virtualenv env
+source env/bin/activate
+pip install .
+```
+
+## Make docker images for tools you want to use
+
+In addition to installing the dependencies for lint-review you will also need to
+build the containers for each lint tool you want to use:
+
+```bash
+# Create a set of images for frequently used tools.
+make images
+````
+
+Once the dependencies are installed you should configure the repositories you
+want to review.
+
+## Running lintreview services in Docker
+
+To use docker, you'll need to install both docker, docker-compose and possibly
+docker toolbox depending on your operating system. Once you have the docker
+installed, you can boot up lint-review into docker using:
+
+```bash
+docker-compose up -d broker worker web
+```
+
+Edit `docker-compose.yml` and customise your configuration by setting keys under
+environment for the web and worker processes. For the most basic installation
+you'll need to set `GITHUB_OAUTH_TOKEN`, and `LINTREVIEW_SERVER_NAME`.
+
+## Lint Review Configuration
+
+Lint review is configured through a settings file. Both the web app and celery process
+share the same configuration file, so configuration is easier to manage and share.
+
+* Copy the `settings.sample.py` to `settings.py`
+* Edit the required configuration options, or set the correct environment variables.
+* Set the `LINTREVIEW_SETTINGS` environment variable to the path
+  of your configuration files. In \*nix system this can be done via:
+
+      export LINTREVIEW_SETTINGS='/path/to/settings.py'
+
+* You can skip setting `LINTREVIEW_SETTINGS` if you're running lintreview from
+  a directory containing your `settings.py` file.
+
+You can also have per install configuration files by defining the
+`LINTRC_DEFAULTS` config option in your settings file. This file should be
+a `.lintrc` config file. It will be merged with each projects `.lintrc` before
+running tools. This gives you an easy way to have global configuration for
+tools.
+
+## Setting up Repositories
+
+Once you've configured the server processes, it is time to setup some
+repositories to be checked.
+
+### Installing GitHub hooks
+
+Before Lint Review can check pull requests on a repository webhooks will need
+to be installed.  You can install webhooks by running the built-in command line
+tool:
+
+```bash
+source env/bin/activate
+lintreview register mark awesome-stuff
+```
+
+Or, if you're using Docker:
+
+```bash
+docker-compose run web lintreview register mark awesome-stuff
+```
+
+The above register webhooks for the given user & repository. You can use the
+`--user` and `--password` options to provide the repository admin credentials
+if the user lint-review runs as does not have admin access to the repository.
+You can also use the cli tool to remove webhooks:
+
+```bash
+source env/bin/activate
+lintreview unregister mark awesome-stuff
+```
+
+**Warning** The current web server name will be registered with github. Make sure
+it is configured properly before registering hooks, or you'll need to remove
+any registered hooks and start over.
+
+
+### .lintrc files
+
+Lint Review use hidden ini files to configure the tools used on each project.
+The `.lintrc` file defines the various linting tools and any arguments for each
+one. Lint tools must be tools Lint Review knows about. See [lint
+tools](#lint-tools) for available tools. A sample `.lintrc` file would look
+like.
+
+```ini
+[files]
+ignore = generated/*
+    vendor/*
+
+[tools]
+linters = pep8, jshint
+
+[tool_pep8]
+ignore = W2,E401
+
+[tool_jshint]
+config = path/to/jshint.json
+```
+
+The `[tools]` section is required, and `linters` should be a list of linters
+your project uses.  Each tool can also have a section prefixed with `tool_` to
+define additional configuration options for each tool. The documentation for
+each tool outlines which options are supported.
+
+The `[files]` section is optional and allows you to define ignore patterns.
+These patterns are used to find and exclude files when doing a review. Ignore
+patterns use glob expressions to find files. The patterns start at the reviewed
+repository root. If you need to ignore mulitple patterns separate them with new
+lines.
+
+
+## Running Lint Review
+
+After setting up configuration you'll need to start up both processes:
+
+```bash
+source env/bin/activate
+gunicorn -c settings.py lintreview.web:app
+celery -A lintreview.tasks worker
+```
+
+Now when ever a pull request is opened or updated for a registered repository
+new jobs will be spun up and lint will be checked and commented on.
+
+
+## Lint tools
+
+### Python:
+
+#### Flake8
+
+Uses the [flake8](http://pypi.python.org/pypi/flake8) module to check code.
+
+*Options*
+
+* `ignore` Set which pep8 error codes you wish to ignore.
+* `exclude` Exclude files matching these comma
+   separated patterns (default: .svn, CVS, .bzr, .hg, .git)
+* `filename` When parsing directories, only check filenames
+   matching these comma separated patterns (default: `*.py`)
+* `select` Select errors and warnings (e.g. E,W6)
+* `max-line-length` Set maximum allowed line length (default: 79)
+* `format` Set the error format [default|pylint|<custom>]
+* `max-complexity` McCabe complexity threshold
+* `snippet` Interacts with
+  [flake8-snippets](https://pypi.python.org/pypi/flake8-snippets) allowing you
+  to trigger errors on specific snippets you want to disallow.
+
+These options are passed into flake8 as cli options.
+
+#### pep8
+
+Uses the [pep8](http://pypi.python.org/pypi/pep8/1.2) module to check code.
+
+*Options*
+
+* `ignore` Set which pep8 error codes you wish to ignore.
+* `exclude` Exclude files or directories which match these comma
+   separated patterns (default: .svn, CVS, .bzr, .hg, .git)
+* `filename` When parsing directories, only check filenames
+   matching these comma separated patterns (default: `*.py`)
+* `select` Select errors and warnings (e.g. E,W6)
+* `max-line-length` Set maximum allowed line length (default: 79)
+
+#### py3k
+
+Uses [pylint](https://www.pylint.org/) to check for Python 3 compatibility
+issues.
+
+*Options*
+
+* `ignore` A comma separated list of error codes you wish to ignore.
+* `ignore-patterns` A comma separated list of regular expressions that match
+  files you want to ignore.
+
+#### pytype
+
+Uses [pytype](https://opensource.google.com/projects/pytype) to check python
+code using type annotations.
+
+*Options*
+
+* `config` Path to a config file for pytype.
+* `fixer` Enable automatic merging of inferred pyi files.
+
+### PHP
+
+#### PHPCS
+
+Uses the [phpcs](http://pear.php.net/package/PHP_CodeSniffer) PEAR library
+to do style checks on PHP, Javascript and or CSS files.
+
+*Options*
+
+* `standard` The coding standard to use. By default the `PSR2` standard is used.
+  You can use any of the built-in standards or provide your own inside your
+  project directory.
+* `extensions` The extensions to check. By default only `.php` files will be
+  checked.
+* `ignore` A glob path of files to ignore.
+* `exclude` A comma separated list of sniffs to not apply.
+* `tab_width` The number of spaces to convert tabs into, this is useful for
+  projects using tabs for indentation.
+
+#### PHPMD
+
+Uses the [phpmd](http://phpmd.org) tool to check code for messy or hard to
+maintain code.
+
+*Options*
+
+* `ruleset` The ruleset names or file to use for phpmd. Defaults to `cleancode,codesize,unusedcode`
+
+### Javascript:
+
+#### JSHint
+
+Uses the [jshint](http://jshint.org/) npm module to check javascript files. Before
+you can use this linter you'll need to install nodejs and the jshint npm package:
+
+    cd path/to/lintreview
+    npm install jshint
+
+*Options*
+
+* `config` Provide a path to the json config file for jshint.
+
+#### ESLint
+
+Uses the [eslint](http://eslint.org/) npm module to check javascript files. Before
+you can use this linter you'll need to install the eslint npm package:
+
+    cd path/to/lintreview
+    npm install eslint
+
+*Options*
+
+* `config` Provide a path to the json config file for eslint.
+
+#### StandardJs
+
+Uses the [standard](http://npmjs.org/package/standard) npm module to check javascript files. Before
+you can use this linter you'll need to install nodejs and the standard npm package:
+
+*Options*
+
+* None currently supported
+
+#### JSON Lint
+
+Uses the jsonlint script from [demjson](https://pypi.python.org/pypi/demjson) python module
+to check javascript object notation files.
+
+*Options*
+
+* None currently supported
+
+### TypeScript
+
+#### Tslint
+
+Uses the [tslint](http://npmjs.org/package/tslint) tool to review TypeScript files. You need to
+include a `tslint.json` configuration file in your project or use the `config` option to provide
+a path to a config file.
+
+*Options*
+
+* `config` The config file you want `tslint` to use.
+* `project` The tsc config file you want `tslint` to use.
+
+### CSS:
+
+#### CSSLint
+
+Uses the [csslint](http://csslint.net/) npm module to check css files. Before
+you can use this linter you'll need to install nodejs and the `csslint` npm package:
+
+    cd path/to/lintreview
+    npm install
+
+Both warnings and errors will be turned into code review comments. If you don't want
+code review comments for specific rules, you should ignore them.
+
+*Options*
+
+* `ignore` A comma separated list of rule ids to ignore.
+
+### SASS / SCSS
+
+#### scss-lint
+
+Uses the [sass-lint](https://www.npmjs.com/package/sass-lint) npm module to check scss and sass files.
+
+*Options*
+
+* `ignore` A comma separated list of files to ignore.
+* `config` Project relative path to the sass-lint config file you want
+  applied.
+
+#### Stylelint
+
+Uses [stylelint](https://github.com/stylelint/stylelint) to check, scss, sass,
+less or css files.
+
+*Options*
+
+* `config` Provide a path to your stylelint configuration file. If none is
+  provided then stylelint's default config file lookup behavior will be used,
+  and falling back to the `stylelint-config-recommended` will be used.
+
+
+### Ruby:
+
+#### RuboCop
+
+Uses the [rubocop](http://rubygems.org/gems/rubocop) gem to check ruby files.
+You'll need to install it to use it:
+
+    gem install rubocop
+
+*Options*
+
+* `display_cop_names` Set to `true` to pass display cop names in offense messages.
+
+`.rubocop.yml` files will be respected, as described
+[here](https://github.com/bbatsov/rubocop#configuration).
+
+### Puppet:
+
+#### puppet-lint
+
+Uses the [puppet-lint](http://rubygems.org/gems/rubocop) gem to check puppet manifests
+against the puppetlabs style guide.
+
+You'll need to install it to use it:
+
+    gem install puppet-lint
+
+*Options*
+
+* `config` Provide a path to a puppet-lint config file.
+* `fixer_ignore` A comma separated list of linter checks to ignore when running
+  the fixer.
+
+`.puppet-lint.rc` files will also be respected, to allow each project to disable
+checks. A list of checks can be found by running "puppet-lint --help"
+
+### Chef:
+
+#### Foodcritic
+
+Uses the [Foodcritic](http://www.foodcritic.io/) gem to check Chef files.
+You'll need to install Foodcritic:
+
+    gem install foodcritic
+
+*Options*
+
+* `path` If your cookbooks aren't stored in the root, use this to set the path
+  that foodcritic runs against. Example: `path = cookbooks`
+
+### Yet Another Markup Language:
+
+#### yamllint
+
+Uses the [yamllint](http://pypi.python.org/pypi/yamllint) module to check yaml and yml files.
+
+*Options*
+
+* `config` Provide a path to the yaml config file for yamlhint.
+
+### Shell
+
+#### Shellcheck
+
+Uses [shellcheck](https://github.com/koalaman/shellcheck) to lint shell scripts.
+
+*Options*
+
+* `shell` Select which shell to use. Options are: bash, sh, ksh or zsh. Default: `sh`
+* `exclude` String of checks to ignore. Example: SC2154,SC2069
+
+### Ansible
+
+#### Ansible-lint
+
+Uses [ansible-lint](https://github.com/willthames/ansible-lint) to lint Ansible plays.
+
+*Options*
+
+* `ignore` Set which ansible-lint error codes you wish to ignore.
+
+### Go lang
+
+#### Golint
+
+Uses [go-lint](https://github.com/golang/lint) to lint go code.
+
+*Options*
+
+* `min_confidence` Set the confidence level of a problem before it is reported.
+* `ignore` A list of regular expressions, that allow you to ignore warnings.
+
+
+### Kotlin
+
+#### Ktlint
+
+Uses [ktlint](https://github.com/pinterest/ktlint) to lint kotlin code.
+
+*Options*
+
+* `android` Set to `true` to pass rule set in error messages.
+* `config` Provide a path to the [.editorconfig](https://github.com/pinterest/ktlint/#EditorConfig) file for ktlint.
+* `experimental` Set to `true` to add [`experimental rules`](https://github.com/pinterest/ktlint/#experimental-rules).
+* `fixer` Set to `true` to fix any deviations from the code style
+* `ruleset` Provide ["ruleset"](https://github.com/pinterest/ktlint/#experimental-rules) a path to JAR containing one or more [Rule](https://github.com/pinterest/ktlint/blob/master/ktlint-core/src/main/kotlin/com/pinterest/ktlint/core/Rule.kt)s gathered together in a [RuleSet](https://github.com/pinterest/ktlint/blob/master/ktlint-core/src/main/kotlin/com/github/shyiko/ktlint/core/RuleSet.kt).
+
+
+### Lua
+
+#### Luacheck
+
+Uses [luacheck](https://github.com/mpeterv/luacheck) to lint Lua code.
+
+*Options*
+
+* `config` Provide a path to the config file for luacheck.
+
+
+### Elixir
+
+#### Credo
+
+Uses [credo](https://github.com/rrrene/credo) to lint Elixir code. Runs `mix
+credo list` to get results by files.
+
+*Options*
+
+* `checks` Only include checks that match the given strings
+* `config-name` Use the given config instead of "default"
+* `ignore-checks` Ignore checks that match the given strings
+* `all` Show all issues
+* `all-priorities` Show all issues including low priority ones
+* `strict` Show all issues and all priorities
+
+
+### Markdown
+
+#### Remarklint
+
+Uses [remark-lint](https://github.com/remarkjs/remark-lint) to lint markdown
+files. Will use the `.remarkrc` files in your project. 
+The `remark-preset-lint-recommended` package is installed, other presets require
+customizing the nodejs docker image.
+
+*Options*
+
+* No options at this time.

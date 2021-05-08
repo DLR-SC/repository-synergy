@@ -1,0 +1,65 @@
+=== Description ===
+A plugin that provides an ADB Logcat view inside of Sublime Text 2.
+
+=== Known issues and feature requests ===
+Please go [[https://github.com/quarnster/ADBView/issues?sort=created&direction=desc&state=open|here]] to see the currently known issues and feature request, or to file a new.
+
+=== Prerequisites ===
+  # The Android SDK should be installed, and ADB should be in your path.
+  # If you want to connect to the emulator on Windows, you'll have to [enable telnet](http://social.technet.microsoft.com/wiki/contents/articles/910.enabling-telnet-client-in-windows-7-en-us.aspx). See #16.
+
+=== Installation ===
+    # The easiest way to install this plugin is via the excellent Package Control Plugin
+    ## See http://wbond.net/sublime_packages/package_control#Installation
+    ### Once package control has been installed, bring up the command palette (cmd+shift+P or ctrl+shift+P)
+    ### Type Install and select "Package Control: Install Package"
+    ### Select ADBView from the list. Package Control will keep it automatically updated for you
+    ## If you don't want to use package control, you can manually install it
+    ### Go to your packages directory and type:
+    ####        git clone https://github.com/quarnster/ADBView ADBView
+    # The default command is ["adb", "logcat"]. If you want to change this you can do so via the file setting "adb_command"
+
+=== Usage ===
+After installation, hit ctrl+alt+d to open up an ADB logcat view.
+
+Message filters can be set by clicking a line in the logcat view and then right click and choose one of the menu options:
+
+    # ADB Filter by Process ID
+    # ADB Filter by Tag Name
+    # ADB Filter by Thread ID
+    # ADB Filter by Message Level
+    # ADB Filter by Debuggable Apps
+    # ADB Custom Regular Expression Filter
+
+Or by selecting some text and then right click and choose one of the menu options:
+
+    # ADB Filter by Containing Selections
+    # ADB Filter by Excluding Selections
+
+You can also specify a custom regular expression filter in the preferences or project settings.
+
+=== License ===
+This plugin is using the zlib license
+
+{{{
+Copyright (c) 2012 Fredrik Ehnbom
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+   1. The origin of this software must not be misrepresented; you must not
+   claim that you wrote the original software. If you use this software
+   in a product, an acknowledgment in the product documentation would be
+   appreciated but is not required.
+
+   2. Altered source versions must be plainly marked as such, and must not be
+   misrepresented as being the original software.
+
+   3. This notice may not be removed or altered from any source
+   distribution.
+}}}

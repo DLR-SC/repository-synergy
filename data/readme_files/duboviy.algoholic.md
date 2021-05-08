@@ -1,0 +1,5 @@
+<h1><img src="https://raw.githubusercontent.com/duboviy/algoholic/master/logo.png" height=85 alt="logo" title="logo"> algoholic</h1>
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/faa8953754f4444a93bac4deef2dc0b8)](https://www.codacy.com/app/dubovoy/algoholic?utm_source=github.com&utm_medium=referral&utm_content=duboviy/algoholic&utm_campaign=badger) [![Code Health](https://landscape.io/github/duboviy/algoholic/master/landscape.svg?style=flat)](https://landscape.io/github/duboviy/algoholic/master) [![Open Source Love](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/duboviy/algoholic/) [![PRs & Issues Welcome](https://img.shields.io/badge/PRs%20&%20Issues-welcome-brightgreen.svg)](https://github.com/duboviy/algoholic/pulls) [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/duboviy/algoholic/)
+
+A sandbox for trying out algorithms from [the coursera Princeton and Stanford courses](https://class.coursera.org/algs4partI-007), [leetcode](https://leetcode.com/) and [codility](https://codility.com/).

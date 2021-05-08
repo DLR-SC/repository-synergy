@@ -1,0 +1,471 @@
+h1(#title). Marrow Mailer
+
+bq(subtitle). A highly efficient and modular mail delivery framework for Python 2.6+ and 3.2+, formerly called TurboMail.
+
+bq(byline). (C) 2006-2019, Alice Bevan-McGregor and contributors.
+
+bq(byline). "https://github.com/marrow/mailer":github-project
+
+[github-project]https://github.com/marrow/mailer
+
+
+
+h2(#what-is). %1.% What is Marrow Mailer?
+
+Marrow Mailer is a Python library to ease sending emails from your application.
+
+By using Marrow Mailer you can:
+
+* Easily construct plain text and HTML emails.
+* Improve the testability of your e-mail deliveries.
+* Use different mail delivery management strategies; e.g. immediate, deferred, or even multi-server.
+* Deliver e-mail through a number of alternative transports including SMTP, Amazon SES, sendmail, or even via direct on-disk mbox/maildir.
+* Multiple simultaneous configurations for more targeted delivery.
+
+Mailer supports Python 2.6+ and 3.2+ and there are only light-weight dependencies: @marrow.util@, @marrow.interface@, and @boto@ if using Amazon SES.
+
+
+h3(#goals). %1.1.% Goals
+
+Marrow Mailer is all about making email delivery easy. Attempting to utilize the built-in MIME message generation classes can be painful, and interfacing with an SMTP server, or, worse, the command-line @sendmail@ command can make you lose your hair.  Mailer handles all of these tasks for you and more.
+
+The most common cases for mail message creation (plain text, html, attachments, and html embeds) are handled by the @marrow.mailer.message.Message@ class. Using this class allows you to write clean, succinct code within your own applications.  If you want to use hand-generated MIME messages, or tackle Python's built-in MIME generation support for an advanced use-case, Mailer allows you to utilize the delivery mechanics without requiring the use of the @Message@ class.
+
+Mailer is *not* an MTA like "Exim":http://www.exim.org/, "Postfix":http://www.postfix.org/, "sendmail":http://www.sendmail.com/sm/open_source/, or "qmail":http://www.qmail.org/. It is designed to deliver your messages to a real mail server ("smart host") or other back-end which then actually delivers the messages to the recipient's server. There are a number of true MTAs written in Python, however, including "Python's smtpd":http://docs.python.org/library/smtpd.html, "Twisted Mail":http://twistedmatrix.com/trac/wiki/TwistedMail, "pymta":http://www.schwarz.eu/opensource/projects/pymta/, "tmda-ofmipd":http://tmda.svn.sourceforge.net/viewvc/tmda/trunk/tmda/bin/tmda-ofmipd?revision=2194&view=markup, and "Lamson":http://lamsonproject.org/, though this is by no means an exhaustive list.
+
+
+
+h2(#installation). %2.% Installation
+
+Installing @marrow.mailer@ is easy, just execute the following in a terminal: [2]
+
+<pre><code>pip install marrow.mailer</code></pre>
+
+If you add @marrow.mailer@ to the @install_requires@ argument of the call to @setup()@ in your application's @setup.py@ file, @marrow.mailer@ will be automatically installed and made available when your own application is installed.  We recommend using "less than" version numbers to ensure there are no unintentional side-effects when updating.  Use @"marrow.mailer<4.1"@ to get all bugfixes for the current release, and @"marrow.mailer<5.0"@ to get bugfixes and feature updates, but ensure that large breaking changes are not installed.
+
+*Warning:* The 4.0 series is the last to support Python 2.
+
+
+h3(#install-dev). %2.1.% Development Version
+
+Development takes place on "GitHub":github in the "marrow/mailer":github-project project.  Issue tracking, documentation, and downloads are provided there.
+
+Installing the current development version requires "Git":git, a distributed source code management system.  If you have Git, you can run the following to download and _link_ the development version into your Python runtime:
+
+<pre><code>git clone https://github.com/marrow/mailer.git
+(cd mailer; python setup.py develop)</code></pre>
+
+You can upgrade to the latest version at any time:
+
+<pre><code>(cd mailer; git pull; python setup.py develop)</code></pre>
+
+If you would like to make changes and contribute them back to the project, fork the GitHub project, make your changes, and submit a pull request.  This process is beyond the scope of this documentation; for more information, see "GitHub's documentation":github-help.
+
+
+[github]https://github.com/
+[git]http://git-scm.com/
+[github-help]http://help.github.com/
+
+
+
+h2(#basic). %3.% Basic Usage
+
+To use Marrow Mailer you instantiate a @marrow.mailer.Mailer@ object with the configuration, then pass @Message@ instances to the @Mailer@ instance's @send()@ method.  This allows you to configure multiple delivery mechanisms and choose, within your code, how you want each message delivered.  The configuration is a dictionary of dot-notation keys and their values.  Each manager and transport has their own configuration keys.
+
+Configuration keys may utilize a shared, common prefix, such as @mail.@.  By default no prefix is assumed.  Manager and transport configurations are each additionally prefixed with @manager.@ and @transport.@, respectively.  The following is an example of how to send a message by SMTP:
+
+<pre><code>from marrow.mailer import Mailer, Message
+
+mailer = Mailer(dict(
+        transport = dict(
+                use = 'smtp',
+                host = 'localhost')))
+mailer.start()
+
+message = Message(author="user@example.com", to="user-two@example.com")
+message.subject = "Testing Marrow Mailer"
+message.plain = "This is a test."
+mailer.send(message)
+
+mailer.stop()</code></pre>
+
+Another example configuration, using a flat dictionary and delivering to an on-disk @maildir@ mailbox:
+
+<pre><code>{
+    'transport.use': 'maildir',
+    'transport.directory': 'data/maildir'
+}</pre></code>
+
+
+h3(#mailer-methods). %3.1.% Mailer Methods
+
+table(methods).
+|_. Method |_. Description |
+| @__init__(config, prefix=None)@ | Create and configure a new Mailer. |
+| @start()@ | Start the mailer. Returns the Mailer instance and can thus be chained with construction. |
+| @stop()@ | Stop the mailer.  This cascades through to the active manager and transports. |
+| @send(message)@ | Deliver the given Message instance. |
+| @new(author=None, to=None, subject=None, **kw)@ | Create a new bound instance of Message using configured default values. |
+
+
+
+h2(#message). %4.% The Message Class
+
+The original format for email messages was defined in "RFC 822":http://www.faqs.org/rfcs/rfc822.html which was superseded by "RFC 2822":http://www.faqs.org/rfcs/rfc2822.html. The newest standard document about the format is currently "RFC 5322":http://www.faqs.org/rfcs/rfc2822.html. But the basics of RFC 822 still apply, so for the sake of readability we will just use "RFC 822" to refer to all these RFCs. Please read the official standard documents if this text fails to explain some aspects.
+
+The Marrow Mailer @Message@ class has a large number of attributes and methods, described below.
+
+h3(#message-methods). %4.1.% Message Methods
+
+table(methods).
+|_. Method |_. Description |
+| @__init__(author=None, to=None, subject=None, **kw)@ | Create and populate a new Message. Any attribute may be set by name. |
+| @__str__@ | You can easily get the MIME encoded version of the message using the @str()@ built-in. |
+| @attach(name, data=None, maintype=None, subtype=None, inline=False)@ | Attach a file (data=None) or string-like. For on-disk files, mimetype will be guessed. |
+| @embed(name, data=None)@ | Embed an image from disk or string-like. Only embed images! |
+| @send()@ | If the Message instance is bound to a Mailer instance, e.g. having been created by the @Mailer.new()@ factory method, deliver the message via that instance. |
+
+h3(#message-attributes). %4.2.% Message Attributes
+
+h4. %4.2.1.% Read/Write Attributes
+
+table(attributes).
+|_. Attribute |_. Description |
+| @_id@ | The message ID, generated for you as needed. |
+| @attachments@ | A list of MIME-encoded attachments. |
+| @author@ | The visible author of the message. This maps to the @From:@ header. |
+| @to@ | The visible list of primary intended recipients. |
+| @cc@ | A visible list of secondary intended recipients. |
+| @bcc@ | An invisible list of tertiary intended recipients. |
+| @date@ | The visible date/time of the message, defaults to @datetime.now()@ |
+| @embedded@ | A list of MIME-encoded embedded images. |
+| @encoding@ | Unicode encoding, defaults to @utf-8@. |
+| @headers@ | A list of additional message headers. |
+| @notify@ | The address that message disposition notification messages get routed to. |
+| @organization@ | An extended header for an organization name. |
+| @plain@ | Plain text message content. [1] |
+| @priority@ | The @X-Priority@ header. |
+| @reply@ | The address replies should be routed to by default; may differ from @author@. |
+| @retries@ | The number of times the message should be retried in the event of a non-critical failure. |
+| @rich@ | HTML message content. Must have plain text alternative. [1] |
+| @sender@ | The designated sender of the message; may differ from @author@. This is primarily utilized by SMTP delivery. |
+| @subject@ | The subject of the message. |
+
+fn1. The message bodies may be callables which will be executed when the message is delivered, allowing you to easily utilize templates.  Pro tip: to pass arguments to your template, while still allowing for later execution, use @functools.partial@.  When using a threaded manager please be aware of thread-safe issues within your templates.
+
+Any of these attributes can also be defined within your mailer configuration.  When you wish to use default values from the configuration you must use the @Mailer.new()@ factory method.  For example:
+
+<pre><code>mail = Mailer({
+        'message.author': 'Example User <user@example.com>',
+        'message.subject': "Test subject."
+    })
+message = mail.new()
+message.subject = "Test subject."
+message.send()</code></pre>
+
+h4. %4.2.2.% Read-Only Attributes
+
+table(attributes).
+|_. Attribute |_. Description |
+| @id@ | A valid message ID. Regenerated after each delivery. |
+| @envelope@ | The envelope sender from SMTP terminology. Uses the value of the @sender@ attribute, if set, otherwise the first @author@ address. |
+| @mime@ | The complete MIME document tree that is the message. |
+| @recipients@ | A combination of @to@, @cc@, and @bcc@ address lists. |
+
+
+
+h2(#managers). %5.% Delivery Managers
+
+h3(#immediate-manager). %5.1.% Immediate Manager
+
+The immediate manager attempts to deliver the message using your chosen transport immediately.  The request to deliver a message is blocking.  There is no configuration for this manager.
+
+
+h3(#futures-manager). %5.2.% Futures Manager
+
+Futures is a thread pool delivery manager based on the @concurrent.futures@ module introduced in "PEP 3148":http://www.python.org/dev/peps/pep-3148/.  The use of @concurrent.futures@ and its default thread pool manager allows you to receive notification (via callback or blocking request) of successful delivery and errors.
+
+When you enqueue a message for delivery a Future object is returned to you.  For information on what you can do with a Future object, see the "relevant section of the Futures PEP":http://www.python.org/dev/peps/pep-3148/#future-objects.
+
+The Futures manager understands the following configuration directives:
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @workers@ | @1@ | The number of threads to spawn. |
+
+The @workers@ configuration directive has the side effect of requiring one transport instance per worker, requiring up to @workers@ simultaneous connections.
+
+
+h3(#dynamic-manager). %5.3.% Dynamic Manager
+
+This manager dynamically scales the number of worker threads (and thus simultaneous transport connections) based on the current workload.  This is a port of the _TurboMail 3_ @ondemand@ manager to the Futures API.  This manager is somewhat more efficient than the plain Futures manager, and should be the manager in use on production systems.
+
+The Dynamic manager understands the following configuration directives:
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @workers@ | @10@ | The maximum number of threads. |
+| @divisor@ | @10@ | The number of messages to send before freeing the thread. (A.k.a. "exhaustion".) |
+| @timeout@ | @60@ | The number of seconds to wait for additional work before freeing the thread. (A.k.a. "starvation".) |
+
+
+
+h2(#transports). %6.% Message Transports
+
+Transports are grouped into three primary categories: disk, network, and meta.  Meta transports keep the message within Python or only 'pretend' to deliver it.  Disk transports save the message to disk in some fashion, and networked transports deliver the message over a network.  Configuration is similar between transports within the same category.
+
+
+h3(#disk-transports). %6.1.% Disk Transports
+
+Disk transports are the easiest to get up and running and allow you to off-load final transport of the message to another process or server.  These transports are most useful in a larger deployment, but are also great for testing!
+
+There are currently two on-disk transports included with Marrow Mailer: @mbox@ and @maildir@.
+
+h4(#mbox-transport). %6.1.1.% UNIX Mailbox
+
+There is only one configuration directive for the @mbox@ transport:
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @file@ | — | The on-disk file to use as the mailbox, must be writeable. |
+
+There are several important limitations on this mailbox format; notably the use of whole-file locking when changes are to be made, making this transport useless for high-performance or multi-threaded delivery.  For details, see the "@mbox@ documentation":http://docs.python.org/library/mailbox.html#mbox.  To efficiently utilize this transport, it is recommended to use the Futures manager with a single worker thread; this avoids lock contention.
+
+
+h4(#maildir-transport). %6.1.2.% UNIX Mail Directory
+
+The @maildir@ transport offers the benefits of a universal on-disk mail storage format with numerous features and none of the limitations of the @mbox@ format.  These added features mandate the need for additional configuration directives.
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @directory@ | — | The on-disk path to the mail directory. |
+| @folder@ | @None@ | A dot-separated subfolder to deliver mail into. The default is the top-level (inbox) folder. |
+| @create@ | @False@ | Create the target folder if it does not exist at the time of delivery. |
+| @separator@ | @"!"@ | Additional meta-information is associated with the mail directory format, usually separated by a colon. Because a colon is not a valid character on many operating systems, Marrow Mailer defaults to the de-facto standard of the @!@ (bang) character. |
+
+
+
+h3(#network-transports). %6.2.% Network Transports
+
+Network transports have Python directly communicate over TCP/IP with an external service.
+
+
+h4(#smtp-transport). %6.2.1.% Simple Mail Transport Protocol (SMTP)
+
+SMTP is, far and away, the most ubiquitous mail delivery protocol in existence.
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @host@ | @None@ | The host name to connect to. |
+| @port@ | @25@ or @465@ | The port to connect to. The default depends on the @tls@ directive's value. |
+| @username@ | @None@ | The username to authenticate against. If utilizing authentication, it is recommended to enable TLS/SSL. |
+| @password@ | @None@ | The password to authenticate with. |
+| @timeout@ | @None@ | Network communication timeout. |
+| @local_hostname@ | @None@ | The hostname to advertise during @HELO@/@EHLO@. |
+| @debug@ | @False@ | If @True@ all SMTP communication will be printed to STDERR. |
+| @tls@ | @"optional"@ | One of @"required"@, @"optional"@, and @"ssl"@ or any other value to indicate no SSL/TLS. |
+| @certfile@ | @None@ | An optional SSL certificate to authenticate SSL communication with. |
+| @keyfile@ | @None@ | The private key for the optional @certfile@. |
+| @pipeline@ | @None@ | If a non-zero positive integer, this represents the number of messages to pipeline across a single SMTP connection. Most servers allow up to 10 messages to be delivered. |
+
+
+h4(#imap-transport). %6.2.2.% Internet Mail Access Protocol (IMAP)
+
+Marrow Mailer, via the @imap@ transport, allows you to dump messages directly into folders on remote servers.
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @host@ | @None@ | The host name to connect to. |
+| @ssl@ | @False@ | Enable or disable SSL communication. |
+| @port@ | @143@ or @993@ | Port to connect to; the default value relies on the @ssl@ directive's value. |
+| @username@ | @None@ | The username to authenticate against. The note from SMTP applies here, too. |
+| @password@ | @None@ | The password to authenticate with. |
+| @folder@ | @"INBOX"@ | The default IMAP folder path. |
+
+
+h3(#meta-transports). %6.3.% Meta-Transports
+
+
+h4(#gae-transport). %6.3.1.% Google AppEngine
+
+The @appengine@ transport translates between Mailer's Message representation and Google AppEngine's.  Note that GAE's @EmailMessage@ class is not nearly as feature-complete as Mailer's.  The translation covers the following @marrow.mailer.Message@ attributes:
+
+* @author@
+* @to@
+* @cc@
+* @bcc@
+* @reply@
+* @subject@
+* @plain@
+* @rich@
+* @attachments@ (excluding inline/embedded files)
+
+
+h4(#logging-transport). %6.3.1.% Python Logging
+
+The @log@ transport implements the use of the standard Python logging module for message delivery.  Using this module allows you to emit messages which are filtered and directed through standard logging configuration.  There are three logging levels used:
+
+|_. Level |_. Meaning |
+| @DEBUG@ | This level is used for informational messages such as startup and shutdown. |
+| @INFO@ | This level communicates information about messages being delivered. |
+| @CRITICAL@  | This level is used to deliver the MIME content of the message. |
+
+Log entries at the @INFO@ level conform to the following syntax:
+
+<pre><code>DELIVER {ID} {ISODATE} {SIZE} {AUTHOR} {RECIPIENTS}</code></pre>
+
+There is only one configuration directive:
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @name@ | *"marrow.mailer.transport.log"* | The name of the logger to use. |
+
+
+h4(#mock-transport). %6.3.1.% Mock (Testing) Transport
+
+The @mock@ testing transport is useful if you are writing a manager.  It allows you to test to ensure your manager handles various exceptions correctly.
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @success@ | @1.0@ | The probability of successful delivery, handled after the following conditions. |
+| @failure@ | @0.0@ | The probability of the @TransportFailedException@ exception being raised. |
+| @exhaustion@ | @0.0@ | The probability of the @TransportExhaustedException@ exception being raised. |
+
+All probabilities are floating point numbers between 0.0 (0% chance) and 1.0 (100% chance).
+
+
+h4(#sendmail-transport). %6.3.1.% Sendmail Command
+
+If the server your software is running on is configured to deliver mail via the on-disk @sendmail@ command, you can use the @sendmail@ transport to deliver your mail.
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @path@ | @"/usr/sbin/sendmail"@ | The path to the @sendmail@ executable. |
+
+
+h4(#amazon-transport). %6.3.1.% Amazon Simple E-Mail Service (SES)
+
+Deliver your messages via the Amazon Simple E-Mail Service with the @amazon@ transport.  While Amazon allows you to utilize SMTP for communication, using the correct API allows you to get much richer information back from delivery upon both success *and* failure.  To utilize this transport you must have the @boto@ package installed.
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @id@ | — | Your Amazon AWS access key identifier. |
+| @key@ | — | Your Amazon AWS secret access key. |
+
+
+h4(#sendgrid-transport). %6.3.1.% SendGrid
+
+The @sendgrid@ transport uses the email service provider SendGrid to deliver your transactional and marketing messages.  Use your SendGrid username and password (@user@ and @key@), or supply an API key (only @key@).
+
+table(configuration).
+|_. Directive |_. Default |_. Description |
+| @user@ | — | Your SendGrid username.  Don't include this if you're using an API key. |
+| @key@ | — | Your SendGrid password, or a SendGrid account API key. |
+
+
+h2(#extending). %7.% Extending Marrow Mailer
+
+Marrow Mailer can be extended in two ways: new managers (such as thread pool management strategies or process pools) and delivery transports.  The API for each is quite simple.
+
+One note is that managers and transports only receive the configuration directives targeted at them; it is not possible to inspect other aspects of configuration.
+
+
+h3(#managers). %7.1.% Delivery Manager API
+
+Delivery managers are responsible for accepting work from the application programmer and (eventually) handing this work to transports for final outbound delivery from the application.
+
+The following are the methods understood by the duck-typed manager API.  All methods are required even if they do nothing.
+
+table(methods).
+|_. Method |_. Description |
+| @__init__(config, Transport)@ | Initialization code.  @Transport@ is a pre-configured transport factory. |
+| @startup()@ | Code to execute after initialization and before messages are accepted. |
+| @deliver(message)@ | Handle delivery of the given @Message@ instance. |
+| @shutdown()@ | Code to execute during shutdown. |
+
+A manager must:
+
+# Perform no actions during initialization.
+# Prepare state within the @startup()@ method call.  E.g. prepare a thread or transport pool.
+# Clean up state within the @shutdown()@ method call.  E.g. free a thread or transport pool.
+# Return a documented object from the @deliver()@ method call, preferably a @Future@ instance for interoperability with the core managers.
+# Accept multiple messages during the lifetime of the manager instance.
+# Accept multiple @startup()@/@shutdown()@ cycles.
+# Understand and correctly handle exceptions that may be raised by message transports, described in "§5.3":#exceptions.
+
+Additionally, a manager must not:
+
+# Utilize or alter any form of global scope configuration.
+
+
+h3(#transports). %7.2.% Message Transport API
+
+A message transport is some method whereby a message is sent to an external consumer.  Message transports have limited control over how they are utilized by the use of Marrow Mailer exceptions with specific semantic meanings, as described in "§6.3":#exceptions.
+
+The following are the methods understood by the duck-typed transport API.  All methods are required even if they do nothing.
+
+table(methods).
+|_. Method |_. Description |
+| @__init__(config)@ | Initialization code. |
+| @startup()@ | Code to execute after initialization and before messages are accepted. |
+| @deliver(message)@ | Handle delivery of the given @Message@ instance. |
+| @shutdown()@ | Code to execute during shutdown. |
+
+Optionally, a transport may define the following additional attribute:
+
+table(attributes).
+| @connected@ | True or False based on the current connection status. |
+
+A transport must:
+
+# Perform no actions during initialization.
+# Prepare state within the @startup()@ method call.  E.g. opening network connections or files.
+# Clean up state within the @shutdown()@ method call.  E.g. closing network connections or files.
+# Accept multiple messages during the lifetime of the transport instance.
+# Accept multiple @startup()@/@shutdown()@ cycles.
+# Understand and correctly handle exceptions that may be raised by message transports, described in "§6.3":#exceptions.
+
+Additionally, a transport must not:
+
+# Utilize or alter any form of global scope configuration.
+
+A transport may:
+
+# Return data from the @deliver()@ method; this data will be passed through as the return value of the @Mailer.send()@ call or Future callback response value.
+
+
+h3(#exceptions). %7.3.% Exceptions
+
+The following table illustrates the semantic meaning of the various internal (and external) exceptions used by Marrow Mailer, managers, and transports.
+
+table(exceptions).
+|_. Exception |_. Role |_. Description |
+| @DeliveryFailedException@ | External | The message stored in @args[0]@ could not be delivered for the reason given in @args[1]@.  (These can be accessed as @e.msg@ and @e.reason@.) |
+| @MailerNotRunning@ | External | Raised when attempting to deliver messages using a dead interface.  (Not started, or already shut down.) |
+| @MailConfigurationException@ | External | Raised to indicate some configuration value was required and missing, out of bounds, or otherwise invalid. |
+| @TransportFailedException@ | Internal | The transport has failed to deliver the message due to an internal error; a new instance of the transport should be used to retry. |
+| @MessageFailedException@ | Internal | The transport has failed to deliver the message due to a problem with the message itself, and no attempt should be made to retry delivery of this message.  The transport may still be re-used, however. |
+| @TransportExhaustedException@ | Internal | The transport has successfully delivered the message, but can no longer be used for future message delivery; a new instance should be used on the next request. |
+
+
+
+h2(#license). %8.% License
+
+Marrow Mailer has been released under the MIT Open Source license.
+
+
+h3(#license-mit). %8.1.% The MIT License
+
+Copyright (C) 2006-2019 Alice Bevan-McGregor and contributors.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+fn1. In order to run the full test suite you need to install "pymta":http://www.schwarz.eu/opensource/projects/pymta/ and its dependencies.
+
+fn2. If "Pip":http://www.pip-installer.org/ is not available for you, you can use @easy_install@ instead. We have much love for Pip and "Distribute":http://packages.python.org/distribute/, though.

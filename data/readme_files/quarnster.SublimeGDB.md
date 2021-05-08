@@ -1,0 +1,64 @@
+=== Description ===
+GDB plugin for Sublime Text 2. Filing issues are not welcome (and thus disabled). Pull requests please.
+
+=== Installation ===
+    # The easiest way to install SublimeGDB is via the excellent Package Control Plugin
+    ## See http://wbond.net/sublime_packages/package_control/installation
+    ### Once package control has been installed, bring up the command palette (cmd+shift+P or ctrl+shift+P)
+    ### Type Install and select "Package Control: Install Package"
+    ### Select SublimeGDB from the list. Package Control will keep it automatically updated for you
+    ## If you don't want to use package control, you can manually install it
+    ### Go to your packages directory and type:
+    ####        git clone https://github.com/quarnster/SublimeGDB SublimeGDB
+    # Back in the editor, open up the command palette by pressing cmd+shift+P or ctrl+shift+P
+    # Type SublimeGDB and open up the settings file you want to modify
+
+=== Usage ===
+
+See [[https://github.com/quarnster/SublimeGDB/blob/master/Default.sublime-keymap|the default key bindings]] and [[https://github.com/quarnster/SublimeGDB/blob/master/Default.sublime-mousemap|the default mouse map]].
+
+In short:
+* Open up the default settings via the command palette and begin typing SublimeGDB and select the Default SublimeGDB preferences.
+* See what options are available, and open up the User SublimeGDB preferences to tweak any values
+* If you have multiple projects, you most likely want to put project specific setting in your project file, with a prefixed "sublimegdb_". See the comments at the top of the default SublimeGDB preferences for an example.
+* If you have multiple executables in the same project, you can add a "sublimegdb_executables" setting to your project settings, and add an entry for each executable's settings.
+* Once you're all configured, you can toggle breakpoints with F9 (OSX Users might want to change the key binding, or disable the "Exposé and Spaces" key bindings in the System Preferences)
+* Launch with F5
+* Step over with F10
+* Step into with F11
+* Step out with Shift+F11
+* Click on the appropriate line in the GDB Callstack view to go to that stack frame
+* Click a variable in the GDB Variables view to show its children (if available)
+* Double click a variable in the GDB Variables view to modify its value
+* You can also access some commands by right clicking in any view
+
+=== Show your support ===
+
+[[https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UPSEP2BHMLYEW|Donate]]
+
+=== License ===
+This plugin is using the zlib license
+
+{{{
+Copyright (c) 2012 Fredrik Ehnbom
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+   1. The origin of this software must not be misrepresented; you must not
+   claim that you wrote the original software. If you use this software
+   in a product, an acknowledgment in the product documentation would be
+   appreciated but is not required.
+
+   2. Altered source versions must be plainly marked as such, and must not be
+   misrepresented as being the original software.
+
+   3. This notice may not be removed or altered from any source
+   distribution.
+}}}
+

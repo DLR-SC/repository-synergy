@@ -1,0 +1,36 @@
+This is the name parser and standardizer for the datacommons project.
+It now supports politician, individual and organization names.
+
+Installation
+============
+
+Installation is easy:
+
+    pip install name-cleaver
+
+Usage
+=====
+
+Basic usage is the same for each type of name, just import the relevant NameCleaver class from one of:
+
+* `PoliticianNameCleaver`
+* `IndividualNameCleaver`
+* `OrganizationNameCleaver`
+
+Example:
+
+    from name_cleaver import PoliticianNameCleaver
+    smith = PoliticianNameCleaver('Smith, Robert J').parse()
+    
+    smith.first => "Robert"
+    smith.middle => "J."
+    smith.last => "Smith"
+
+    print str(smith) => "Robert J. Smith"
+
+Usage as above can usually be expected to return a Name object, but is not guaranteed to not throw an exception if NameCleaver is given unexpected input or otherwise can't figure out what to do with a name. You can look for and handle Name Cleaver's `UnparseableNameException` class. If you don't want to deal with handling exceptions, NameCleaver has a safe mode:
+
+    smith = PoliticianNameCleaver('Smith, Robert J').parse(safe=True)
+
+In safe mode, if NameCleaver encounters an exception or doesn't come up with a fully-formed name, it will return the original input string.
+

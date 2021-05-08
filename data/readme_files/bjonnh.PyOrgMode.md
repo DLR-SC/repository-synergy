@@ -1,0 +1,124 @@
+#+BABEL: :comments no
+#+VERSION: 0.03a
+
+**PyOrgMode is currently, and probably for ever, unmaintained ** 
+
+There is a new project that is well documented and may cover most, if not more of what PyOrgMode was covering: [[https://github.com/karlicoss/orgparse][Karlicoss' OrgParse]].
+
+* PyOrgMode
+PyOrgMode is a small python library able to do simple tasks with your org files. It allows you to generate org files or treat them in an automated fashion.
+
+This project is not my top priority, but I'm more than happy to receive pull requests. Don't worry, even if it takes some time, I go through all of them ;)
+
+I'd like to thank all the people that contributes (see AUTHORS file).
+
+** Quick Start
+
+*** Installation
+
+Download the git repo and then install the package.
+#+BEGIN_SRC sh
+git clone https://github.com/bjonnh/PyOrgMode.git
+cd PyOrgMode/
+sudo python setup.py install
+#+END_SRC
+
+*** Import an Org-Mode file
+
+Import PyOrgMode
+
+#+BEGIN_SRC python
+import PyOrgMode
+#+END_SRC
+
+Create an Org data structure to hold the org-mode file.
+
+#+BEGIN_SRC python
+base = PyOrgMode.OrgDataStructure()
+#+END_SRC
+
+Load the org-mode file.
+
+#+BEGIN_SRC python
+base.load_from_file("test.org")
+#+END_SRC
+
+*** Create an org-mode file
+Create an Org data structure to hold the org-mode file.
+#+BEGIN_SRC python
+base = PyOrgMode.OrgDataStructure()
+#+END_SRC
+
+Create a new TODO item
+#+BEGIN_SRC python
+new_todo = PyOrgMode.OrgNode.Element()
+new_todo.heading = "I am a new todo item"
+new_todo.tags=["things", "important"]
+new_todo.level = 1
+new_todo.todo = "TODO"
+#+END_SRC
+
+Add a scheduled item and a deadline to the item.
+#+BEGIN_SRC python
+_sched = PyOrgMode.OrgSchedule()
+_sched._append(new_todo, _sched.Element(scheduled="<2015-08-01 Sat 12:00-13:00>"))
+_sched._append(new_todo, _sched.Element(deadline="<2015-08-01 Sat 12:00-13:00>"))
+#+END_SRC
+
+Create a logbook drawer
+#+BEGIN_SRC python
+_props = PyOrgMode.OrgDrawer.Element("LOGBOOK")
+# Add a properties drawer
+_props.append(PyOrgMode.OrgDrawer.Element("- State \"SOMEDAY\"    from \"TODO\"     [2015-07-01 Wed 09:45]"))
+# Append the properties to the new todo item
+new_todo.append_clean(_props)
+#+END_SRC
+
+Create a properties drawer
+#+BEGIN_SRC python
+_props = PyOrgMode.OrgDrawer.Element("PROPERTIES")
+# Add a properties drawer
+_props.append(PyOrgMode.OrgDrawer.Property("FRUITS", "pineapples"))
+_props.append(PyOrgMode.OrgDrawer.Property("NAMES", "bob, sally"))
+# Append the properties to the new todo item
+new_todo.append_clean(_props)
+#+END_SRC
+
+Append the todo item to the base object
+#+BEGIN_SRC python
+base.root.append_clean(new_todo)
+#+END_SRC
+
+Save the org object to a file
+#+BEGIN_SRC python
+base.save_to_file("output.org")
+#+END_SRC
+
+** Tools
+   [[elisp:org-babel-tangle][Tangle]] (Export the files)
+** Documentation
+*** Authors
+    :PROPERTIES:
+    :ID:       5b9ea3e5-f67b-4be7-9c55-6f1923b04e79
+    :END:
+#+srcname: authors
+#+begin_src ascii :tangle AUTHORS :exports code
+Jonathan BISSON <firstname.lastname at bjonnh.net> : initiator of the project
+Antti KAIHOLA <akaihol plus orgmode at ambitone dot com>
+m3wolf (github)
+bordercore (github)
+wroberts (github)
+gonvaled (github)
+10nin (github)
+CodeMonk (github)
+midraal (github)
+whacked (github)
+maxandersen (github)
+CodeMonk (github)
+midraal (github)
+Seamus Tuohy (@elationfoundation on github)
+clemente (github)
+kbarber2 (github)
+sp1ff (github)
+inducer (github)
+#+end_src

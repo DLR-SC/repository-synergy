@@ -1,0 +1,195 @@
+# Flask-Restless #
+
+## Introduction ##
+
+This is Flask-Restless, a [Flask][1] extension that creates URL endpoints that
+satisfy the requirements of the [JSON API][2] specification. It is compatible
+with models that have been defined using either [SQLAlchemy][3] or
+[Flask-SQLAlchemy][4].
+
+This document contains some brief instructions concerning installation of
+requirements, installation of this extension, configuration and usage of this
+extension, and building of documentation.
+
+For more information, see the
+
+  * [documentation][5],
+  * [Python Package Index listing][6],
+  * [source code repository][7].
+
+[![Build status](https://secure.travis-ci.org/jfinkels/flask-restless.png)](https://travis-ci.org/jfinkels/flask-restless)
+
+[1]: http://flask.pocoo.org
+[2]: https://jsonapi.org
+[3]: https://sqlalchemy.org
+[4]: https://packages.python.org/Flask-SQLAlchemy
+[5]: https://flask-restless.readthedocs.org
+[6]: https://pypi.python.org/pypi/Flask-Restless
+[7]: https://github.com/jfinkels/flask-restless
+
+## Copyright license ##
+
+The code comprising this program is copyright 2011 Lincoln de Sousa and
+copyright 2012, 2013, 2014, 2015, 2016 Jeffrey Finkelstein and contributors,
+and is dual-licensed under the following two copyright licenses:
+
+* the GNU Affero General Public License, either version 3 or (at your option)
+  any later version
+* the 3-clause BSD License
+
+For more information, see the files `LICENSE.AGPL` and `LICENSE.BSD` in this
+directory.
+
+The documentation is licensed under the Creative Commons Attribution-ShareAlike
+4.0 license.
+
+## Contents ##
+
+This is a partial listing of the contents of this package.
+
+* `LICENSE.AGPL` - one possible copyright license under which this program is
+  distributed to you (the GNU Affero General Public License version 3)
+* `LICENSE.BSD` - another possible copyright license under which this program
+  is distributed to you (the 3-clause BSD License)
+* `docs/` - the Sphinx documentation for Flask-Restless
+* `examples/` - example applications of Flask-Restless
+* `flask_restless/` - the Python package containing the extension
+* `MANIFEST.in` - indicates files to include when packaging Flask-Restless
+* `README.md` - this file
+* `setup.py` - Python setuptools configuration file for packaging this
+  extension
+* `tests/` - unit tests for Flask-Restless
+
+The `flask_restless` directory is a Python package containing the following
+files and directory:
+
+* `helpers.py` - utility functions, mainly for performing introspection on
+  SQLAlchemy objects
+* `manager.py` - contains the main class that end users will utilize to create
+  ReSTful JSON APIs for their database models
+* `search.py` - functions and classes that facilitate searching the database
+  on requests that require a search
+* `serialization.py` - basic serialization and deserialization for SQLAlchemy
+  models
+* `views/` - the view classes that implement the JSON API interface
+
+## Installing ##
+
+This application can be used with any Python version that Flask supports, which
+currently includes versions 2.6, 2.7, 3.3, and 3.4. (Python 3.2 is not
+supported by Flask and therefore cannot be supported by Flask-Restless.)
+
+This application requires the following libraries to be installed:
+
+* [Flask][1] version 0.10 or greater
+* [SQLAlchemy][3] version 0.8 or greater
+* [python-dateutil][8] version strictly greater than 2.2
+* [mimerender][9] version 0.5.2 or greater
+
+These requirements (and some additional optional packages) are also listed in
+the `requirements/install.txt` file. Using `pip` is probably the easiest way to
+install these:
+
+    pip install -r requirements/install.txt
+
+[8]: https://labix.org/python-dateutil
+[9]: https://github.com/martinblech/mimerender
+
+## Building as a Python egg ##
+
+This package can be built, installed, etc. as a Python egg using the provided
+`setup.py` script. For more information, run
+
+    python setup.py --help
+
+## How to use ##
+
+For information on how to use this extension, build the documentation here or
+[view it on the Web][5].
+
+## Testing ##
+
+If your Python interpreter is `cpython`, run:
+
+    pip install -r requirements/test-cpython.txt
+
+Otherwise, if your Python interpreter is `pypy`, run:
+
+    pip install -r requirements/test-pypy.txt
+
+To run the tests:
+
+    python setup.py test
+
+## Building documentation ##
+
+Flask-Restless requires the following program and supporting library to build
+the documentation:
+
+* [Sphinx][10]
+* [sphinxcontrib-httpdomain][11], version 1.1.7 or greater
+
+These requirements are also listed in the `requirements/doc.txt` file. Using
+`pip` is probably the easiest way to install these:
+
+    pip install -r requirements/doc.txt
+
+The documentation is written for Sphinx in [reStructuredText][12] files in the
+`docs/` directory. Documentation for each class and function is provided in the
+docstring in the code.
+
+The documentation uses the Flask Sphinx theme. It is included as a git
+submodule of this project, rooted at `docs/_themes`. To get the themes, do
+
+    git submodule update --init
+
+Now to build the documentation, run the command
+
+    python setup.py build_sphinx
+
+in the top-level directory. The output can be viewed in a web browser by
+opening `build/sphinx/html/index.html`.
+
+[10]: http://sphinx.pocoo.org/
+[11]: https://packages.python.org/sphinxcontrib-httpdomain/
+[12]: https://docutils.sourceforge.net/rst.html
+
+## Contributing ##
+
+Please report any issues on the [GitHub Issue Tracker][13].
+
+To suggest a change to the code or documentation, please create a new pull
+request on GitHub. Contributed code must come with an appropriate unit
+test. Please ensure that your code follows [PEP8][14], by running, for example,
+[flake8][15] before submitting a pull request. Also, please squash multiple
+commits into a single commit in your pull request by [rebasing][16] onto the
+master branch.
+
+By contributing to this project, you are agreeing to license your code
+contributions under both the GNU Affero General Public License, either version
+3 or any later version, and the 3-clause BSD License, and your documentation
+contributions under the Creative Commons Attribution-ShareAlike License version
+4.0, as described in the copyright license section above.
+
+[13]: http://github.com/jfinkels/flask-restless/issues
+[14]: https://www.python.org/dev/peps/pep-0008/
+[15]: http://flake8.readthedocs.org/en/latest/
+[16]: https://help.github.com/articles/about-git-rebase/
+
+## Artwork ##
+
+The `artwork/flask-restless-small.svg` and
+`docs/_static/flask-restless-small.png` are licensed under the [Creative
+Commons Attribute-ShareAlike 4.0 license][17]. The original image is a scan of
+a (now public domain) illustration by Arthur Hopkins in a serial edition of
+"The Return of the Native" by Thomas Hardy published in October 1878.
+
+The `artwork/flask-restless.svg` and `docs/_static/flask-restless.png` are
+licensed under the [Flask Artwork License][18].
+
+[17]: https://creativecommons.org/licenses/by-sa/4.0
+[18]: http://flask.pocoo.org/docs/license/#flask-artwork-license
+
+## Contact ##
+
+Jeffrey Finkelstein <jeffrey.finkelstein@gmail.com>

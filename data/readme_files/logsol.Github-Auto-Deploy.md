@@ -1,0 +1,29 @@
+!http://logsol.github.com/Github-Auto-Deploy/images/Github-Auto-Deploy.png!
+
+h1. What is it?
+
+This is a small HTTP server written in python. 
+It allows you to have a version of your project installed, that will be updated automatically on each Github push.
+
+To set it up, do the following:
+* install python
+* copy the GitAutoDeploy.conf.json.example to GitAutoDeploy.conf.json. This file will be gitignored and can be environment specific.
+* enter the matching for your project(s) in the GitAutoDeploy.conf.json file
+* start the server by typing "python GitAutoDeploy.py" 
+* to run it as a daemon add ==--daemon-mode==
+* On the Github page go to a repository, then "Admin", "Service Hooks", 
+"Post-Receive URLs" and add the url of your machine + port (e.g. http://example.com:8001).
+* Specify Content type as application/json
+
+You can test hook delivery by clicking redeliver existing hook delieveries.
+
+h1. How this works
+
+When someone pushes changes into Github, it sends a json file to the service hook url. 
+It contains information about the repository that was updated.
+
+All it really does is match the repository urls to your local repository paths in the config file, 
+move there and run "git fetch".
+
+Additionally it runs a deploy bash command that you can add to the config file optionally.
+Make sure that you start the server as the user that is allowed to pull from the github repository.
