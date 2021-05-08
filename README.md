@@ -1,6 +1,24 @@
-# Repositories Synergies
 
-This is the repository for SEKE 2021 paper on finding synergy between repositories.
+
+# Repository-pair Synergies
+
+
+This is the code for the SEKE 2021 paper *Quantifying Synergy between Software Projects using README Files Only*.
+
+Roxanne El Baff, Sivasurya Santhanam and Tobias Hecking
+
+      @InProceedings{elbaff:2021,
+        author =  {Roxanne {El Baff} and Sivasurya Santhanam and Tobias Hecking},
+
+        title     = {Quantifying Synergy between Software Projects using {README} Files Only},
+        booktitle = {The 33rd International Conference on Software Engineering and Knowledge
+                   Engineering, {SEKE} 2021, {KSIR} Virtual Conference Center, USA, July
+                   1-10, 2021},
+        publisher = {{KSI} Research Inc.},
+        year      = {2021},
+        url       = {https://doi.org/10.18293/SEKE2021-162},
+        doi       = {10.18293/SEKE2021-162},
+        }
 
 
 ## Dataset
